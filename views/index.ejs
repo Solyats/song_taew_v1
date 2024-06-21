@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8" />
+    <title>Shuttle Bus Route</title>
+    <%- include("./partials/commonJS.ejs") %> <%-
+    include("./partials/commonStyle.ejs") %>
+    <style>
+      html,
+      body,
+      #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=th"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="js/shuttlebus02/index.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700&display=swap" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <div class="grid grid-cols-10 gap-2 min-h-screen">
+      <div class="bg-primary col-span-3">
+        <div class="content-center ">
+          <div class="flex justify-center items-center content-center h-screen">
+            <img 
+            class="ml-6"
+            src="https://i.imgur.com/uQzstAW.png" 
+            alt="Description of image" 
+            style="width: 75%; height: auto;">   
+          </div>
+        </div>
+      
+      
+        
+      
+        
+
+        <div class="grid grid-cols-5 gap-4 h-full bg-test">
+          <div class="bg-test-dark col-span-1">
+            <div class="m-2 text-white text-1xl font-semibold content-center flex flex-col items-center">
+            </div>
+
+            <a
+              href="shuttlehome" 
+              class="flex flex-col items-center active-nav-link text-white nav-item ml-4 mr-4 my-4 hover:bg-primary "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"
+                />
+              </svg>
+              <div class="m-1 text-white text-1xl font-semibold content-center flex flex-col items-center">
+                <span>แนะนำ</span>
+                <span>เส้นทาง</span>
+
+              </div>
+              
+            </a>
+
+
+
+            <a
+              href="shuttlehome" 
+              class="flex flex-col items-center active-nav-link text-white nav-item ml-4 mr-4 my-4 hover:bg-test "
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5"
+                />
+              </svg>
+              <div class="m-2 text-white text-1xl font-semibold content-center flex flex-col items-center">
+                <span>ข้อมูล</span>
+                <span>สายรถ</span>
+
+              </div>
+              
+            </a>
+
+            
+
+           
+            
+          </div>
+
+          <div class="col-span-4 p-2 mt-2 pb-4">
+            <div
+              class="text-center font-kanit text-black pb-4 mt-6 text-2xl"
+            >
+              <span class=""> แนะนำเส้นทาง </span>
+            </div>
+
+            <div class="pb-4">
+              <div class="border">
+            </div>
+          </div>
+            
+
+
+
+            <div class="flex content-center">
+              <img
+                class="pl-2"
+                src="https://i.imgur.com/JnAh7NA.png"
+                alt="Sample Image"
+                style="width: 38px; height: 43px"
+              />
+
+              <div class="autocomplete pb-4 mr-2 ml-4 w-full">
+                <input
+                  id="autocomplete-input"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                  type="text"
+                  placeholder="ค้นหาบัส"
+                />
+                <ul
+                  hidden
+                  id="autocomplete-list"
+                  class="mt-2 py-1 px-4 border border-gray-300 rounded-md shadow-sm bg-white"
+                ></ul>
+              </div>
+            </div>
+
+            <div class="flex content-center">
+              <img
+                class="pl-2"
+                src="https://i.imgur.com/JnAh7NA.png"
+                alt="Sample Image"
+                style="width: 38px; height: 43px"
+              />
+
+              <div class="autocomplete pb-4 mr-2 ml-4 w-full">
+                <input
+                  id="autocomplete-input"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                  type="text"
+                  placeholder="ค้นหาบัส"
+                />
+                <ul
+                  hidden
+                  id="autocomplete-list"
+                  class="mt-2 py-1 px-4 border border-gray-300 rounded-md shadow-sm bg-white"
+                ></ul>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: center;">
+              <button class="bg-primary-light hover:bg-gray-100 text-white font-semibold py-2 px-4 border border-gray-400 rounded shadow rounded-lg">
+                ค้นหา
+              </button>
+            </div>
+            
+
+            
+
+          </div>
+        </div>
+        
+      </div>
+      <div class="col-span-7">
+        <div id="map-canvas"></div>
+      </div>
+    </div>
+
+    <script src="js/homePage/index.js"></script>
+  </body>
+</html>

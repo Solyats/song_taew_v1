@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn-main {
+    @apply bg-primary hover:opacity-80 text-white font-bold py-2 px-4 rounded;
+  }
+
+.btn-main-light {
+    @apply bg-primary-light hover:opacity-80 text-white font-bold rounded;
+}
+
+.btn-red {
+    @apply bg-red hover:opacity-80 text-white font-bold py-2 px-4 rounded;
+  }
