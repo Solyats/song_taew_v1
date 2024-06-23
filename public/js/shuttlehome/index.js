@@ -206,7 +206,7 @@ const initialize = async (routeId) => {
       let itemDetail = renderMarkersAndPath(item?.detailData, {
         startIcon: "image/startIcon.png",
         makkerIcon: "image/makkerIcon.png",
-        endIcon: "image/busIcon60.png",
+        endIcon: item?.shuttleBus_picture ? "image/busIcon60.png" : "image/busIcon60.png",
         middleIcon: "image/p.png",
         polylineColor: item?.polylineColor ? item?.polylineColor : "#ffff00",
         symbolColor: item?.symbolColor ? item?.symbolColor : "#32cd32",

@@ -56,7 +56,8 @@ const listDataRepository = async (shuttleBus_id) => {
         "tb1.shuttleBus_price",
         "tb1.shuttleBus_picture",
         "tb1.polylineColor",
-        "tb1.symbolColor"
+        "tb1.symbolColor",
+        "tb1.icon_shuttle_bus"
       )
       .from("shuttlebus as tb1");
 

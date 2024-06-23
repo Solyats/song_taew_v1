@@ -33,7 +33,7 @@ const updatePolylineStyle = (polyline, isSelected) => {
   });
 };
 
-const initialize = async () => {
+const initialize = async (routeId) => {
   await fetchAllShuttlebusData();
 
   let mapOptions = {
@@ -57,7 +57,6 @@ const initialize = async () => {
 
   const renderMarkersAndPath = (data, iconSet) => {
     let arr = [];
-
     $.each(data, function (i, item) {
       let iconUrl;
       let index = i + 1;
@@ -174,12 +173,41 @@ const initialize = async () => {
 
   let allPolylines = []; // Store all polylines for resetting zIndex
 
+   if (!routeId) {
+    let set = new Set(uuIndices);
+    for (let i = 1; i <= 1000; i++) {
+      set.add(i);
+    }
+    uuIndices = Array.from(set);
+    uuIndices.sort((a, b) => a - b);
+  } else {
+    switch (routeId) {
+      case "bus02":
+        uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+        break;
+      case "bus03":
+        uuIndices = [1, 2, 3];
+        break;
+      case "bus04":
+        uuIndices = [1, 2, 3];
+        break;
+      case "bus09":
+        uuIndices = [1, 2, 3];
+        break;
+      case "bus10":
+        uuIndices = [1, 2, 3];
+        break;
+      default:
+        break;
+    }
+  }
+
   if (allDataShuttleBus.length > 0) {
     allDataShuttleBus.map((item) => {
       let itemDetail = renderMarkersAndPath(item?.detailData, {
-        startIcon: "image/2.png",
+         startIcon: "image/startIcon.png",
         makkerIcon: "image/makkerIcon.png",
-        endIcon: "image/2.png",
+        endIcon: item?.shuttleBus_picture ? "image/busIcon60.png" : "image/busIcon60.png",
         middleIcon: "image/p.png",
         polylineColor: item?.polylineColor ? item?.polylineColor : "#ffff00",
         symbolColor: item?.symbolColor ? item?.symbolColor : "#32cd32",
