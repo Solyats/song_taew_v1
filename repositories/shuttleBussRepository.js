@@ -54,9 +54,37 @@ const listShuttleBusDataDetailRepository = async (shuttleBus_id) => {
   }
 };
 
+const insertShuttleBusRepository = async (data) => {
+  try {
+    const query = db.insert(data).from('shuttlebus')
 
+    await query;
+
+    return { data: null, error: null };
+  } catch (err) {
+    console.log("🚀 ~ insertShuttleBusRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+};
+
+const getLatestShuttleBusSeqRepository = async () => {
+  try {
+
+       const result = await db
+      .select('seq').from('shuttlebus')
+      .orderBy('seq', 'desc')
+      .limit(1);
+
+    return { data: result[0], error: null };
+  } catch (error) {
+    console.log("🚀 ~ getLatestShuttleBusSeqRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+}
 
 module.exports = {
   listMainShuttleBussDataRepository,
   listShuttleBusDataDetailRepository,
+  insertShuttleBusRepository,
+  getLatestShuttleBusSeqRepository
 };
