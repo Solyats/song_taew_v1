@@ -25,14 +25,3 @@ module.exports = {
   },
   plugins: [],
 }
-
-// tailwind.config.js
-module.exports = {
-  theme: {
-    extend: {
-      fontFamily: {
-        'kanit': ['Kanit', 'sans-serif'],
-      },
-    },
-  },
-};
