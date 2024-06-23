@@ -20,6 +20,11 @@ module.exports = {
           light: '#4B70F5',   // Lighter shade of red
           dark: '#023177  ',    // Darker shade of red
         },
+        cret: {
+          DEFAULT: '#005b96', // Custom red color
+          light: '#b3cde0',   // Lighter shade of red
+          dark: '#6497b1  ',    // Darker shade of red
+        },
       },
     },
   },

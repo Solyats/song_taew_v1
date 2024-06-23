@@ -1,13 +1,9 @@
 const express = require('express');
 const router = express.Router();
-
-const { GetRouteController, fetchDataRoad02Controller, fetchDataRoad03Controller , bus02 } = require('../controllers/routeController');
 const { API_ENDPOINT } = require('./constant');
+const { fetchDataShuttleBussController } = require('../controllers/shuttleBUssController');
 
-router.get(`${API_ENDPOINT}/get-bus`, GetRouteController);
-router.get(`${API_ENDPOINT}/get-path1`, GetRouteController);
-router.post(`${API_ENDPOINT}/get-path2`, fetchDataRoad02Controller);
-router.post(`${API_ENDPOINT}/get-path2`, fetchDataRoad03Controller);
+router.post(`${API_ENDPOINT}/fetch-shuttlebus`, fetchDataShuttleBussController);
 
 
 module.exports = router;

@@ -8,7 +8,7 @@ const fetchShuttlebusData = async (routeId) => {
     };
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/get-path2",
+      "http://localhost:5555/api/v1/fetch-shuttlebus",
       bodyRequest
     );
 
