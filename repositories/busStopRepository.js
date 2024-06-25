@@ -54,8 +54,62 @@ try {
   }
 }
 
+const deleteBusStopByIdRepository = async (id) => {
+  try {
+    const query = db('busstop')
+      .where('busStop_id', id)
+      .del();
+
+    await query;
+
+    return { data: null, error: null };
+  } catch (err) {
+    console.error("🚀 ~ deleteBusStopByIdRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+};
+
+const getBusStopByIDRepository = async (ID) => { 
+try {
+      const query = db
+  .select(
+    'tb1.busStop_id',
+    'tb1.busStop_name',
+    'tb1.busStop_latitude',
+    'tb1.busStop_longitude',
+    'tb1.busStop_picture'
+    ).from('busstop as tb1').where("tb1.busStop_id", ID);
+
+    const result = await query;
+    
+     return { data: result, error: null };
+  } catch (err) {
+     console.log("🚀 ~ getBusStopByIDRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+}
+
+const editBusstopRepository = async (busStop_id, busStopData) => {
+  try {
+
+    const query = db('busstop')
+      .where('busStop_id', busStop_id)
+      .update(busStopData);
+
+    await query;
+
+    return { data: null, error: null };
+  } catch (err) {
+    console.error("🚀 ~ editBusstopRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+};
+
 module.exports = {
   listBusstopRepository,
   insertBusstopRepository,
-  getBusStopByNameRepository
+  getBusStopByNameRepository,
+  deleteBusStopByIdRepository,
+  getBusStopByIDRepository,
+  editBusstopRepository
 };
