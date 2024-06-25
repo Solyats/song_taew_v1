@@ -32,6 +32,7 @@ const fetchDataShuttleBussController = async (req, res) => {
         acc[shuttleBus_id] = [];
       }
       acc[shuttleBus_id].push({
+        shuttleBus_id: shuttleBus_id,
         busStop_name,
         busStop_latitude,
         busStop_longitude,
