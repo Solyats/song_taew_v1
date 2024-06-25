@@ -13,7 +13,7 @@ const listBussStopControler = async (req, res) => {
   try {
     const datas = await listBusstopRepository();
 
-    return res.status(200).json({ status: 200, data: datas });
+    return res.status(200).json({ status: 200, data: datas?.data });
   } catch (err) {
     console.log("🚀 ~ listBussStopControler ~ err:", err);
     return res.status(500).json({ status: 500, error: err });
