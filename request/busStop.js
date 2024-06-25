@@ -5,17 +5,23 @@ const busStopValidator = [
     .exists()
     .withMessage("busStop_name is required")
     .isString()
-    .withMessage("busStop_name must be a string"),
+    .withMessage("busStop_name must be a string")
+    .notEmpty()
+    .withMessage("busStop_name cannot be empty"),
   body("busStop_latitude")
     .exists()
     .withMessage("busStop_latitude is required")
     .isFloat()
-    .withMessage("busStop_latitude must be a float"),
+    .withMessage("busStop_latitude must be a float")
+    .notEmpty()
+    .withMessage("busStop_latitude cannot be empty"),
   body("busStop_longitude")
     .exists()
     .withMessage("busStop_longitude is required")
     .isFloat()
-    .withMessage("busStop_longitude must be a float"),
+    .withMessage("busStop_longitude must be a float")
+    .notEmpty()
+    .withMessage("busStop_longitude cannot be empty"),
 ];
 
 module.exports = { busStopValidator };
