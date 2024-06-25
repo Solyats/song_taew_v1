@@ -155,7 +155,6 @@ const editBusStopController = async (req, res) => {
     console.log("🚀 ~ createBusStopController ~ err:", err);
     return res.status(500).json({ status: 500, error: err });
   }
-  console.log("🚀 ~ editBusStopController ~ getBusId:", getBusId);
 };
 
 module.exports = {

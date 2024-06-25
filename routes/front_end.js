@@ -23,4 +23,11 @@ router.get('/admin_edit_shuttle_bus', (req, res) => {
   res.render('admin_edit_shuttle_bus');
 });
 
+router.get('/admin_create_bus_stop', (req, res) => {
+  res.render('admin_create_bus_stop');
+});
+
+router.get('/admin_list_bus_stop', (req, res) => {
+  res.render('admin_list_bus_stop');
+});
 module.exports = router;
