@@ -4,6 +4,7 @@ const {
   listShuttleBusDataDetailRepository,
   insertShuttleBusRepository,
   getLatestShuttleBusSeqRepository,
+  listBusstopRepository,
 } = require("../repositories/shuttleBussRepository");
 
 const fetchDataShuttleBussController = async (req, res) => {
@@ -74,8 +75,6 @@ const createShuttleBussController = async (req, res) => {
       return res.status(400).json({ status: 500, error: "shuttleBus_id_is_already_exist" });
     }
 
-    
-
     const latestSeq = await getLatestShuttleBusSeqRepository()
 
     const seqBody = latestSeq?.data?.seq + 1
@@ -107,8 +106,19 @@ const createShuttleBussController = async (req, res) => {
   }
 };
 
+const listBussStopControler = async (req,res) => {
+  try {
+    const datas = await listBusstopRepository()
+
+    return res.status(200).json({ status: 200, data: datas });
+  } catch (err) { 
+console.log("🚀 ~ GetRouteController ~ err:", err);
+    return res.status(500).json({ status: 500, error: err });
+  }
+}
 
 module.exports = {
   fetchDataShuttleBussController,
   createShuttleBussController,
+  listBussStopControler,
 };

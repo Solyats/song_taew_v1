@@ -5,7 +5,8 @@ const { API_ENDPOINT } = require("./constant");
 const {
   fetchDataShuttleBussController,
   createShuttleBussController,
-} = require("../controllers/shuttleBUssController");
+  listBussStopControler,
+} = require("../controllers/shuttleBussController");
 const { shuttlebusValidator } = require("../request/shuttleBuss");
 
 router.post(`${API_ENDPOINT}/fetch-shuttlebus`, fetchDataShuttleBussController);
@@ -13,6 +14,10 @@ router.post(
   `${API_ENDPOINT}/create-shuttlebus`,
   shuttlebusValidator,
   createShuttleBussController
+);
+router.post(
+  `${API_ENDPOINT}/list-bus-stop`,
+  listBussStopControler
 );
 
 module.exports = router;
