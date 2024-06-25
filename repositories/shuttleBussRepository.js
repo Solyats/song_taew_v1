@@ -1,10 +1,12 @@
 const db = require("../db/db");
 
-const listMainShuttleBussDataRepository = async (shuttleBus_id) => {
+const getShuttleBussDetailRepository = async (shuttleBus_id) => {
   try {
     const query = db
       .select(
+        "tb1.Road_id",
         "tb1.shuttleBus_id",
+        "tb1.busStop_id",
         "tb2.busStop_name",
         "tb2.busStop_latitude",
         "tb2.busStop_longitude"
@@ -20,12 +22,12 @@ const listMainShuttleBussDataRepository = async (shuttleBus_id) => {
 
     return { data: result, error: null };
   } catch (err) {
-    console.log("🚀 ~ listMainShuttleBussDataRepository ~ err:", err);
+    console.log("🚀 ~ getShuttleBussDetailRepository ~ err:", err);
     return { data: null, error: err };
   }
 };
 
-const listShuttleBusDataDetailRepository = async (shuttleBus_id) => {
+const getShuttleBusByIdRepository = async (shuttleBus_id) => {
   try {
     const query = db
       .select(
@@ -49,14 +51,14 @@ const listShuttleBusDataDetailRepository = async (shuttleBus_id) => {
 
     return { data: result, error: null };
   } catch (err) {
-    console.log("🚀 ~ listShuttleBusDataDetailRepository ~ err:", err);
+    console.log("🚀 ~ getShuttleBusByIdRepository ~ err:", err);
     return { data: null, error: err };
   }
 };
 
 const insertShuttleBusRepository = async (data) => {
   try {
-    const query = db.insert(data).from('shuttlebus')
+    const query = db.insert(data).from("shuttlebus");
 
     await query;
 
@@ -69,10 +71,10 @@ const insertShuttleBusRepository = async (data) => {
 
 const getLatestShuttleBusSeqRepository = async () => {
   try {
-
-       const result = await db
-      .select('seq').from('shuttlebus')
-      .orderBy('seq', 'desc')
+    const result = await db
+      .select("seq")
+      .from("shuttlebus")
+      .orderBy("seq", "desc")
       .limit(1);
 
     return { data: result[0], error: null };
@@ -80,12 +82,41 @@ const getLatestShuttleBusSeqRepository = async () => {
     console.log("🚀 ~ getLatestShuttleBusSeqRepository ~ err:", err);
     return { data: null, error: err };
   }
-}
+};
 
+const deleteShuttleBusRepository = async (shuttleBus_id) => {
+  try {
+    const query = db("shuttlebus").where("shuttleBus_id", shuttleBus_id).del();
+
+    await query;
+
+    return { data: null, error: null };
+  } catch (err) {
+    console.log("🚀 ~ deleteShuttleBusRepository ~ err:", err);
+    return { data: null, error: err.message };
+  }
+};
+
+const editShuttleBusRepository = async (shuttleBus_id, data) => {
+  try {
+    const query = db("shuttlebus")
+      .where("shuttleBus_id", shuttleBus_id)
+      .update(data);
+
+    await query;
+
+    return { data: null, error: null };
+  } catch (err) {
+    console.log("🚀 ~ editShuttleBusRepository ~ err:", err);
+    return { data: null, error: err.message };
+  }
+};
 
 module.exports = {
-  listMainShuttleBussDataRepository,
-  listShuttleBusDataDetailRepository,
+  getShuttleBussDetailRepository,
+  getShuttleBusByIdRepository,
   insertShuttleBusRepository,
   getLatestShuttleBusSeqRepository,
+  deleteShuttleBusRepository,
+  editShuttleBusRepository,
 };

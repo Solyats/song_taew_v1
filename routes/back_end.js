@@ -5,6 +5,8 @@ const { API_ENDPOINT } = require("./constant");
 const {
   fetchDataShuttleBussController,
   createShuttleBussController,
+  deleteShuttleBusController,
+  editShuttleBussController,
 } = require("../controllers/shuttleBussController");
 const { shuttlebusValidator } = require("../request/shuttleBuss");
 const { busStopValidator } = require("../request/busStop");
@@ -16,6 +18,16 @@ router.post(
   shuttlebusValidator,
   createShuttleBussController
 );
+router.post(
+  `${API_ENDPOINT}/delete-shuttlebus`,
+  deleteShuttleBusController
+);
+router.post(
+  `${API_ENDPOINT}/edit-shuttlebus`,
+  shuttlebusValidator,
+  editShuttleBussController
+);
+
 router.post(
   `${API_ENDPOINT}/list-bus-stop`,
   listBussStopControler

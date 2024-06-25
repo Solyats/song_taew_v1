@@ -1,9 +1,6 @@
 const { body } = require('express-validator');
 
 const shuttlebusValidator = [
-  body('shuttleBus_id')
-    .exists().withMessage('shuttleBus_id is required')
-    .notEmpty().withMessage('shuttleBus_id cannot be empty'),
   body('shuttleBus_name')
     .exists().withMessage('shuttleBus_name is required')
     .notEmpty().withMessage('shuttleBus_name cannot be empty'),
@@ -27,7 +24,10 @@ const shuttlebusValidator = [
     .isString().withMessage('symbolColor must be a string'),
   body('icon_shuttle_bus')
     .optional()
-    .isString().withMessage('icon_shuttle_bus must be a string')
+    .isString().withMessage('icon_shuttle_bus must be a string'),
+  body('detailData')
+    .optional()
+    .isArray().withMessage('icon_shuttle_bus must be a array')
 ];
 
 module.exports = shuttlebusValidator;
