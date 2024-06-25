@@ -14,7 +14,9 @@ const {
   getRoadRouteByshuttleBusIdAndbusStopIdRepository,
 } = require("../repositories/roadRouteRepository");
 const { newUUID } = require("../utils/utils");
-const { getBusStopByIDRepository } = require("../repositories/busStopRepository");
+const {
+  getBusStopByIDRepository,
+} = require("../repositories/busStopRepository");
 
 const fetchDataShuttleBussController = async (req, res) => {
   const { route_id } = req.body;
@@ -266,9 +268,67 @@ const editShuttleBussController = async (req, res) => {
   }
 };
 
+const editSeqShuttleBusController = async (req, res) => {
+  const { data } = req.body;
+  try {
+    if (!data) {
+      return res.status(400).json({ status: 400, error: "data_is_required" });
+    }
+
+    if (!Array.isArray(data) || data.length === 0) {
+      return res
+        .status(400)
+        .json({ status: 400, error: "data must be a non-empty array" });
+    }
+
+    data.forEach(async (item) => {
+      if (!item?.shuttleBus_id) {
+        return res
+          .status(400)
+          .json({ status: 400, error: "shuttleBus_id_is_required" });
+      }
+
+      if (!item?.seq || item?.seq === 0) {
+        return res.status(400).json({ status: 400, error: "seq_is_required" });
+      }
+
+      const getBusId = await getShuttleBusByIdRepository(item?.shuttleBus_id);
+
+      if (getBusId.error !== null) {
+        return res.status(500).json({ status: 500, error: data.error });
+      }
+
+      if (getBusId?.data.length === 0) {
+        return res
+          .status(400)
+          .json({ status: 400, error: "shuttleBus_id_is_not_found" });
+      }
+
+      const dataUpdateSeq = {
+        seq: item?.seq,
+      }
+
+      const editSeq = await editShuttleBusRepository(
+        item?.shuttleBus_id,
+       dataUpdateSeq
+      );
+
+      if (editSeq.error !== null) {
+        return res.status(500).json({ status: 500, error: data.error });
+      }
+    });
+
+    return res.status(200).json({ status: 200, data: null });
+  } catch (err) {
+    console.log("🚀 ~ editSeqShuttleBusController ~ err:", err);
+    return res.status(500).json({ status: 500, error: err });
+  }
+};
+
 module.exports = {
   fetchDataShuttleBussController,
   createShuttleBussController,
   deleteShuttleBusController,
   editShuttleBussController,
+  editSeqShuttleBusController,
 };

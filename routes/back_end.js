@@ -7,6 +7,7 @@ const {
   createShuttleBussController,
   deleteShuttleBusController,
   editShuttleBussController,
+  editSeqShuttleBusController,
 } = require("../controllers/shuttleBussController");
 const { shuttlebusValidator } = require("../request/shuttleBuss");
 const { busStopValidator } = require("../request/busStop");
@@ -26,6 +27,11 @@ router.post(
   `${API_ENDPOINT}/edit-shuttlebus`,
   shuttlebusValidator,
   editShuttleBussController
+);
+
+router.post(
+  `${API_ENDPOINT}/edit-seq-shuttlebus`,
+  editSeqShuttleBusController
 );
 
 router.post(
