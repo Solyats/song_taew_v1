@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>edit</title>
+    <%- include("./partials/commonJS.ejs") %> <%-
+    include("./partials/commonStyle.ejs") %>
+    <script src="js/admin_create_shuttle_bus/index.js"></script>
+  </head>
+
+  <body>
+    <%- include("./partials/navbar.ejs") %>
+    <div class="container mx-auto" style="margin-top: 100px">
+      <div class="text-center text-3xl">
+        <span>จัดการรถโดยสาร</span>
+      </div>
+
+      <div class="flex justify-between">
+          <a href="/admin_list_shuttle_bus" class="btn-main">กลับ</a>
+        <button class="btn-main">บันทึก</button>
+      </div>
+    
+
+      <div class="shadow-md mt-10">
+        
+        <div class="grid grid-cols-4 p-4 gap-2">
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">รหัสรถ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group w-full">
+              <label class="block mb-2">ชื่อรถ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_name"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">สีรถ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">เวลาทำการ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">ค่าบริการ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">รูปรถ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">สีเส้นรถ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">สีรถสองแถว:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">ไอคอนรถ:</label>
+              <input
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="shuttleBus_id"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="card bg-white shadow-md rounded p-4">
+        <div class="card-header text-lg font-bold mb-4">เพิ่มรถสองแถว</div>
+        <div class="card-body">
+          <form action="/shuttlebus/add" method="post">
+            <div class="form-group flex mb-4">
+              <div class="form-group mr-8 w-full">
+                <label class="block mb-2">รหัสรถ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_id" />
+              </div>
+              <div class="form-group w-full">
+                <label class="block mb-2">ชื่อรถ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_name" />
+              </div>
+            </div>
+      
+            <div class="form-group flex mb-4">
+              <div class="form-group mr-8 w-full">
+                <label class="block mb-2">สีรถ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_id" />
+              </div>
+              <div class="form-group w-full">
+                <label class="block mb-2">เวลาทำการ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_name" />
+              </div>
+            </div>
+      
+            <div class="form-group flex mb-4">
+              <div class="form-group mr-8 w-full">
+                <label class="block mb-2">ค่าบริการ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_id" />
+              </div>
+              <div class="form-group w-full">
+                <label class="block mb-2">รูปรถ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_name" />
+              </div>
+            </div>
+      
+            <div class="form-group flex mb-4">
+              <div class="form-group mr-8 w-full">
+                <label class="block mb-2">สีเส้นรถ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_id" />
+              </div>
+              <div class="form-group w-full">
+                <label class="block mb-2">สีรถสองแถว:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_name" />
+              </div>
+            </div>
+      
+            <div class="form-group flex mb-4">
+              <div class="form-group w-full">
+                <label class="block mb-2">ไอคอนรถ:</label>
+                <input type="text" class="form-control border border-gray-300 p-2 rounded w-full" name="shuttleBus_id" />
+              </div>
+            </div>
+      
+            <div class="form-group flex justify-end">
+              <input type="submit" class="btn btn-info bg-blue-500 text-white p-2 rounded" value="เพิ่มข้อมูล" />
+            </div>
+          </form>
+        </div>
+      </div> -->
+    </div>
+  </body>
+</html>
