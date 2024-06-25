@@ -4,7 +4,6 @@ const {
   listShuttleBusDataDetailRepository,
   insertShuttleBusRepository,
   getLatestShuttleBusSeqRepository,
-  listBusstopRepository,
 } = require("../repositories/shuttleBussRepository");
 
 const fetchDataShuttleBussController = async (req, res) => {
@@ -64,20 +63,23 @@ const createShuttleBussController = async (req, res) => {
 
   const data = req.body;
   try {
-
-    const shuttleBus = await listShuttleBusDataDetailRepository(data?.shuttleBus_id);
+    const shuttleBus = await listShuttleBusDataDetailRepository(
+      data?.shuttleBus_id
+    );
 
     if (shuttleBus.error !== null) {
       return res.status(500).json({ status: 500, error: data.error });
     }
 
     if (shuttleBus?.data.length > 0) {
-      return res.status(400).json({ status: 500, error: "shuttleBus_id_is_already_exist" });
+      return res
+        .status(400)
+        .json({ status: 500, error: "shuttleBus_id_is_already_exist" });
     }
 
-    const latestSeq = await getLatestShuttleBusSeqRepository()
+    const latestSeq = await getLatestShuttleBusSeqRepository();
 
-    const seqBody = latestSeq?.data?.seq + 1
+    const seqBody = latestSeq?.data?.seq + 1;
 
     let bodyJson = {
       shuttleBus_id: data?.shuttleBus_id || "",
@@ -91,7 +93,6 @@ const createShuttleBussController = async (req, res) => {
       icon_shuttle_bus: data?.icon_shuttle_bus || null,
       seq: seqBody || 0,
     };
-    
 
     const createShuttleBuss = await insertShuttleBusRepository(bodyJson);
 
@@ -106,19 +107,7 @@ const createShuttleBussController = async (req, res) => {
   }
 };
 
-const listBussStopControler = async (req,res) => {
-  try {
-    const datas = await listBusstopRepository()
-
-    return res.status(200).json({ status: 200, data: datas });
-  } catch (err) { 
-console.log("🚀 ~ GetRouteController ~ err:", err);
-    return res.status(500).json({ status: 500, error: err });
-  }
-}
-
 module.exports = {
   fetchDataShuttleBussController,
   createShuttleBussController,
-  listBussStopControler,
 };

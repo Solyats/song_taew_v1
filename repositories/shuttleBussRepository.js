@@ -82,30 +82,10 @@ const getLatestShuttleBusSeqRepository = async () => {
   }
 }
 
-const listBusstopRepository = async () => {
-  try {
-      const query = db
-  .select(
-    'tb1.busStop_id',
-    'tb1.busStop_name',
-    'tb1.busStop_latitude',
-    'tb1.busStop_longitude',
-    'tb1.busStop_picture'
-    ).from('busstop as tb1')
-
-    const result = await query;
-    
-     return { data: result, error: null };
-  } catch (err) {
-     console.log("🚀 ~ listBusstopRepository ~ err:", err);
-    return { data: null, error: err };
-  }
-}
 
 module.exports = {
   listMainShuttleBussDataRepository,
   listShuttleBusDataDetailRepository,
   insertShuttleBusRepository,
   getLatestShuttleBusSeqRepository,
-  listBusstopRepository
 };
