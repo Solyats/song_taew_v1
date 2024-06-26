@@ -99,6 +99,7 @@ const AuthLoginController = async (req, res) => {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
+      path: "/"
     });
 
     return res.status(200).json({ status: 200, message: "Login successful" });

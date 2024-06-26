@@ -23,7 +23,6 @@ const {
 } = require("../controllers/authController");
 const { authValidator } = require("../request/auth");
 const {
-  authenticateToken,
   authenticateAdminToken,
 } = require("../middleware/middleware");
 
