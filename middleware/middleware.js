@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {
-    const token = req.cookies?.token
+  const token = req.cookies?.token;
 
   if (!token) {
     return res
@@ -25,7 +25,7 @@ const authenticateToken = (req, res, next) => {
 };
 
 const authenticateAdminToken = (req, res, next) => {
-   const token = req.cookies?.token
+  const token = req.cookies?.token;
 
   if (!token) {
     return res
@@ -55,7 +55,54 @@ const authenticateAdminToken = (req, res, next) => {
   );
 };
 
+const FrontEndToken = (req, res, next) => {
+  const token = req.cookies?.token;
+
+  if (!token) {
+    return res.redirect("/");
+  }
+
+  jwt.verify(
+    token,
+    process.env.SECRET_TOKEN_KEY || "asdsaddsaddsa2222",
+    (err, decoded) => {
+      if (err) {
+        return res.redirect("/");
+      }
+      req.user = decoded;
+      next();
+    }
+  );
+};
+
+const FrontEndAdminToken = (req, res, next) => {
+  const token = req.cookies?.token;
+
+  if (!token) {
+    return res.redirect("/");
+  }
+
+  jwt.verify(
+    token,
+    process.env.SECRET_TOKEN_KEY || "asdsaddsaddsa2222",
+    (err, decoded) => {
+      if (err) {
+        return res.redirect("/");
+      }
+
+      if (decoded.role !== "ADMIN") {
+        return res.redirect("/");
+      }
+
+      req.user = decoded;
+      next();
+    }
+  );
+};
+
 module.exports = {
   authenticateToken,
   authenticateAdminToken,
+  FrontEndToken,
+  FrontEndAdminToken,
 };
