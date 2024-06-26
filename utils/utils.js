@@ -4,6 +4,11 @@ const newUUID = () => {
   return uuidv4();
 };
 
+const currentEpochTimeMilli = () => {
+  return Date.now(); 
+};
+
 module.exports = {
   newUUID,
+  currentEpochTimeMilli
 };

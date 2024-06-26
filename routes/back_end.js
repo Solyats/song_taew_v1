@@ -12,6 +12,8 @@ const {
 const { shuttlebusValidator } = require("../request/shuttleBuss");
 const { busStopValidator } = require("../request/busStop");
 const { listBussStopControler, createBusStopController, deleteBusStopController, editBusStopController } = require("../controllers/busStopController");
+const { AuthRegisterController, AuthLoginController } = require("../controllers/authController");
+const { authValidator } = require("../request/auth");
 
 router.post(`${API_ENDPOINT}/fetch-shuttlebus`, fetchDataShuttleBussController);
 router.post(
@@ -54,6 +56,18 @@ router.post(
   `${API_ENDPOINT}/edit-bus-stop`,
    busStopValidator,
   editBusStopController
+);
+
+router.post(
+  `${API_ENDPOINT}/register`,
+   authValidator,
+  AuthRegisterController
+);
+
+router.post(
+  `${API_ENDPOINT}/login`,
+   authValidator,
+  AuthLoginController
 );
 
 module.exports = router;
