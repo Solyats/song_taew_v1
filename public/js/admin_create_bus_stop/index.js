@@ -69,11 +69,13 @@ const onClickCreateBusstop = async () => {
       bodyRequest
     );
 
+
+
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    window.location.href = "/admin_list_bus_stop";
+    // window.location.href = "/admin_list_bus_stop";
   } catch (error) {
     console.log(error?.response);
     switch (error?.response?.data?.error) {

@@ -2,8 +2,6 @@ const express = require("express");
 const { FrontEndAdminToken } = require("../middleware/middleware");
 const router = express.Router();
 
-const cssPath = "";
-
 router.get("/", (req, res) => {
   res.render("index");
 });
@@ -33,6 +31,10 @@ router.get("/admin_create_bus_stop", FrontEndAdminToken, (req, res) => {
 
 router.get("/admin_list_bus_stop", FrontEndAdminToken, async (req, res) => {
   res.render("admin_list_bus_stop");
+});
+
+router.get('/admin_login', async (req, res) => {
+  res.render('admin_login');
 });
 
 module.exports = router;

@@ -25,6 +25,12 @@ module.exports = {
           light: '#b3cde0',   // Lighter shade of red
           dark: '#6497b1  ',    // Darker shade of red
         },
+
+        bt: {
+          DEFAULT: '#005b96', // Custom red color
+          light: '#b3cde0',   // Lighter shade of red
+          dark: '#6497b1  ',    // Darker shade of red
+        },
       },
     },
   },
