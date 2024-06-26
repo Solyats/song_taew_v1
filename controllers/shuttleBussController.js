@@ -88,6 +88,7 @@ const createShuttleBussController = async (req, res) => {
     let bodyJson = {
       shuttleBus_id: uuid,
       shuttleBus_name: data?.shuttleBus_name || "",
+      shuttleTHname: data?.shuttleTHname || "",
       shuttleBus_color: data?.shuttleBus_color || "",
       shuttleBus_time: data?.shuttleBus_time || "",
       shuttleBus_price: data?.shuttleBus_price || 0,
@@ -243,6 +244,7 @@ const editShuttleBussController = async (req, res) => {
 
     let bodyJson = {
       shuttleBus_name: data?.shuttleBus_name || "",
+      shuttleTHname: data?.shuttleTHname || "",
       shuttleBus_color: data?.shuttleBus_color || "",
       shuttleBus_time: data?.shuttleBus_time || "",
       shuttleBus_price: data?.shuttleBus_price || 0,

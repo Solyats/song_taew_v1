@@ -4,6 +4,9 @@ const shuttlebusValidator = [
   body('shuttleBus_name')
     .exists().withMessage('shuttleBus_name is required')
     .notEmpty().withMessage('shuttleBus_name cannot be empty'),
+  body('shuttleTHname')
+    .exists().withMessage('shuttleTHname is required')
+    .notEmpty().withMessage('shuttleTHname cannot be empty'),
   body('shuttleBus_color')
     .exists().withMessage('shuttleBus_color is required')
     .notEmpty().withMessage('shuttleBus_color cannot be empty'),
