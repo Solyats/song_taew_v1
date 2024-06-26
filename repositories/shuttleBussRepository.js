@@ -32,6 +32,7 @@ const getShuttleBusByIdRepository = async (shuttleBus_id) => {
     const query = db
       .select(
         "tb1.shuttleBus_id",
+        "tb1.shuttleTHname",
         "tb1.shuttleBus_name",
         "tb1.shuttleBus_color",
         "tb1.shuttleBus_time",
