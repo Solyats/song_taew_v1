@@ -35,7 +35,7 @@ const AuthRegisterController = async (req, res) => {
       id: userID,
       username: data.username,
       password: hashedPassword,
-      role: "Member",
+      role: "MEMBER",
       status: true,
       created_at: currentEpochTime,
       updated_at: currentEpochTime,
@@ -96,7 +96,7 @@ const AuthLoginController = async (req, res) => {
     );
 
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
     });
