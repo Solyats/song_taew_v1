@@ -1,5 +1,6 @@
 let map;
 let allDataShuttleBus = [];
+let listShuttleBus = [];
 
 const fetchShuttlebusData = async (routeId) => {
   try {
@@ -181,7 +182,7 @@ const initialize = async (routeId) => {
       fillColor: iconSet.symbolColor,
       fillOpacity: 1,
       strokeColor: iconSet.symbolColor,
-      strokeWeight: 2,
+      strokeWeight: 1,
     };
 
     let lineSymbolSequence = {
@@ -206,7 +207,9 @@ const initialize = async (routeId) => {
       let itemDetail = renderMarkersAndPath(item?.detailData, {
         startIcon: "image/startIcon.png",
         makkerIcon: "image/makkerIcon.png",
-        endIcon: item?.shuttleBus_picture ? "image/busIcon60.png" : "image/busIcon60.png",
+        endIcon: item?.shuttleBus_picture
+          ? "image/busIcon60.png"
+          : "image/busIcon60.png",
         middleIcon: "image/p.png",
         polylineColor: item?.polylineColor ? item?.polylineColor : "#ffff00",
         symbolColor: item?.symbolColor ? item?.symbolColor : "#32cd32",
@@ -226,37 +229,13 @@ function setMapsToCenter(obj) {
   map.fitBounds(bounds);
 }
 
-const initDomJS = () => {
-  try {
-    $("#span_bus_02").click(async function () {
-      await initialize("bus02");
-    });
-
-    $("#span_bus_03").click(async function () {
-      await initialize("bus03");
-    });
-
-    $("#span_bus_04").click(async function () {
-      await initialize("bus04");
-    });
-
-    $("#span_bus_09").click(async function () {
-      await initialize("bus09");
-    });
-
-    $("#span_bus_10").click(async function () {
-      await initialize("bus10");
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 const initDetailBus = () => {
   try {
     let busContent = "";
+    let shuttleBusSidebar = "";
 
     $("#detail_bus").html("");
+    $("#list_shuttle_bus_data").html("");
 
     let uniqueBuses = [];
 
@@ -299,12 +278,44 @@ const initDetailBus = () => {
     }
 
     $("#detail_bus").html(busContent);
+
+    if (listShuttleBus.length > 0) {
+      listShuttleBus.forEach((item) => {
+        if (!uniqueBuses.includes(item?.shuttleBus_id)) {
+          shuttleBusSidebar += `
+          <span id="item_${item?.shuttleBus_id}"
+  class="flex flex-col items-center active-nav-link text-white nav-item ml-4 mr-4 my-4 hover:bg-primary cursor-pointer">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+    class="size-6">
+    <path stroke-linecap="round" stroke-linejoin="round"
+      d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
+  </svg>
+  <div class="m-1 text-white text-1xl font-semibold content-center flex flex-col items-center">
+    <span>${item?.shuttleTHname}</span>
+  </div>
+</span>
+          `;
+        }
+      });
+    }
+
+    $("#list_shuttle_bus_data").html(shuttleBusSidebar);
+
+    if (listShuttleBus.length > 0) {
+      listShuttleBus.forEach((item) => {
+        if (!uniqueBuses.includes(item?.shuttleBus_id)) {
+          $(`#item_${item?.shuttleBus_id}`).on("click", async function () {
+            await initialize(item?.shuttleBus_id);
+          });
+        }
+      });
+    }
   } catch (error) {
     console.log(error);
   }
 };
 
 window.onload = async function () {
+  listShuttleBus = await fetchShuttlebusData();
   await initialize("bus02");
-  initDomJS();
 };
