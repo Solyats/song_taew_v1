@@ -42,7 +42,7 @@ const getShuttleBusByIdRepository = async (shuttleBus_id) => {
         "tb1.symbolColor",
         "tb1.icon_shuttle_bus"
       )
-      .from("shuttlebus as tb1");
+      .from("shuttlebus as tb1").orderBy("seq", "asc")
 
     if (shuttleBus_id) {
       query.where("tb1.shuttleBus_id", shuttleBus_id);
