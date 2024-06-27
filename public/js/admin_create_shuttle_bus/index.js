@@ -83,7 +83,7 @@ const onClickCreateShuttleBus = async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    window.location.href = "/admin_list_bus_stop";
+    window.location.href = "/admin_list_shuttle_bus";
   } catch (error) {
     console.log("Error: ", error); // เพิ่มการ log เพื่อดูข้อผิดพลาดที่เกิดขึ้น
     switch (error?.response?.data?.error) {

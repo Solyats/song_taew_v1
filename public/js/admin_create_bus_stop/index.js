@@ -35,6 +35,7 @@ const initDomJS = async () => {
 
     $("#btn_create_busstop").on("click", async function () {
       await onClickCreateBusstop();
+      console.log("sdadasdasdas")
     });
   } catch (error) {
     console.log(error);
@@ -43,20 +44,20 @@ const initDomJS = async () => {
 
 const onClickCreateBusstop = async () => {
   try {
-    showLoading();
+    window.customswal.showLoading();
 
     if (nameBusStop === "") {
-      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
+      window.customswal.hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ชื่อจุดจอด");
     }
 
     if (latitudeVar <= 0 || latitudeVar === "") {
-      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
+      window.customswal.hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ละติจูด");
     }
 
     if (longitudeVar <= 0 || longitudeVar === "") {
-      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
+      window.customswal.hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ลองจิจูด");
     }
 
@@ -76,10 +77,10 @@ const onClickCreateBusstop = async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    hideLoading();
+    window.customswal.hideLoading();
     window.location.href = "/admin_list_bus_stop"; // นำทางไปยังหน้า /admin_list_bus_stop เมื่อสำเร็จ
   } catch (error) {
-    hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
+    window.customswal.hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
     console.log(error?.response);
     switch (error?.response?.data?.error) {
       case "busStopName_is_already_exist":
@@ -111,42 +112,9 @@ function validateFloatInput(input) {
   }
 }
 
-const showLoading = () => {
-  Swal.fire({
-    title: "Loading...",
-    allowOutsideClick: false,
-    showCancelButton: false,
-    showConfirmButton: false,
-    willOpen: () => {
-      Swal.showLoading();
-    },
-  });
-};
-
-const hideLoading = () => {
-  Swal.close();
-};
-
-const showErrorAlert = (message) => {
-  Swal.fire({
-    text: message,
-    icon: "error",
-    buttonsStyling: false,
-    confirmButtonText: "Okay, i got it",
-    customClass: { confirmButton: "btn-main" },
-  });
-};
-
-const showSuccessAlert = (message) => {
-  Swal.fire({
-    text: message,
-    icon: "success",
-    buttonsStyling: false,
-    confirmButtonText: "Okay, i got it",
-    customClass: { confirmButton: "btn-main" },
-  });
-};
 
 window.onload = async function () {
-  initDomJS();
+  console.log("Initializing DOM...");
+  await initDomJS();
 };
+
