@@ -2,7 +2,7 @@ let listDatas = [];
 
 const initDataPage = async () => {
   try {
-    showLoading()
+     window.customswal.showLoading()
     const response = await axios.post(
       "http://localhost:5555/api/v1/fetch-shuttlebus"
     );
@@ -54,35 +54,9 @@ const initDataPage = async () => {
   } catch (err) {
     console.log(err);
   } finally {
-    hideLoading()
+     window.customswal.hideLoading()
   }
 };
-
-const showLoading = () => {
-    Swal.fire({
-      title: "Loading...",
-      allowOutsideClick: false,
-      showCancelButton: false,
-      showConfirmButton: false,
-      willOpen: () => {
-        Swal.showLoading();
-      },
-    });
-  };
-
-  const hideLoading = () => {
-    Swal.close();
-  };
-
-  const showErrorAlert = (message) => {
-    Swal.fire({
-      text: message,
-      icon: "error",
-      buttonsStyling: false,
-      confirmButtonText: "Okay, i got it",
-      customClass: { confirmButton: "btn btn-primary" },
-    });
-  };
 
 window.onload = async function () {
   await initDataPage();

@@ -244,9 +244,11 @@ const initDetailBus = () => {
         if (!uniqueBuses.includes(item?.shuttleBus_id)) {
           uniqueBuses.push(item.shuttlebus);
 
-          const shuttlebusStops = item?.detailData
-            .map((stop) => stop.busStop_name)
-            .join(", ");
+         const shuttlebusStops = item?.detailData
+  .map((stop) => stop.busStop_name)
+  .filter((name) => !name.endsWith('*'))
+  .join(", ");
+
 
           busContent += `
         <div class="mb-4">
