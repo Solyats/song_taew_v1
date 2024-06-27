@@ -9,7 +9,7 @@ const initDomJS = async () => {
       nameBusStop = $(this).val();
     });
 
-    $("#inp_latitudeVar").on("change", function (event) {
+    $("#inp_latitudeVar").on("change", function () {
       var value = parseFloat($(this).val());
       if (!isNaN(value) && typeof value === "number") {
         latitudeVar = value;
@@ -19,7 +19,7 @@ const initDomJS = async () => {
       }
     });
 
-    $("#inp_longitudeVar").on("change", function (event) {
+    $("#inp_longitudeVar").on("change", function () {
       var value = parseFloat($(this).val());
       if (!isNaN(value) && typeof value === "number") {
         longitudeVar = value;
@@ -46,14 +46,17 @@ const onClickCreateBusstop = async () => {
     showLoading();
 
     if (nameBusStop === "") {
+      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ชื่อจุดจอด");
     }
 
     if (latitudeVar <= 0 || latitudeVar === "") {
+      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ละติจูด");
     }
 
     if (longitudeVar <= 0 || longitudeVar === "") {
+      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ลองจิจูด");
     }
 
@@ -69,14 +72,14 @@ const onClickCreateBusstop = async () => {
       bodyRequest
     );
 
-
-
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    // window.location.href = "/admin_list_bus_stop";
+    hideLoading();
+    window.location.href = "/admin_list_bus_stop"; // นำทางไปยังหน้า /admin_list_bus_stop เมื่อสำเร็จ
   } catch (error) {
+    hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
     console.log(error?.response);
     switch (error?.response?.data?.error) {
       case "busStopName_is_already_exist":
