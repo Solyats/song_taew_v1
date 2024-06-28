@@ -54,15 +54,19 @@
           <label for="username" class="block font-semibold"> ชื่อผู้ใช้งาน </label>
           <input id="username" type="text" placeholder="ชื่อผู้ใช้"
             class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+            <div id="error_message_user" class="text-red-500 mt-2"></div>
           <label for="password" class="block mt-3 font-semibold"> รหัสผู้ใช้งาน </label>
-          
           <input id="password" type="password" placeholder="รหัสผ่าน"
             class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+            <div id="error_message_password" class="text-red-500 mt-2"></div>
           <div class="flex justify-center items-baseline">
+            
             <button id="btn_login" type="submit"
               class="mt-4 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600">เข้าสู่ระบบ</button>
           </div>
+         
         </div>
+
       </div>
     </div>
   </div>

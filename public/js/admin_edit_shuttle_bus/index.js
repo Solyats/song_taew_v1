@@ -149,7 +149,7 @@ const getShuttleBus = async (id) => {
       if (detailDataVar?.length > 0) {
         detailDataVar.map((item) => {
           contentDiv += `
-          <div class="flex gx-2 content-center" id="content_detail_var_${item?.Road_id}">
+          <div class="flex justify-between gx-2 content-center" id="content_detail_var_${item?.Road_id}">
            <h1>${item?.busStop_name}</h1>
         <button class="btn-red" id="btn_remove_busStop_id_${item?.Road_id}">ลบ</button>
           </div>
@@ -166,6 +166,7 @@ const getShuttleBus = async (id) => {
     window.customswal.hideLoading();
   }
 };
+
 
 const getAvailibleBusStop = async () => {
   try {

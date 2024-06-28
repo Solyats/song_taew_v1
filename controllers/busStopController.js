@@ -110,6 +110,7 @@ const editBusStopController = async (req, res) => {
     return res.status(400).json({ status: 400, error: errors.array() });
   }
 
+
   const data = req.body;
   try {
     if (!data?.busStop_id) {
