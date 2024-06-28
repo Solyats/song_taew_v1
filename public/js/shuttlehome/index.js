@@ -4,6 +4,7 @@ let listShuttleBus = [];
 
 const fetchShuttlebusData = async (routeId) => {
   try {
+      window.customswal.showLoading()
     const bodyRequest = {
       route_id: routeId ? routeId : "",
     };
@@ -20,6 +21,8 @@ const fetchShuttlebusData = async (routeId) => {
     return response.data.data;
   } catch (error) {
     console.error(`Error fetching the shuttle bus data for ${routeId}:`, error);
+  } finally {
+      window.customswal.hideLoading()
   }
 };
 
