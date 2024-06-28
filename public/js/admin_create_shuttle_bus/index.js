@@ -74,7 +74,7 @@ const onClickCreateShuttleBus = async () => {
     console.log("Request body: ", bodyRequest); // เพิ่มการ log เพื่อดูค่าที่ส่งไป
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/create-shuttlebus",
+      "api/v1/create-shuttlebus",
       bodyRequest
     );
     console.log("Response: ", response); // เพิ่มการ log เพื่อตรวจสอบการตอบสนองของเซิร์ฟเวอร์

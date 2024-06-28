@@ -102,7 +102,7 @@ const AuthLoginController = async (req, res) => {
       path: "/"
     });
 
-    return res.status(200).json({ status: 200, message: "Login successful" });
+    return res.status(200).json({ status: 200, message: "Login successful", token: token });
   } catch (err) {
     console.log("🚀 ~ AuthLoginController ~ err:", err);
     return res.status(500).json({ status: 500, error: err.message });

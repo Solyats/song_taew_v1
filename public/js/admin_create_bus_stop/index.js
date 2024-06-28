@@ -69,7 +69,7 @@ const onClickCreateBusstop = async () => {
     };
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/create-bus-stop",
+      "api/v1/create-bus-stop",
       bodyRequest
     );
 

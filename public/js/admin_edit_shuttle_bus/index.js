@@ -78,7 +78,7 @@ const onClickUpdateShuttleBus = async () => {
     console.log("Request body: ", bodyRequest); // เพิ่มการ log เพื่อดูค่าที่ส่งไป
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/edit-shuttlebus",
+      "api/v1/edit-shuttlebus",
       bodyRequest
     );
     console.log("Response: ", response); // เพิ่มการ log เพื่อตรวจสอบการตอบสนองของเซิร์ฟเวอร์
@@ -110,7 +110,7 @@ const getShuttleBus = async (id) => {
     };
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/fetch-shuttlebus",
+      "api/v1/fetch-shuttlebus",
       bodyRequest
     );
 
@@ -172,7 +172,7 @@ const getAvailibleBusStop = async () => {
     let contentDiv = "";
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/list-bus-stop"
+      "api/v1/list-bus-stop"
     );
 
     listRouteAvailible = response?.data?.data

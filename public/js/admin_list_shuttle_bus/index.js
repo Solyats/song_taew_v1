@@ -4,7 +4,7 @@ const initDataPage = async () => {
   try {
      window.customswal.showLoading()
     const response = await axios.post(
-      "http://localhost:5555/api/v1/fetch-shuttlebus"
+      "api/v1/fetch-shuttlebus"
     );
 
     if (response.status !== 200) {

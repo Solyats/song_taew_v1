@@ -4,7 +4,7 @@ const initDataPage = async () => {
   try {
      window.customswal.showLoading()
     const response = await axios.post(
-      "http://localhost:5555/api/v1/list-bus-stop"
+      "api/v1/list-bus-stop"
     );
 
     if (response.status !== 200) {
@@ -91,7 +91,7 @@ const onDeleteBusStop = async (busStop_id) => {
     };
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/delete-bus-stop",
+      "api/v1/delete-bus-stop",
       bodyRequest
     );
 

@@ -68,7 +68,7 @@ const onClickCreateBusstop = async () => {
     };
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/create-bus-stop",
+      "api/v1/create-bus-stop",
       bodyRequest
     );
 
@@ -103,7 +103,7 @@ const getBusStop = async (id) => {
     };
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/fetch-shuttlebus",
+      "api/v1/fetch-shuttlebus",
       bodyRequest
     );
 

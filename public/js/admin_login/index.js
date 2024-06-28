@@ -29,16 +29,14 @@ const onAdminlogin = async () => {
     };
 
     const response = await axios.post(
-      "http://localhost:5555/api/v1/login",
+      "api/v1/login",
       bodyRequest
     );
-
-    console.log(response.data); 
 
       if (response.status !== 200) {
         throw new Error(`HTTP error! status: ${response.status}`);
       } 
-      
+    
       window.location.href = "/admin_list_shuttle_bus"
   } catch (error) {
   }
