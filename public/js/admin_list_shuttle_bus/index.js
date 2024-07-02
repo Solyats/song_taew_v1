@@ -30,6 +30,7 @@ const initDataPage = async () => {
                     ${item?.shuttleBus_id}
                   </td>
                   <td class="px-6 py-4">${item?.shuttleBus_name}</td>
+                  <td class="px-6 py-4">${item?.shuttleTHname}</td>
                   <td class="px-6 py-4">${item?.shuttleBus_color}</td>
                   <td class="px-6 py-4">${item?.shuttleBus_time}</td>
                   <td class="px-6 py-4">${item?.shuttleBus_price}</td>
