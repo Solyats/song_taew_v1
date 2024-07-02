@@ -6,6 +6,7 @@ const {
   getBusStopByIDRepository,
   deleteBusStopByIdRepository,
   editBusstopRepository,
+  getBusstopRepository,
 } = require("../repositories/busStopRepository");
 const { newUUID } = require("../utils/utils");
 const { deleteRoadRouteBybusStopIdRepository } = require("../repositories/roadRouteRepository");
@@ -15,6 +16,28 @@ const listBussStopControler = async (req, res) => {
     const datas = await listBusstopRepository();
 
     return res.status(200).json({ status: 200, data: datas?.data });
+  } catch (err) {
+    console.log("🚀 ~ listBussStopControler ~ err:", err);
+    return res.status(500).json({ status: 500, error: err });
+  }
+};
+
+const getBussStopControler = async (req, res) => {
+
+  const { busStop_id } = req.body;
+
+  try {
+    if (!busStop_id) {
+       return res.status(400).json({ status: 400, error: "busStop_id_is_required" });
+    }
+
+    const busStop = await getBusstopRepository(busStop_id)
+
+    if (!busStop.data) {
+       return res.status(400).json({ status: 400, error: "busStop_id_not_found" });
+    }
+
+    return res.status(200).json({ status: 200, data: busStop?.data });
   } catch (err) {
     console.log("🚀 ~ listBussStopControler ~ err:", err);
     return res.status(500).json({ status: 500, error: err });
@@ -171,4 +194,5 @@ module.exports = {
   createBusStopController,
   deleteBusStopController,
   editBusStopController,
+  getBussStopControler,
 };

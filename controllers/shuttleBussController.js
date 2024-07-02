@@ -24,13 +24,13 @@ const fetchDataShuttleBussController = async (req, res) => {
     const listData = await getShuttleBusByIdRepository(route_id);
 
     if (listData.error !== null) {
-      return res.status(500).json({ status: 500, error: data.error });
+      return res.status(500).json({ status: 500, error: listDataDetail.error });
     }
 
     const listDataDetail = await getShuttleBussDetailRepository(route_id);
 
     if (listDataDetail.error !== null) {
-      return res.status(500).json({ status: 500, error: data.error });
+      return res.status(500).json({ status: 500, error: listDataDetail.error });
     }
 
     const detailDataMap = listDataDetail?.data.reduce((acc, detail) => {
@@ -41,6 +41,7 @@ const fetchDataShuttleBussController = async (req, res) => {
         busStop_name,
         busStop_latitude,
         busStop_longitude,
+        busStop_picture,
       } = detail;
       if (!acc[shuttleBus_id]) {
         acc[shuttleBus_id] = [];
@@ -52,6 +53,7 @@ const fetchDataShuttleBussController = async (req, res) => {
         busStop_name,
         busStop_latitude,
         busStop_longitude,
+        busStop_picture,
       });
       return acc;
     }, {});

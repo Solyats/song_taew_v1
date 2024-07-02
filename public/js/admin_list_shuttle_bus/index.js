@@ -43,12 +43,36 @@ const initDataPage = async () => {
                       class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >แก้ไข</a
                     >
+                    <button
+                      id="btn_delete_${item?.shuttleBus_id}"
+                      class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      >ลบ</button
+                    >
                   </td>
                 </tr>
             `
         })
 
-        $("#list_data_bus").html(divContent)
+      $("#list_data_bus").html(divContent)
+
+      listDatas.map((item) => {
+        $(`#btn_delete_${item?.shuttleBus_id}`).click(function () {
+          Swal.fire({
+              title: "Are you sure?",
+              text: "Do you want to delete?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#d33",
+              cancelButtonColor: "#3085d6",
+              confirmButtonText: "Yes, I want to delete",
+              cancelButtonText: "Cancel",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                await onDeleteShuttleBus(item?.shuttleBus_id);
+              }
+            });
+        });
+      });
 
     }
   } catch (err) {
@@ -57,6 +81,37 @@ const initDataPage = async () => {
      window.customswal.hideLoading()
   }
 };
+
+const onDeleteShuttleBus = async (shuttleBus_id) => {
+  try {
+     window.customswal.showLoading()
+
+    if (!shuttleBus_id) {
+      return showErrorAlert("shuttleBus_id_is_missing")
+    }
+
+    const bodyRequest = {
+      shuttleBus_id: shuttleBus_id,
+    };
+
+    const response = await axios.post(
+      "api/v1/delete-shuttlebus",
+      bodyRequest
+    );
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+
+    window.location.reload()
+  } catch (error) {
+    console.log(error)
+     window.customswal.showErrorAlert(error)
+  } finally {
+     window.customswal.hideLoading()
+  }
+}
 
 window.onload = async function () {
   await initDataPage();

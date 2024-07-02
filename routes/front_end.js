@@ -33,6 +33,13 @@ router.get("/admin_list_bus_stop", FrontEndAdminToken, async (req, res) => {
   res.render("admin_list_bus_stop");
 });
 
+router.get("/admin_edit_bus_stop", FrontEndAdminToken, (req, res) => {
+  if (!req.query.id) {
+    return res.redirect("/admin_list_bus_stop");
+  }
+  res.render("admin_edit_bus_stop");
+});
+
 router.get('/admin_login', async (req, res) => {
   res.render('admin_login');
 });

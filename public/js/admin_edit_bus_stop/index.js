@@ -9,56 +9,25 @@ const initDomJS = async () => {
       nameBusStop = $(this).val();
     });
 
-    $("#inp_latitudeVar").on("change", function () {
-      var value = parseFloat($(this).val());
-      if (!isNaN(value) && typeof value === "number") {
-        latitudeVar = value;
-      } else {
-        $(this).val("");
-        alert("Please enter a valid float number.");
-      }
+    $("#inp_busStop_latitudee").on("change", function () {
+      latitudeVar = $(this).val();
     });
 
-    $("#inp_longitudeVar").on("change", function () {
-      var value = parseFloat($(this).val());
-      if (!isNaN(value) && typeof value === "number") {
-        longitudeVar = value;
-      } else {
-        $(this).val("");
-        alert("Please enter a valid float number.");
-      }
+    $("#inp_busStop_longitude").on("change", function () {
+      longitudeVar = $(this).val();
     });
 
-    $("#inp_PicTure").on("change", function () {
+    $("#inp_busStop_picture").on("change", function () {
       PicTureVar = $(this).val();
-    });
-
-    $("#btn_create_busstop").on("click", async function () {
-      await onClickCreateBusstop();
     });
   } catch (error) {
     console.log(error);
   }
 };
 
-const onClickCreateBusstop = async () => {
+const onClickUpdateBusStop = async () => {
   try {
-    showLoading();
-
-    if (nameBusStop === "") {
-      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
-      return showErrorAlert("กรุณากรอก ชื่อจุดจอด");
-    }
-
-    if (latitudeVar <= 0 || latitudeVar === "") {
-      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
-      return showErrorAlert("กรุณากรอก ละติจูด");
-    }
-
-    if (longitudeVar <= 0 || longitudeVar === "") {
-      hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
-      return showErrorAlert("กรุณากรอก ลองจิจูด");
-    }
+    window.customswal.showLoading();
 
     const bodyRequest = {
       busStop_name: nameBusStop,
@@ -67,78 +36,46 @@ const onClickCreateBusstop = async () => {
       busStop_picture: PicTureVar,
     };
 
-    const response = await axios.post(
-      "api/v1/create-bus-stop",
-      bodyRequest
-    );
+    console.log("Request body: ", bodyRequest); // Log to see the request body
 
-    if (response.status !== 200) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    const response = await axios.post("api/v1/create-bus-stop", bodyRequest);
+    console.log("Response: ", response); // Log to see the server response
 
-    hideLoading();
-    window.location.href = "/admin_list_bus_stop"; // นำทางไปยังหน้า /admin_list_bus_stop เมื่อสำเร็จ
+    window.location.href = "/admin_list_shuttle_bus";
   } catch (error) {
-    hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
-    console.log(error?.response);
+    console.log("Error: ", error); // Log to see the error
     switch (error?.response?.data?.error) {
       case "busStopName_is_already_exist":
-        showErrorAlert("ชื่อจุดจอดซ้ำ");
+        window?.customswal?.showErrorAlert("ชื่อจุดจอดซ้ำ");
         break;
       default:
-        showErrorAlert(error?.response?.data?.error);
+        window?.customswal?.showErrorAlert(error?.response?.data?.error);
         break;
     }
   }
 };
-
-
 
 const getBusStop = async (id) => {
   try {
     window.customswal.showLoading();
 
     const bodyRequest = {
-      route_id: id,
+      busStop_id: id,
     };
 
-    const response = await axios.post(
-      "api/v1/fetch-shuttlebus",
-      bodyRequest
-    );
+    const response = await axios.post("api/v1/get-bus-stop", bodyRequest);
 
-    if (response?.data?.data[0]) {
-      const data = response?.data?.data[0];
-      shortNameVar = data?.shuttleBus_name;
-      shortThname = data?.shuttleTHname;
-      suttlebusColor = data?.shuttleBus_color;
-      shuttlesusTime = data?.shuttleBus_time;
-      shuttlesusPrice = data?.shuttleBus_price;
-      shuttlebusPicture = data?.shuttleBus_picture;
-      polylineColorVar = data?.polylineColor;
-      symbolColorVar = data?.symbolColor;
-      shuttlebusIcon = data?.icon_shuttle_bus;
-      detailDataVar = data?.detailData;
+    if (response?.data) {
+      const data = response?.data?.data;
+      nameBusStop = data?.busStop_name;
+      latitudeVar = data?.busStop_latitude;
+      longitudeVar = data?.busStop_longitude;
+      PicTureVar = data?.busStop_picture;
 
-      $("#inp_shuttle_name").val(shortNameVar);
-
-      $("#inp_busstop_thName").val(shortThname);
-
-      $("#inp_busstop_color").val(suttlebusColor);
-
-      $("#inp_busstop_time").val(shuttlesusTime);
-
-      $("#inp_busstop_price").val(shuttlesusPrice);
-
-      $("#inp_busstop_picture").val(shuttlebusPicture);
-
-      $("#inp_busstop_polyline").val(polylineColorVar);
-
-      $("#inp_busstop_symbol").val(symbolColorVar);
-
-      $("#inp_busstop_icon").val(shuttlebusIcon);
-
-      $("#list_route_this_id").html(contentDiv);
+      $("#inp_busStop_name").val(nameBusStop);
+      $("#inp_busStop_latitudee").val(latitudeVar);
+      $("#inp_busStop_longitude").val(longitudeVar);
+      $("#inp_busStop_picture").val(PicTureVar);
     }
   } catch (error) {
     console.log(error);
@@ -146,3 +83,12 @@ const getBusStop = async (id) => {
     window.customswal.hideLoading();
   }
 };
+
+// Initialize DOM elements
+
+$(document).ready(async () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  busStopIdVar = searchParams.get("id");
+  initDomJS();
+  await getBusStop(busStopIdVar);
+});

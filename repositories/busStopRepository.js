@@ -21,6 +21,27 @@ const listBusstopRepository = async () => {
   }
 }
 
+const getBusstopRepository = async (busStop_id) => {
+  try {
+      const query = db
+  .select(
+    'tb1.busStop_id',
+    'tb1.busStop_name',
+    'tb1.busStop_latitude',
+    'tb1.busStop_longitude',
+    'tb1.busStop_picture'
+    ).from('busstop as tb1')
+    .where("tb1.busStop_id", busStop_id)
+
+    const result = await query;
+    
+     return { data: result[0], error: null };
+  } catch (err) {
+     console.log("🚀 ~ getBusstopRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+}
+
 const insertBusstopRepository = async (busStopData) => {
   try {
     const query = db.insert(busStopData).from('busstop')
@@ -111,5 +132,6 @@ module.exports = {
   getBusStopByNameRepository,
   deleteBusStopByIdRepository,
   getBusStopByIDRepository,
-  editBusstopRepository
+  editBusstopRepository,
+  getBusstopRepository
 };

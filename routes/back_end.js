@@ -16,6 +16,7 @@ const {
   createBusStopController,
   deleteBusStopController,
   editBusStopController,
+  getBussStopControler,
 } = require("../controllers/busStopController");
 const {
   AuthRegisterController,
@@ -52,6 +53,7 @@ router.post(
 );
 
 router.post(`${API_ENDPOINT}/list-bus-stop`, listBussStopControler);
+router.post(`${API_ENDPOINT}/get-bus-stop`, getBussStopControler);
 
 router.post(
   `${API_ENDPOINT}/create-bus-stop`,

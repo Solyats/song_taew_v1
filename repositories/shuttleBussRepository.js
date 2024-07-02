@@ -9,10 +9,12 @@ const getShuttleBussDetailRepository = async (shuttleBus_id) => {
         "tb1.busStop_id",
         "tb2.busStop_name",
         "tb2.busStop_latitude",
-        "tb2.busStop_longitude"
+        "tb2.busStop_longitude",
+        "tb2.busStop_picture"
       )
       .from("road_route as tb1")
-      .leftJoin("busstop as tb2", "tb1.busStop_id", "tb2.busStop_id");
+      .leftJoin("busstop as tb2", "tb1.busStop_id", "tb2.busStop_id")
+      .orderBy("tb1.Road_id", "asc"); 
 
     if (shuttleBus_id) {
       query.where("tb1.shuttleBus_id", shuttleBus_id);

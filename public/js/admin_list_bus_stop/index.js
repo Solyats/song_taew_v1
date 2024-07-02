@@ -34,9 +34,9 @@ const initDataPage = async () => {
                   <td class="px-6 py-4">${item?.busStop_longitude}</td>
                   <td class="px-6 py-4">${item?.busStop_picture}</td>
                  
-                  <td class="px-6 py-4">
+                  <td class="px-6 py-4 flex ">
                     <a
-                      href="/admin_edit_shuttle_bus?id=${item?.busStop_id}"
+                      href="/admin_edit_bus_stop?id=${item?.busStop_id}"
                       class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >แก้ไข</a
                     >

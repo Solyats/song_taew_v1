@@ -80,6 +80,10 @@ const AuthLoginController = async (req, res) => {
       return res.status(400).json({ status: 400, error: "invalid_password" });
     }
 
+    if (user?.status === 0) {
+      return res.status(400).json({ status: 400, error: "user_got_banned" });
+    }
+
     const tokenExp = process.env.TOKEN_EXPIRES
       ? process.env.TOKEN_EXPIRES
       : "1h";
