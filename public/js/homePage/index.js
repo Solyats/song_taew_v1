@@ -175,7 +175,7 @@ const initialize = async (routeId) => {
 
    if (!routeId) {
     let set = new Set(uuIndices);
-    for (let i = 1; i <= 1000; i++) {
+    for (let i = 1; i <= 0; i++) {
       set.add(i);
     }
     uuIndices = Array.from(set);
