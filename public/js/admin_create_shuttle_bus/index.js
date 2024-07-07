@@ -34,12 +34,19 @@ const initDomJS = () => {
       shuttlebusPicture = $(this).val();
     });
 
-    $("#inp_busstop_polyline").on("change", function () {
-      polylineColorVar = $(this).val();
-    });
+    $(document).ready(function () {
+      const $polylineColorVar = $("#polylineColorVar");
+      const $symbolColorVar = $("#symbolColorVar");
+      const $selectedColorpoly = $("#selectedColorpoly");
+      const $selectedColor = $("#selectedColor");
 
-    $("#inp_busstop_symbol").on("change", function () {
-      symbolColorVar = $(this).val();
+      $polylineColorVar.on("change", function () {
+        $selectedColorpoly.text($polylineColorVar.val());
+      });
+
+      $symbolColorVar.on("change", function () {
+        $selectedColor.text($symbolColorVar.val());
+      });
     });
 
     $("#inp_busstop_icon").on("change", function () {
@@ -73,10 +80,7 @@ const onClickCreateShuttleBus = async () => {
 
     console.log("Request body: ", bodyRequest); // เพิ่มการ log เพื่อดูค่าที่ส่งไป
 
-    const response = await axios.post(
-      "api/v1/create-shuttlebus",
-      bodyRequest
-    );
+    const response = await axios.post("api/v1/create-shuttlebus", bodyRequest);
     console.log("Response: ", response); // เพิ่มการ log เพื่อตรวจสอบการตอบสนองของเซิร์ฟเวอร์
 
     if (response.status !== 200) {
@@ -88,7 +92,7 @@ const onClickCreateShuttleBus = async () => {
     console.log("Error: ", error); // เพิ่มการ log เพื่อดูข้อผิดพลาดที่เกิดขึ้น
     switch (error?.response?.data?.error) {
       case "busStopName_is_already_exist":
-         window?.customswal?.showErrorAlert("ชื่อจุดจอดซ้ำ");
+        window?.customswal?.showErrorAlert("ชื่อจุดจอดซ้ำ");
         break;
       default:
         window?.customswal?.showErrorAlert(error?.response?.data?.error);

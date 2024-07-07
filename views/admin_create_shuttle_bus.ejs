@@ -41,7 +41,7 @@
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
-              <label class="block mb-2">สีรถ:</label>
+              <label class="block mb-2">ชื่อสีรถ:</label>
               <input id="inp_busstop_color" class="form-control border border-gray-300 p-2 rounded w-full"
                 name="inp_color" />
             </div>
@@ -70,15 +70,23 @@
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">สีเส้นรถ:</label>
-              <input id="inp_busstop_polyline" type="text"
-                class="form-control border border-gray-300 p-2 rounded w-full" name="inp_line_color" />
+              <div class="flex content-center mt-2 form-control border border-gray-300 p-2 mb-1 rounded w-full">
+              <input type="color" id="polylineColorVar" name="polylineColorVar" value="#ff0000">
+              <p>สีที่เลือก: <span id="selectedColorpoly">#ff0000</span></p>
+              </div>
+
             </div>
           </div>
+
+
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">สีจุดรถสองแถว:</label>
-              <input id="inp_busstop_symbol" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
-                name="input_bus_color" />
+              <div class="flex content-center mt-2 form-control border border-gray-300 p-2 mb-1 rounded w-full">
+                <input type="color" id="symbolColorVar" name="symbolColorVar" value="#ff0000">
+                <p>สีที่เลือก: <span id="selectedColor">#ff0000</span></p>
+              </div>
+          
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">

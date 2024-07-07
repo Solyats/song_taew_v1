@@ -7,6 +7,15 @@
     <%- include("./partials/commonJS.ejs") %> <%-
     include("./partials/commonStyle.ejs") %>
     <script src="js/admin_create_bus_stop/index.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=th"></script>
+    
+    <style>
+      /* CSS for map container */
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
   </head>
 
   <body>
@@ -37,7 +46,7 @@
             <div class="col-span-2 w-full p-2">
               <label class="block mb-2">ละติจูด:</label>
               <input
-              id="inp_latitudeVar"
+              id="busStop_latitude"
                 type="text"
                 class="form-control border border-gray-300 p-2 rounded w-full"
               />
@@ -46,7 +55,7 @@
             <div class="col-span-2 w-full p-2">
               <label class="block mb-2">ลองจิจูด:</label>
               <input
-              id="inp_longitudeVar"
+              id="busStop_longitude"
                 type="text"
                 class="form-control border border-gray-300 p-2 rounded w-full"
                 name="BusStop_name"
@@ -57,11 +66,13 @@
               <label class="block mb-2">รูปจุดจอด:</label>
               <input
               id="inp_PicTure"
-                type="text"
+                type="file"
                 class="form-control border border-gray-300 p-2 rounded w-full"
                 name="BusStop_id"
+                accept="image/*"
               />
             </div>
+              <div id="map"></div>
           </div>
         </div>
       </div>

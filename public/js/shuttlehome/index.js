@@ -4,7 +4,6 @@ let listShuttleBus = [];
 
 const fetchShuttlebusData = async (routeId) => {
   try {
-      window.customswal.showLoading()
     const bodyRequest = {
       route_id: routeId ? routeId : "",
     };
@@ -21,8 +20,6 @@ const fetchShuttlebusData = async (routeId) => {
     return response.data.data;
   } catch (error) {
     console.error(`Error fetching the shuttle bus data for ${routeId}:`, error);
-  } finally {
-      window.customswal.hideLoading()
   }
 };
 
@@ -54,11 +51,6 @@ const initialize = async (routeId) => {
   };
   map = new google.maps.Map(document.getElementById("map-bus"), mapOptions);
   let infowindow = new google.maps.InfoWindow();
-
-  google.maps.event.addListener(map, 'click', function(event) {
-                console.log("Latitude: " + event.latLng.lat());
-                console.log("Longitude: " + event.latLng.lng());
-            });
 
   let uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
 

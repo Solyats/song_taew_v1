@@ -7,6 +7,8 @@ const initDataPage = async () => {
       "api/v1/fetch-shuttlebus"
     );
 
+    
+
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -34,10 +36,14 @@ const initDataPage = async () => {
                   <td class="px-6 py-4">${item?.shuttleBus_color}</td>
                   <td class="px-6 py-4">${item?.shuttleBus_time}</td>
                   <td class="px-6 py-4">${item?.shuttleBus_price}</td>
-                  <td class="px-6 py-4">${item?.shuttleBus_picture}</td>
-                  <td class="px-6 py-4">${item?.polylineColor}</td>
+                  <td class="px-6 py-4"><img src="${item?.shuttleBus_picture}" height="50%" width="50%" alt=""></td>
+                  <td class="px-6 py-4">${item?.polylineColor}
+                    <div>
+                    
+                    </div>
+                  </td>
                   <td class="px-6 py-4">${item?.symbolColor}</td>
-                  <td class="px-6 py-4">${item?.icon_shuttle_bus}</td>
+                  <td class="px-6 py-4"><img src="${item?.icon_shuttle_bus}"height="50%" width="50%" alt=""></td>
                   <td class="px-6 py-4">
                     <a
                       href="/admin_edit_shuttle_bus?id=${item?.shuttleBus_id}"

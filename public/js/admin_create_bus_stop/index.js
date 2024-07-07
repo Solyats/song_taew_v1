@@ -5,42 +5,58 @@ let PicTureVar = "";
 
 const initDomJS = async () => {
   try {
+    // เมื่อมีการเปลี่ยนแปลงในช่องป้อนชื่อป้ายรถเมล์
     $("#inp_busstop_name").on("change", function () {
       nameBusStop = $(this).val();
     });
 
-    $("#inp_latitudeVar").on("change", function () {
-      var value = parseFloat($(this).val());
-      if (!isNaN(value) && typeof value === "number") {
-        latitudeVar = value;
-      } else {
-        $(this).val("");
-        alert("Please enter a valid float number.");
-      }
-    });
+    // พิกัดเริ่มต้นของแผนที่
+     // แทนที่ด้วยพิกัดเริ่มต้นของคุณ
 
-    $("#inp_longitudeVar").on("change", function () {
-      var value = parseFloat($(this).val());
-      if (!isNaN(value) && typeof value === "number") {
-        longitudeVar = value;
-      } else {
-        $(this).val("");
-        alert("Please enter a valid float number.");
-      }
-    });
+    // สร้างแผนที่ใหม่
+    $(document).ready(function() {
+  var initialLatLng = { lat: 16.447, lng: 102.833 }; // Example initial position, replace with actual coordinates
+  
+  var map = new google.maps.Map($('#map')[0], {
+    center: initialLatLng,
+    zoom: 12 // Adjust as appropriate
+  });
 
-    $("#inp_PicTure").on("change", function () {
-      PicTureVar = $(this).val();
-    });
+  // Create a draggable marker
+  var marker = new google.maps.Marker({
+    position: initialLatLng,
+    map: map,
+    draggable: true // Allow marker to be draggable
+  });
 
+  // Event listener for when the marker is dragged and dropped
+  google.maps.event.addListener(marker, 'dragend', function(event) {
+    $('#busStop_latitude').val(event.latLng.lat());
+    $('#busStop_longitude').val(event.latLng.lng());
+    latitudeVar = event.latLng.lat();
+    longitudeVar = event.latLng.lng();
+  });
+
+  // When there is a change in the picture input field
+  $('#inp_PicTure').on('change', function() {
+    PicTureVar = $(this).val();
+  });
+});
+
+
+    // เมื่อมีการคลิกที่ปุ่มสร้างป้ายรถเมล์
     $("#btn_create_busstop").on("click", async function () {
       await onClickCreateBusstop();
-      console.log("sdadasdasdas")
+      console.log("เริ่มสร้างป้ายรถเมล์");
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
+
+// เรียกฟังก์ชันเพื่อเริ่มต้น
+
+
 
 const onClickCreateBusstop = async () => {
   try {
