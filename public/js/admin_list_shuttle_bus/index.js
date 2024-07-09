@@ -1,30 +1,33 @@
 let listDatas = [];
+let listSortItem = {};
 
 const initDataPage = async () => {
   try {
-     window.customswal.showLoading()
-    const response = await axios.post(
-      "api/v1/fetch-shuttlebus"
-    );
-
-    
+    window.customswal.showLoading();
+    const response = await axios.post("api/v1/fetch-shuttlebus");
 
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     if (response.data.data.length > 0) {
-        listDatas = response.data.data;
-        
-        $("#list_data_bus").html("")
+      listDatas = response.data.data;
 
-        let divContent = null
+      $("#list_data_bus").html("");
 
-        listDatas.map((item) => {
-            divContent += `
+      let divContent = null;
+
+      listDatas.map((item) => {
+        divContent += `
             <tr
                   class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 >
+                  <td
+                    
+                    class="draggable-handle"
+                  >
+                  +
+                  </td>
                   <td
                     scope="row"
                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -57,69 +60,120 @@ const initDataPage = async () => {
                     >
                   </td>
                 </tr>
-            `
-        })
+            `;
+      });
 
-      $("#list_data_bus").html(divContent)
+      $("#list_data_bus").html(divContent);
 
       listDatas.map((item) => {
         $(`#btn_delete_${item?.shuttleBus_id}`).click(function () {
           Swal.fire({
-              title: "Are you sure?",
-              text: "Do you want to delete?",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#d33",
-              cancelButtonColor: "#3085d6",
-              confirmButtonText: "Yes, I want to delete",
-              cancelButtonText: "Cancel",
-            }).then(async (result) => {
-              if (result.isConfirmed) {
-                await onDeleteShuttleBus(item?.shuttleBus_id);
-              }
-            });
+            title: "Are you sure?",
+            text: "Do you want to delete?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, I want to delete",
+            cancelButtonText: "Cancel",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              await onDeleteShuttleBus(item?.shuttleBus_id);
+            }
+          });
         });
       });
-
     }
   } catch (err) {
     console.log(err);
   } finally {
-     window.customswal.hideLoading()
+    window.customswal.hideLoading();
   }
 };
 
 const onDeleteShuttleBus = async (shuttleBus_id) => {
   try {
-     window.customswal.showLoading()
+    window.customswal.showLoading();
 
     if (!shuttleBus_id) {
-      return showErrorAlert("shuttleBus_id_is_missing")
+      return showErrorAlert("shuttleBus_id_is_missing");
     }
 
     const bodyRequest = {
       shuttleBus_id: shuttleBus_id,
     };
 
-    const response = await axios.post(
-      "api/v1/delete-shuttlebus",
-      bodyRequest
-    );
+    const response = await axios.post("api/v1/delete-shuttlebus", bodyRequest);
 
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-
-    window.location.reload()
+    window.location.reload();
   } catch (error) {
-    console.log(error)
-     window.customswal.showErrorAlert(error)
+    console.log(error);
+    window.customswal.showErrorAlert(error);
   } finally {
-     window.customswal.hideLoading()
+    window.customswal.hideLoading();
   }
-}
+};
+
+const initializeSortable = () => {
+  let containers = $(".draggable-zone");
+
+  if (containers.length === 0) {
+    console.log("Initializing sortable failed");
+    return false;
+  }
+
+  containers.each(function () {
+    new Sortable(this, {
+      animation: 150,
+      handle: ".draggable-handle",
+      onEnd: async function (event) {
+        try {
+          const startIndex = event.oldIndex;
+          const endIndex = event.newIndex;
+
+          const draggedItem = listDatas[startIndex];
+          listDatas.splice(startIndex, 1);
+          listDatas.splice(endIndex, 0, draggedItem);
+
+          const reportIdsAndSeqs = listDatas.map((item, index) => ({
+            shuttleBus_id: item.shuttleBus_id,
+            seq: index + 1,
+          }));
+
+          listSortItem = {
+            data: reportIdsAndSeqs,
+          };
+
+          await updateSeqShuttleBus(listSortItem);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  });
+};
+
+const updateSeqShuttleBus = async (body) => {
+  try {
+    window.customswal.showLoading();
+
+    const response = await axios.post("api/v1/edit-seq-shuttlebus", body);
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    window.customswal.hideLoading();
+  }
+};
 
 window.onload = async function () {
   await initDataPage();
+  initializeSortable();
 };

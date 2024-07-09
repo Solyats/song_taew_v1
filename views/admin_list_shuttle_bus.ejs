@@ -7,6 +7,7 @@
     <%- include("./partials/commonJS.ejs") %> <%-
     include("./partials/commonStyle.ejs") %>
     <script src="js/admin_list_shuttle_bus/index.js"></script>
+    <script src="js/sortable.min.js"></script>
   </head>
   <body>
     <%- include("./partials/navbar.ejs") %>
@@ -27,6 +28,7 @@
                 class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
               >
                 <tr>
+                  <th scope="col" class="px-6 py-3"></th>
                   <th scope="col" class="px-6 py-3">รหัสรถ</th>
                   <th scope="col" class="px-6 py-3">ชื่อรถ</th>
                   <th scope="col" class="px-6 py-3">ชื่อข้างๆ</th>
@@ -40,7 +42,7 @@
                   <th scope="col" class="px-6 py-3">เครื่องมือ</th>
                 </tr>
               </thead>
-              <tbody id="list_data_bus">
+              <tbody class="draggable-zone" id="list_data_bus">
                 <!-- <tr
                   class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 >
