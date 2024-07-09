@@ -43,7 +43,8 @@ const getShuttleBusByIdRepository = async (shuttleBus_id) => {
         "tb1.shuttleBus_picture",
         "tb1.polylineColor",
         "tb1.symbolColor",
-        "tb1.icon_shuttle_bus"
+        "tb1.icon_shuttle_bus",
+        "tb1.seq"
       )
       .from("shuttlebus as tb1").orderBy("seq", "asc")
 
