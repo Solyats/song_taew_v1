@@ -27,6 +27,8 @@ const { authValidator } = require("../request/auth");
 const {
   authenticateAdminToken,
 } = require("../middleware/middleware");
+const { uploadSingleImageCloudinaryController } = require("../controllers/fileUpload");
+const { uploadMulter } = require("../utils/utils");
 
 router.post(`${API_ENDPOINT}/fetch-shuttlebus`, fetchDataShuttleBussController);
 router.post(
@@ -89,5 +91,7 @@ router.post(
 );
 
 router.post(`${API_ENDPOINT}/login`, authValidator, AuthLoginController);
+
+router.post(`${API_ENDPOINT}/upload-single-image`, authenticateAdminToken, uploadMulter.single('image'), uploadSingleImageCloudinaryController);
 
 module.exports = router;
