@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>edit</title>
   <%- include("./partials/commonJS.ejs") %> <%- include("./partials/commonStyle.ejs") %>
+  <%- include("./partials/uploadService.ejs") %>
       <script src="js/admin_create_shuttle_bus/index.js"></script>
 </head>
 
@@ -68,11 +69,21 @@
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
-            <div class="form-group mr-8 w-full">
+            <div class="form-group mr-8 w-full flex items-center">
               <label class="block mb-2">รูปรถ:</label>
-              <input id="inp_busstop_picture" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
-                name="inp_image" />
+              <img class="hidden" id="previewImageShuttleBus" src="#" alt="Preview Image" class="max-w-full max-h-36 rounded-lg shadow-md">
+              <div class="flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                <input id="inp_busstop_picture" type="file" class="hidden" name="inp_image" />
+              </div>
+              <label for="inp_busstop_picture" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                เลือกรูป
+              </label>
             </div>
+
+
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
@@ -99,7 +110,7 @@
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">ไอคอนรถ:</label>
-              <input id="inp_busstop_icon" class="form-control border border-gray-300 p-2 rounded w-full"
+              <input id="inp_busstop_icon" type="file" class="form-control border border-gray-300 p-2 rounded w-full"
                 name="input_icon_img" />
             </div>
           </div>

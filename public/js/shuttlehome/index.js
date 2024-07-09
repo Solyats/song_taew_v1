@@ -8,10 +8,7 @@ const fetchShuttlebusData = async (routeId) => {
       route_id: routeId ? routeId : "",
     };
 
-    const response = await axios.post(
-      "api/v1/fetch-shuttlebus",
-      bodyRequest
-    );
+    const response = await axios.post("api/v1/fetch-shuttlebus", bodyRequest);
 
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -67,16 +64,28 @@ const initialize = async (routeId) => {
         uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
         break;
       case "bus03":
-        uuIndices = [3,4,5,7,24,25,46,16,33,34,39,40,42,43,2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
         break;
       case "bus04":
-        uuIndices = [3,4,5,7,24,25,46,16,33,34,39,40,42,43,2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
         break;
       case "bus09":
-        uuIndices = [3,4,5,7,24,25,46,16,33,34,39,40,42,43,2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
         break;
       case "bus10":
-        uuIndices = [3,4,5,7,24,25,46,16,33,34,39,40,42,43,2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
         break;
       default:
         break;
@@ -108,6 +117,7 @@ const initialize = async (routeId) => {
         title: item.busStop_name,
         icon: {
           url: iconUrl,
+          url: iconUrl,
           scaledSize: new google.maps.Size(
             iconUrl.includes("makkerIcon.png")
               ? 50
@@ -124,6 +134,13 @@ const initialize = async (routeId) => {
               ? 60
               : 0
           ),
+          // scaledSize: new google.maps.Size(
+            
+          //   item?.busStop_name.endsWith("*") ? 0 : 50,
+          //   item?.busStop_name.endsWith("*") ? 0 : 50
+          // ),
+          // origin: new google.maps.Point(0, 0), // จุดเริ่มต้นของไอคอนที่มีขนาด 50x50 pixels
+          // anchor: new google.maps.Point(40, 40), // จุดที่ใช้เชื่อมต่อไอคอนกับตำแหน่งของ Marker
         },
       });
 
@@ -202,7 +219,7 @@ const initialize = async (routeId) => {
 
   let allPolylines = []; // Store all polylines for resetting zIndex
 
-  if (allDataShuttleBus.length > 0) {
+   if (allDataShuttleBus.length > 0) {
     allDataShuttleBus.map((item) => {
       let itemDetail = renderMarkersAndPath(item?.detailData, {
         startIcon: "image/startIcon.png",
@@ -220,6 +237,27 @@ const initialize = async (routeId) => {
   }
 };
 
+//   if (allDataShuttleBus.length > 0) {
+//     console.log("allDataShuttleBus", allDataShuttleBus);
+//     allDataShuttleBus.map((item) => {
+//       let itemDetail = renderMarkersAndPath(item?.detailData, {
+//         startIcon: allDataShuttleBus[0]?.icon_shuttle_bus
+//           ? allDataShuttleBus[0]?.icon_shuttle_bus
+//           : "image/busIcon60.png",
+//         makkerIcon: "image/makkerIcon.png",
+//         endIcon: allDataShuttleBus[0]?.shuttleBus_picture
+//           ? allDataShuttleBus[0]?.shuttleBus_picture
+//           : "image/busIcon60.png",
+//         middleIcon: "image/p.png",
+//         polylineColor: item?.polylineColor ? item?.polylineColor : "#ffff00",
+//         symbolColor: item?.symbolColor ? item?.symbolColor : "#32cd32",
+//       });
+
+//       setMapsToCenter(itemDetail);
+//     });
+//   }
+// };
+
 function setMapsToCenter(obj) {
   let bounds = new google.maps.LatLngBounds();
   let points = obj.getPath().getArray();
@@ -234,23 +272,6 @@ const initDetailBus = () => {
     let busContent = "";
     let shuttleBusSidebar = "";
 
-    $(document).ready(function() {
-      const shuttlebusStops = ["สถานี1", "สถานี2", "สถานี3", "สถานี4", "สถานี5", "สถานี6", "สถานี7", "สถานี8", "สถานี9"];
-      
-      function generateTable(data) {
-        const table = $('#shuttlebusTable');
-        let row;
-        data.forEach((stop, index) => {
-          if (index % 3 === 0) {
-            row = $('<tr></tr>').appendTo(table);
-          }
-          $('<td></td>').text(stop).appendTo(row);
-        });
-      }
-
-      generateTable(shuttlebusStops);
-    });
-
     $("#detail_bus").html("");
     $("#list_shuttle_bus_data").html("");
 
@@ -261,11 +282,10 @@ const initDetailBus = () => {
         if (!uniqueBuses.includes(item?.shuttleBus_id)) {
           uniqueBuses.push(item.shuttlebus);
 
-         const shuttlebusStops = item?.detailData
-  .map((stop) => stop.busStop_name)
-  .filter((name) => !name.endsWith('*'))
-  .join(", ");
-
+          const shuttlebusStops = item?.detailData
+            .map((stop) => stop.busStop_name)
+            .filter((name) => !name.endsWith("*"))
+            .join(", ");
 
           busContent += `
         <div class="mb-4">

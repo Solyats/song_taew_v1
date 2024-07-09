@@ -42,13 +42,24 @@ const initDomJS = () => {
       shuttlebusPicture = $(this).val();
     });
 
-    $("#inp_busstop_polyline").on("change", function () {
-      polylineColorVar = $(this).val();
-    });
+    $(document).ready(function () {
+  const $polylineColorVar = $("#polylineColorVar");
+  const $symbolColorVar = $("#symbolColorVar");
+  const $selectedColorpoly = $("#selectedColorpoly");
+  const $selectedColor = $("#selectedColor");
 
-    $("#inp_busstop_symbol").on("change", function () {
-      symbolColorVar = $(this).val();
-    });
+  $polylineColorVar.on("change", function () {
+    $selectedColorpoly.text($polylineColorVar.val());
+    // Set value to input field
+    $("#polylineColorVar").val($polylineColorVar.val());
+  });
+
+  $symbolColorVar.on("change", function () {
+    $selectedColor.text($symbolColorVar.val());
+    // Set value to input field
+    $("#symbolColorVar").val($symbolColorVar.val());
+  });
+});
 
     $("#inp_busstop_icon").on("change", function () {
       shuttlebusIcon = $(this).val();
