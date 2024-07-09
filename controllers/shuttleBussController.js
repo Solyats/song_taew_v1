@@ -37,6 +37,7 @@ const fetchDataShuttleBussController = async (req, res) => {
       const {
         Road_id,
         shuttleBus_id,
+        busStop_subname,
         busStop_id,
         busStop_name,
         busStop_latitude,
@@ -49,6 +50,7 @@ const fetchDataShuttleBussController = async (req, res) => {
       acc[shuttleBus_id].push({
         Road_id,
         shuttleBus_id,
+        busStop_subname,
         busStop_id,
         busStop_name,
         busStop_latitude,
@@ -90,6 +92,7 @@ const createShuttleBussController = async (req, res) => {
     let bodyJson = {
       shuttleBus_id: uuid,
       shuttleBus_name: data?.shuttleBus_name || "",
+      shuttleBus_subname: data?.shuttleBus_subname || "",
       shuttleTHname: data?.shuttleTHname || "",
       shuttleBus_color: data?.shuttleBus_color || "",
       shuttleBus_time: data?.shuttleBus_time || "",
@@ -249,6 +252,7 @@ const editShuttleBussController = async (req, res) => {
       shuttleTHname: data?.shuttleTHname || "",
       shuttleBus_color: data?.shuttleBus_color || "",
       shuttleBus_time: data?.shuttleBus_time || "",
+      shuttleBus_subname: data?.shuttleBus_subname || "",
       shuttleBus_price: data?.shuttleBus_price || 0,
       shuttleBus_picture: data?.shuttleBus_picture || "",
       polylineColor: data?.polylineColor || null,

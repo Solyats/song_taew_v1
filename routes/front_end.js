@@ -1,9 +1,11 @@
 const express = require("express");
 const { FrontEndAdminToken } = require("../middleware/middleware");
+const { CheckIsHaveUser } = require("../middleware/CheckIsHaveUser");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.render("index");
+router.get("/", CheckIsHaveUser, (req, res) => {
+  const error = req?.errorHaveUser || "no_user";
+  res.render("index", { error });
 });
 
 router.get("/shuttlehome", (req, res) => {
@@ -43,5 +45,10 @@ router.get("/admin_edit_bus_stop", FrontEndAdminToken, (req, res) => {
 router.get('/admin_login', async (req, res) => {
   res.render('admin_login');
 });
+
+router.get('/admin_register', async (req, res) => {
+  res.render('admin_register');
+});
+
 
 module.exports = router;

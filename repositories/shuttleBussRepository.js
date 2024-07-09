@@ -14,7 +14,7 @@ const getShuttleBussDetailRepository = async (shuttleBus_id) => {
       )
       .from("road_route as tb1")
       .leftJoin("busstop as tb2", "tb1.busStop_id", "tb2.busStop_id")
-      .orderBy("tb1.Road_id", "asc"); 
+      .orderBy("tb1.road_id_increment", "asc"); 
 
     if (shuttleBus_id) {
       query.where("tb1.shuttleBus_id", shuttleBus_id);
@@ -38,6 +38,7 @@ const getShuttleBusByIdRepository = async (shuttleBus_id) => {
         "tb1.shuttleBus_name",
         "tb1.shuttleBus_color",
         "tb1.shuttleBus_time",
+        "tb1.shuttleBus_subname",
         "tb1.shuttleBus_price",
         "tb1.shuttleBus_picture",
         "tb1.polylineColor",

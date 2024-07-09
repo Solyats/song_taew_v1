@@ -1,4 +1,5 @@
 let nameBusStop = "";
+let subnameBusStop ="";
 let latitudeVar = 0;
 let longitudeVar = 0;
 let PicTureVar = "";
@@ -8,6 +9,11 @@ const initDomJS = async () => {
     $("#inp_busstop_name").on("change", function () {
       nameBusStop = $(this).val();
     });
+
+    $("#inp_busstop_subname").on("change", function () {
+      nameBusStop = $(this).val();
+    });
+
 
     $("#inp_busStop_latitudee").on("change", function () {
       latitudeVar = $(this).val();
@@ -31,6 +37,7 @@ const onClickUpdateBusStop = async () => {
 
     const bodyRequest = {
       busStop_name: nameBusStop,
+      busStop_subname: subnameBusStop,
       busStop_latitude: latitudeVar,
       busStop_longitude: longitudeVar,
       busStop_picture: PicTureVar,
@@ -68,11 +75,13 @@ const getBusStop = async (id) => {
     if (response?.data) {
       const data = response?.data?.data;
       nameBusStop = data?.busStop_name;
+      subnameBusStop = data?.busStop_subname;
       latitudeVar = data?.busStop_latitude;
       longitudeVar = data?.busStop_longitude;
       PicTureVar = data?.busStop_picture;
 
       $("#inp_busStop_name").val(nameBusStop);
+      $("#inp_busStop_subname").val(subnameBusStop);
       $("#inp_busStop_latitudee").val(latitudeVar);
       $("#inp_busStop_longitude").val(longitudeVar);
       $("#inp_busStop_picture").val(PicTureVar);

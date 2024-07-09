@@ -2,6 +2,7 @@ let shortNameVar = "";
 let shortThname = "";
 let suttlebusColor = "";
 let shuttlesusTime = "";
+let shuttlesusSubname = "";
 let shuttlesusPrice = "";
 let shuttlebusPicture = "";
 let polylineColorVar = "";
@@ -34,11 +35,15 @@ const initDomJS = () => {
       shuttlebusPicture = $(this).val();
     });
 
+    $("#inp_busstop_subname").on("change", function () {
+      shuttlesusSubname = $(this).val();
+    });
+
     $(document).ready(function () {
-      const $polylineColorVar = $("#polylineColorVar");
-      const $symbolColorVar = $("#symbolColorVar");
-      const $selectedColorpoly = $("#selectedColorpoly");
-      const $selectedColor = $("#selectedColor");
+      const $polylineColorVar = $("#polylineColorVars");
+      const $symbolColorVar = $("#symbolColorVars");
+      const $selectedColorpoly = $("#selectedColorpolys");
+      const $selectedColor = $("#selectedColors");
 
       $polylineColorVar.on("change", function () {
         $selectedColorpoly.text($polylineColorVar.val());
@@ -71,6 +76,7 @@ const onClickCreateShuttleBus = async () => {
       shuttleTHname: shortThname,
       shuttleBus_color: suttlebusColor,
       shuttleBus_time: shuttlesusTime,
+      shuttleBus_subname: shuttlesusSubname,
       shuttleBus_price: shuttlesusPrice,
       shuttleBus_picture: shuttlebusPicture,
       polylineColor: polylineColorVar,

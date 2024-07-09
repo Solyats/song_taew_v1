@@ -84,10 +84,27 @@ const getRoadRouteByshuttleBusIdAndbusStopIdRepository = async (shuttleBus_id, b
   }
 }
 
+
+const getLatestRoadRouteSeqRepository = async (shuttleBusId) => {
+  try {
+    const result = await db
+      .select("road_id_increment")
+      .from("road_route")
+      .orderBy("road_id_increment", "desc")
+      .limit(1).where("shuttleBus_id", shuttleBusId)
+
+    return { data: result[0], error: null };
+  } catch (error) {
+    console.log("🚀 ~ getLatestRoadRouteSeqRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+};
+
 module.exports = {
   deleteRoadRouteByShuttleBusIdRepository,
   deleteRoadRouteBybusStopIdRepository,
   insertRoadRouteRepository,
   deleteRoadRouteNotInForShuttleBusRepository,
   getRoadRouteByshuttleBusIdAndbusStopIdRepository,
+  getLatestRoadRouteSeqRepository,
 };

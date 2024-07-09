@@ -27,9 +27,10 @@ const initDataPage = async () => {
                     scope="row"
                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    ${item?.busStop_id}
+                    ${item?.busStop_subname}
                   </td>
                   <td class="px-6 py-4">${item?.busStop_name}</td>
+                  
                   <td class="px-6 py-4">${item?.busStop_latitude}</td>
                   <td class="px-6 py-4">${item?.busStop_longitude}</td>
                   <td class="px-6 py-4">${item?.busStop_picture}</td>

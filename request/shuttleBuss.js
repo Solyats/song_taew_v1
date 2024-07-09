@@ -13,6 +13,9 @@ const shuttlebusValidator = [
   body('shuttleBus_time')
     .exists().withMessage('shuttleBus_time is required')
     .notEmpty().withMessage('shuttleBus_time cannot be empty'),
+    body('shuttleBus_subname')
+    .exists().withMessage('shuttleBus_subname is required')
+    .notEmpty().withMessage('shuttleBus_subname cannot be empty'),
   body('shuttleBus_price')
     .exists().withMessage('shuttleBus_price is required')
     .isFloat({ min: 0 }).withMessage('shuttleBus_price must be a positive number'),

@@ -7,6 +7,7 @@ const listBusstopRepository = async () => {
   .select(
     'tb1.busStop_id',
     'tb1.busStop_name',
+    'tb1.busStop_subname',
     'tb1.busStop_latitude',
     'tb1.busStop_longitude',
     'tb1.busStop_picture'
@@ -27,6 +28,7 @@ const getBusstopRepository = async (busStop_id) => {
   .select(
     'tb1.busStop_id',
     'tb1.busStop_name',
+    'tb1.busStop_subname',
     'tb1.busStop_latitude',
     'tb1.busStop_longitude',
     'tb1.busStop_picture'
@@ -61,7 +63,8 @@ try {
   .select(
     'tb1.busStop_id',
     'tb1.busStop_name',
-    'tb1.busStop_latitude',
+    'tb1.busStop_latitude'
+    ,
     'tb1.busStop_longitude',
     'tb1.busStop_picture'
     ).from('busstop as tb1').where("tb1.busStop_name", name);
@@ -96,6 +99,7 @@ try {
   .select(
     'tb1.busStop_id',
     'tb1.busStop_name',
+    'tb1.busStop_subname',
     'tb1.busStop_latitude',
     'tb1.busStop_longitude',
     'tb1.busStop_picture'

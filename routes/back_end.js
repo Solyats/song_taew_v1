@@ -78,7 +78,6 @@ router.post(
 router.post(
   `${API_ENDPOINT}/register`,
   authValidator,
-  authenticateAdminToken,
   AuthRegisterController
 );
 

@@ -1,5 +1,6 @@
 let shuttleBusIdVar = "";
 let shortNameVar = "";
+let subBsname = "";
 let shortThname = "";
 let suttlebusColor = "";
 let shuttlesusTime = "";
@@ -15,6 +16,10 @@ const initDomJS = () => {
   try {
     $("#inp_shuttle_name").on("change", function () {
       shortNameVar = $(this).val();
+    });
+
+    $("#inp_shuttle_subname").on("change", function () {
+      subBsname = $(this).val();
     });
 
     $("#inp_busstop_thName").on("change", function () {
@@ -64,6 +69,7 @@ const onClickUpdateShuttleBus = async () => {
     const bodyRequest = {
       shuttleBus_id: shuttleBusIdVar,
       shuttleBus_name: shortNameVar,
+      shuttleBus_subname: subBsname,
       shuttleTHname: shortThname,
       shuttleBus_color: suttlebusColor,
       shuttleBus_time: shuttlesusTime,
@@ -87,7 +93,7 @@ const onClickUpdateShuttleBus = async () => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    window.location.href = "/admin_list_shuttle_bus";
+    window.location.href = "/admin_edit_shuttle_bus";
   } catch (error) {
     console.log("Error: ", error); // เพิ่มการ log เพื่อดูข้อผิดพลาดที่เกิดขึ้น
     switch (error?.response?.data?.error) {
@@ -117,6 +123,7 @@ const getShuttleBus = async (id) => {
     if (response?.data?.data[0]) {
       const data = response?.data?.data[0];
       shortNameVar = data?.shuttleBus_name;
+      subBsname = data?.shuttleBus_subname;
       shortThname = data?.shuttleTHname;
       suttlebusColor = data?.shuttleBus_color;
       shuttlesusTime = data?.shuttleBus_time;
@@ -128,6 +135,8 @@ const getShuttleBus = async (id) => {
       detailDataVar = data?.detailData;
 
       $("#inp_shuttle_name").val(shortNameVar);
+
+      $("#inp_busstop_subName").val(subBsname);
 
       $("#inp_busstop_thName").val(shortThname);
 

@@ -1,4 +1,5 @@
 let nameBusStop = "";
+let subnameBusStop ="";
 let latitudeVar = 0;
 let longitudeVar = 0;
 let PicTureVar = "";
@@ -9,6 +10,11 @@ const initDomJS = async () => {
     $("#inp_busstop_name").on("change", function () {
       nameBusStop = $(this).val();
     });
+
+    $("#inp_busstop_subname").on("change", function () {
+      subnameBusStop = $(this).val();
+    });
+
 
     // พิกัดเริ่มต้นของแผนที่
      // แทนที่ด้วยพิกัดเริ่มต้นของคุณ
@@ -62,7 +68,7 @@ const onClickCreateBusstop = async () => {
   try {
     window.customswal.showLoading();
 
-    if (nameBusStop === "") {
+    if (  nameBusStop === "") {
       window.customswal.hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ชื่อจุดจอด");
     }
@@ -79,6 +85,7 @@ const onClickCreateBusstop = async () => {
 
     const bodyRequest = {
       busStop_name: nameBusStop,
+      busStop_subname: subnameBusStop,
       busStop_latitude: latitudeVar,
       busStop_longitude: longitudeVar,
       busStop_picture: PicTureVar,

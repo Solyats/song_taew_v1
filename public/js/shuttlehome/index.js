@@ -234,6 +234,23 @@ const initDetailBus = () => {
     let busContent = "";
     let shuttleBusSidebar = "";
 
+    $(document).ready(function() {
+      const shuttlebusStops = ["สถานี1", "สถานี2", "สถานี3", "สถานี4", "สถานี5", "สถานี6", "สถานี7", "สถานี8", "สถานี9"];
+      
+      function generateTable(data) {
+        const table = $('#shuttlebusTable');
+        let row;
+        data.forEach((stop, index) => {
+          if (index % 3 === 0) {
+            row = $('<tr></tr>').appendTo(table);
+          }
+          $('<td></td>').text(stop).appendTo(row);
+        });
+      }
+
+      generateTable(shuttlebusStops);
+    });
+
     $("#detail_bus").html("");
     $("#list_shuttle_bus_data").html("");
 
@@ -261,6 +278,7 @@ const initDetailBus = () => {
           <div>
             <span>
               จุดจอด : ${shuttlebusStops}
+               
             </span>
           </div>
           <br />
