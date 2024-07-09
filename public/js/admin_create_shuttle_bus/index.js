@@ -40,19 +40,24 @@ const initDomJS = () => {
     });
 
     $(document).ready(function () {
-      const $polylineColorVar = $("#polylineColorVars");
-      const $symbolColorVar = $("#symbolColorVars");
-      const $selectedColorpoly = $("#selectedColorpolys");
-      const $selectedColor = $("#selectedColors");
+  const $polylineColorVar = $("#polylineColorVar");
+  const $symbolColorVar = $("#symbolColorVar");
+  const $selectedColorpoly = $("#selectedColorpoly");
+  const $selectedColor = $("#selectedColor");
 
-      $polylineColorVar.on("change", function () {
-        $selectedColorpoly.text($polylineColorVar.val());
-      });
+  $polylineColorVar.on("change", function () {
+    $selectedColorpoly.text($polylineColorVar.val());
+    // Set value to input field
+    $("#polylineColorVar").val($polylineColorVar.val());
+  });
 
-      $symbolColorVar.on("change", function () {
-        $selectedColor.text($symbolColorVar.val());
-      });
-    });
+  $symbolColorVar.on("change", function () {
+    $selectedColor.text($symbolColorVar.val());
+    // Set value to input field
+    $("#symbolColorVar").val($symbolColorVar.val());
+  });
+});
+
 
     $("#inp_busstop_icon").on("change", function () {
       shuttlebusIcon = $(this).val();
@@ -72,16 +77,16 @@ const onClickCreateShuttleBus = async () => {
     window.customswal.showLoading();
 
     const bodyRequest = {
-      shuttleBus_name: shortNameVar,
-      shuttleTHname: shortThname,
-      shuttleBus_color: suttlebusColor,
-      shuttleBus_time: shuttlesusTime,
-      shuttleBus_subname: shuttlesusSubname,
-      shuttleBus_price: shuttlesusPrice,
-      shuttleBus_picture: shuttlebusPicture,
-      polylineColor: polylineColorVar,
-      symbolColor: symbolColorVar,
-      icon_shuttle_bus: shuttlebusIcon,
+  shuttleBus_name: shortNameVar,
+  shuttleTHname: shortThname,
+  shuttleBus_color: suttlebusColor,
+  shuttleBus_time: shuttlesusTime,
+  shuttleBus_subname: shuttlesusSubname,
+  shuttleBus_price: shuttlesusPrice,
+  shuttleBus_picture: shuttlebusPicture,
+  polylineColor: $("#polylineColorVar").val(), // รับค่าจาก input ที่มี id ว่า polylineColorVar
+  symbolColor: $("#symbolColorVar").val(), // รับค่าจาก input ที่มี id ว่า symbolColorVar
+  icon_shuttle_bus: shuttlebusIcon,
     };
 
     console.log("Request body: ", bodyRequest); // เพิ่มการ log เพื่อดูค่าที่ส่งไป
