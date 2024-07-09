@@ -10,7 +10,8 @@ const getShuttleBussDetailRepository = async (shuttleBus_id) => {
         "tb2.busStop_name",
         "tb2.busStop_latitude",
         "tb2.busStop_longitude",
-        "tb2.busStop_picture"
+        "tb2.busStop_picture",
+        "tb1.road_id_increment",
       )
       .from("road_route as tb1")
       .leftJoin("busstop as tb2", "tb1.busStop_id", "tb2.busStop_id")

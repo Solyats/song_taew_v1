@@ -8,6 +8,7 @@ const {
   deleteShuttleBusController,
   editShuttleBussController,
   editSeqShuttleBusController,
+  editSeqShuttleBusDetailSeqController,
 } = require("../controllers/shuttleBussController");
 const { shuttlebusValidator } = require("../request/shuttleBuss");
 const { busStopValidator } = require("../request/busStop");
@@ -50,6 +51,12 @@ router.post(
   `${API_ENDPOINT}/edit-seq-shuttlebus`,
   authenticateAdminToken,
   editSeqShuttleBusController
+);
+
+router.post(
+  `${API_ENDPOINT}/edit-seq-shuttlebus-detail`,
+  authenticateAdminToken,
+  editSeqShuttleBusDetailSeqController
 );
 
 router.post(`${API_ENDPOINT}/list-bus-stop`, listBussStopControler);

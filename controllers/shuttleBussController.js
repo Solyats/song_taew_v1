@@ -12,6 +12,8 @@ const {
   deleteRoadRouteNotInForShuttleBusRepository,
   insertRoadRouteRepository,
   getRoadRouteByshuttleBusIdAndbusStopIdRepository,
+  editRoadRouteSeqRepository,
+  getRoadRouteByIdRepository,
 } = require("../repositories/roadRouteRepository");
 const { newUUID } = require("../utils/utils");
 const {
@@ -43,6 +45,7 @@ const fetchDataShuttleBussController = async (req, res) => {
         busStop_latitude,
         busStop_longitude,
         busStop_picture,
+        road_id_increment,
       } = detail;
       if (!acc[shuttleBus_id]) {
         acc[shuttleBus_id] = [];
@@ -56,6 +59,7 @@ const fetchDataShuttleBussController = async (req, res) => {
         busStop_latitude,
         busStop_longitude,
         busStop_picture,
+        road_id_increment,
       });
       return acc;
     }, {});
@@ -333,10 +337,84 @@ const editSeqShuttleBusController = async (req, res) => {
   }
 };
 
+const editSeqShuttleBusDetailSeqController = async (req, res) => {
+  const { shuttleBus_id, data } = req.body;
+  try {
+    if (!shuttleBus_id) {
+      return res.status(400).json({ status: 400, error: "shuttleBus_id_is_required" });
+    }
+
+    if (!data) {
+      return res.status(400).json({ status: 400, error: "data_is_required" });
+    }
+
+    if (!Array.isArray(data) || data.length === 0) {
+      return res
+        .status(400)
+        .json({ status: 400, error: "data must be a non-empty array" });
+    }
+
+    const getShuttleBusId = await getShuttleBusByIdRepository(shuttleBus_id);
+
+      if (getShuttleBusId.error !== null) {
+        return res.status(500).json({ status: 500, error: data.error });
+      }
+
+      if (getShuttleBusId?.data.length === 0) {
+        return res
+          .status(400)
+          .json({ status: 400, error: "shuttleBus_id_is_not_found" });
+      }
+
+    data.forEach(async (item) => {
+      if (!item?.Road_id) {
+        return res
+          .status(400)
+          .json({ status: 400, error: "Road_id_is_required" });
+      }
+
+      if (!item?.road_id_increment || item?.road_id_increment === 0) {
+        return res.status(400).json({ status: 400, error: "road_id_increment_is_required" });
+      }
+
+      const Road_id = await getRoadRouteByIdRepository(item?.Road_id);
+
+      if (Road_id.error !== null) {
+        return res.status(500).json({ status: 500, error: data.error });
+      }
+
+      if (Road_id?.data.length === 0) {
+        return res
+          .status(400)
+          .json({ status: 400, error: "Road_id_is_not_found" });
+      }
+
+      const dataUpdateroad_id_increment = {
+        road_id_increment: item?.road_id_increment,
+      }
+
+      const editSeq = await editRoadRouteSeqRepository(
+        item?.Road_id,
+       dataUpdateroad_id_increment
+      );
+
+      if (editSeq.error !== null) {
+        return res.status(500).json({ status: 500, error: data.error });
+      }
+    });
+
+    return res.status(200).json({ status: 200, data: null });
+  } catch (err) {
+    console.log("🚀 ~ editSeqShuttleBusDetailSeqController ~ err:", err);
+    return res.status(500).json({ status: 500, error: err });
+  }
+};
+
 module.exports = {
   fetchDataShuttleBussController,
   createShuttleBussController,
   deleteShuttleBusController,
   editShuttleBussController,
   editSeqShuttleBusController,
+  editSeqShuttleBusDetailSeqController,
 };
