@@ -6,7 +6,7 @@
     <title>edit</title>
     <%- include("./partials/commonJS.ejs") %> <%-
     include("./partials/commonStyle.ejs") %>
-    <script src="js/admin_edit_shuttle_bus/index.js"></script>
+    <script src="js/admin_edit_road/index.js"></script>
   </head>
 
   <body>
@@ -17,14 +17,12 @@
       </div>
 
       <div class="flex justify-between">
-          <a href="/admin_list_shuttle_bus" class="btn-main">กลับ</a>
+        <a href="/admin_list_road" class="btn-main">กลับ</a>
         <button id="btn_edit_shuttlebus" class="btn-main">บันทึก</button>
       </div>
-    
 
       <div class="shadow-md mt-10">
-      
-        <div class="grid grid-cols-4 p-4 gap-2">
+        <!-- <div class="grid grid-cols-4 p-4 gap-2">
 
           
             <div class="col-span-4 lg:col-span-1">
@@ -70,23 +68,23 @@
           <div class="col-span-4 lg:col-span-1 ">
             <div class="form-group mr-8 w-full ">
               <label class="block mb-2">รูปรถ:</label>
-              <!-- <img class="" id="previewImageShuttleBus" src="#" alt="Preview Image" class="max-w-full max-h-36 rounded-lg shadow-md"> -->
+              <!-- <img class="" id="previewImageShuttleBus" src="#" alt="Preview Image" class="max-w-full max-h-36 rounded-lg shadow-md">
               <div class=" border">
                 <!-- <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                          </svg> -->
-                <input id="inp_busstop_picture" type="file" class="" name="inp_image" />
-              </div>
-              <!-- <label for="inp_busstop_picture" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                          <!-- </svg> -->
+        <!-- <input id="inp_busstop_picture" type="file" class="" name="inp_image" />
+              </div> -->
+        <!-- <label for="inp_busstop_picture" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
                           เลือกรูป
                         </label> -->
-            </div>
+        <!-- </div>
           
           
           </div>
-       
+        -->
 
-          <div class="col-span-4 lg:col-span-1">
+        <!-- <div class="col-span-4 lg:col-span-1">
             <label class="block mb-2">สีเส้นรถ:</label>
             <div class="form-group mr-8 w-full border border-gray-300 flex p-1 content-center">
               
@@ -111,23 +109,20 @@
               <input id="inp_busstop_icon" class="form-control border border-gray-300 p-2 rounded w-full"
                 name="input_icon_img" />
             </div>
-          </div>
-      
-        </div>
-      </div>
+          </div> -->
 
-      <div class="shadow-md mt-10 p-5">
-      
-        <div class="d-felx" id="list_route_this_id">
+        <!-- </div> -->
+        <!-- </div> -->
+        <h1 class="mt-10">ตำแหน่งที่เลือก</h1>
+
+        <div class="shadow-md mt-10 p-5">
+          <div class="d-felx" id="list_route_this_id"></div>
         </div>
 
         <h1 class="mt-10">ตำแหน่งที่เพิ่มได้</h1>
-          <div class="gird gird-cols-4" id="list_availible_route">
-            
-          </div>
-    
-      
-      
+        <div class="shadow-md mt-10 p-5">
+          <div class="gird gird-cols-4" id="list_availible_route"></div>
+        </div>
       </div>
 
       <!-- <div class="card bg-white shadow-md rounded p-4">

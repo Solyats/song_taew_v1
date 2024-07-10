@@ -57,7 +57,7 @@ const deleteRoadRouteNotInForShuttleBusRepository = async (
 
     return { data: null, error: null };
   } catch (err) {
-    console.log("🚀 ~ insertRoadRouteRepository ~ err:", err);
+    console.log("🚀 ~ deleteRoadRouteNotInForShuttleBusRepository ~ err:", err);
     return { data: null, error: err };
   }
 };

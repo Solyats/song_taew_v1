@@ -50,5 +50,13 @@ router.get('/admin_register', async (req, res) => {
   res.render('admin_register');
 });
 
+router.get('/admin_list_road', async (req, res) => {
+  res.render('admin_list_road');
+});
+
+router.get('/admin_edit_road', async (req, res) => {
+  res.render('admin_edit_road');
+});
+
 
 module.exports = router;

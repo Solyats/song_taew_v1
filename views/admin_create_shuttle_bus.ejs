@@ -68,19 +68,19 @@
                 name="inp_price" />
             </div>
           </div>
-          <div class="col-span-4 lg:col-span-1">
-            <div class="form-group mr-8 w-full flex items-center">
+          <div class="col-span-4 lg:col-span-1 ">
+            <div class="form-group mr-8 w-full ">
               <label class="block mb-2">รูปรถ:</label>
-              <img class="hidden" id="previewImageShuttleBus" src="#" alt="Preview Image" class="max-w-full max-h-36 rounded-lg shadow-md">
-              <div class="flex items-center">
-                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <!-- <img class="" id="previewImageShuttleBus" src="#" alt="Preview Image" class="max-w-full max-h-36 rounded-lg shadow-md"> -->
+              <div class=" border">
+                <!-- <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                </svg>
-                <input id="inp_busstop_picture" type="file" class="hidden" name="inp_image" />
+                </svg> -->
+                <input id="inp_busstop_picture" type="file" class="" name="inp_image" />
               </div>
-              <label for="inp_busstop_picture" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+              <!-- <label for="inp_busstop_picture" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
                 เลือกรูป
-              </label>
+              </label> -->
             </div>
 
 
@@ -99,13 +99,14 @@
 
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
-              <label class="block mb-2">สีจุดรถสองแถว:</label>
+              <label class="block mb-2">สีจุดเส้นรถ:</label>
               <div class="flex content-center mt-2 form-control border border-gray-300 p-2 mb-1 rounded w-full">
-                <input type="color" id="symbolColorVar" name="symbolColorVar" value="#ff0000">
-                <p>สีที่เลือก: <span id="selectedColorVar">#ff0000</span></p>
+                <input type="color" id="symbolColorVar" name="polylineColorVar" value="#ff0000">
+                <p>สีที่เลือก: <span id="selectedColor">#ff0000</span></p>
               </div>
           
             </div>
+          </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">

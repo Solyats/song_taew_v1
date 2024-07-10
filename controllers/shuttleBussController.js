@@ -189,16 +189,20 @@ const editShuttleBussController = async (req, res) => {
 
     let RoadIds = [];
     if (data?.detailData.length > 0) {
-      RoadIds = data?.detailData.map((item) => item.Road_id);
+      RoadIds = data?.detailData.map((item) => {
+          return item?.Road_id;
+        }).filter((item)=> item !== undefined)
 
-      const respDeleteNotInBus =
-        await deleteRoadRouteNotInForShuttleBusRepository(
-          data?.shuttleBus_id,
-          RoadIds
-        );
+      if (RoadIds.length > 0) {
+        const respDeleteNotInBus =
+          await deleteRoadRouteNotInForShuttleBusRepository(
+            data?.shuttleBus_id,
+            RoadIds
+          );
 
-      if (respDeleteNotInBus?.error !== null) {
-        return res.status(500).json({ status: 500, error: data.error });
+        if (respDeleteNotInBus?.error !== null) {
+          return res.status(500).json({ status: 500, error: data.error });
+        }
       }
 
       data?.detailData.forEach(async (item) => {
@@ -318,11 +322,11 @@ const editSeqShuttleBusController = async (req, res) => {
 
       const dataUpdateSeq = {
         seq: item?.seq,
-      }
+      };
 
       const editSeq = await editShuttleBusRepository(
         item?.shuttleBus_id,
-       dataUpdateSeq
+        dataUpdateSeq
       );
 
       if (editSeq.error !== null) {
@@ -341,7 +345,9 @@ const editSeqShuttleBusDetailSeqController = async (req, res) => {
   const { shuttleBus_id, data } = req.body;
   try {
     if (!shuttleBus_id) {
-      return res.status(400).json({ status: 400, error: "shuttleBus_id_is_required" });
+      return res
+        .status(400)
+        .json({ status: 400, error: "shuttleBus_id_is_required" });
     }
 
     if (!data) {
@@ -356,15 +362,15 @@ const editSeqShuttleBusDetailSeqController = async (req, res) => {
 
     const getShuttleBusId = await getShuttleBusByIdRepository(shuttleBus_id);
 
-      if (getShuttleBusId.error !== null) {
-        return res.status(500).json({ status: 500, error: data.error });
-      }
+    if (getShuttleBusId.error !== null) {
+      return res.status(500).json({ status: 500, error: data.error });
+    }
 
-      if (getShuttleBusId?.data.length === 0) {
-        return res
-          .status(400)
-          .json({ status: 400, error: "shuttleBus_id_is_not_found" });
-      }
+    if (getShuttleBusId?.data.length === 0) {
+      return res
+        .status(400)
+        .json({ status: 400, error: "shuttleBus_id_is_not_found" });
+    }
 
     data.forEach(async (item) => {
       if (!item?.Road_id) {
@@ -374,7 +380,9 @@ const editSeqShuttleBusDetailSeqController = async (req, res) => {
       }
 
       if (!item?.road_id_increment || item?.road_id_increment === 0) {
-        return res.status(400).json({ status: 400, error: "road_id_increment_is_required" });
+        return res
+          .status(400)
+          .json({ status: 400, error: "road_id_increment_is_required" });
       }
 
       const Road_id = await getRoadRouteByIdRepository(item?.Road_id);
@@ -391,11 +399,11 @@ const editSeqShuttleBusDetailSeqController = async (req, res) => {
 
       const dataUpdateroad_id_increment = {
         road_id_increment: item?.road_id_increment,
-      }
+      };
 
       const editSeq = await editRoadRouteSeqRepository(
         item?.Road_id,
-       dataUpdateroad_id_increment
+        dataUpdateroad_id_increment
       );
 
       if (editSeq.error !== null) {
