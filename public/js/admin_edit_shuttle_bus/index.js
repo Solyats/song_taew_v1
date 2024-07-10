@@ -165,20 +165,20 @@ const getShuttleBus = async (id) => {
 
       $("#inp_busstop_icon").val(shuttlebusIcon);
 
-      let contentDiv = "";
-      if (detailDataVar?.length > 0) {
-        detailDataVar.map((item) => {
-          contentDiv += `
-          <div class="flex justify-between gx-2 content-center" id="content_detail_var_${item?.Road_id}">
-           <h1>${item?.busStop_name}</h1>
-        <button class="btn-red" id="btn_remove_busStop_id_${item?.Road_id}">ลบ</button>
-          </div>
+      // let contentDiv = "";
+      // if (detailDataVar?.length > 0) {
+      //   detailDataVar.map((item) => {
+      //     contentDiv += `
+      //     <div class="flex justify-between gx-2 content-center" id="content_detail_var_${item?.Road_id}">
+      //      <h1>${item?.busStop_name}</h1>
+      //   <button class="btn-red" id="btn_remove_busStop_id_${item?.Road_id}">ลบ</button>
+      //     </div>
        
-          `;
-        });
-      }
+      //     `;
+      //   });
+      // }
 
-      $("#list_route_this_id").html(contentDiv);
+      // $("#list_route_this_id").html(contentDiv);
     }
   } catch (error) {
     console.log(error);
@@ -251,7 +251,7 @@ $(document).ready(async function () {
 
   shuttleBusIdVar = searchParams.get("id");
   initDomJS()
-  await getAvailibleBusStop()
+  // await getAvailibleBusStop()
   await getShuttleBus(shuttleBusIdVar);
       initButtonROute()
 });
