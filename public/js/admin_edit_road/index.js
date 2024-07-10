@@ -265,7 +265,7 @@ const initButtonROute = () => {
       $(`#btn_remove_busStop_id_${item?.Road_id}`).on("click", () => {
         detailDataVar = detailDataVar.filter((i) => i?.Road_id != item.Road_id);
 
-        // $(`#content_detail_var_${item?.Road_id}`).remove();
+        $(`#content_detail_var_${item?.Road_id}`).remove();
 
         console.log(detailDataVar);
       });
