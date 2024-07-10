@@ -6,6 +6,7 @@
     <title>edit</title>
     <%- include("./partials/commonJS.ejs") %> <%-
     include("./partials/commonStyle.ejs") %>
+    <script src="js/sortable.min.js"></script>
     <script src="js/admin_edit_road/index.js"></script>
   </head>
 
@@ -21,7 +22,6 @@
         <button id="btn_edit_shuttlebus" class="btn-main">บันทึก</button>
       </div>
 
-      <div class="shadow-md mt-10">
         <!-- <div class="grid grid-cols-4 p-4 gap-2">
 
           
@@ -113,17 +113,27 @@
 
         <!-- </div> -->
         <!-- </div> -->
-        <h1 class="mt-10">ตำแหน่งที่เลือก</h1>
+        
 
-        <div class="shadow-md mt-10 p-5">
-          <div class="d-felx" id="list_route_this_id"></div>
+        <div class="grid grid-cols-2 gap-4">
+        
+          <div class="col-span-2 lg:col-span-1">
+            <h1 class="mt-10">ตำแหน่งที่เพิ่มได้</h1>
+            <div class="shadow-md mt-10 p-5">
+              <div class="grid grid-cols-4 gap-2" id="list_availible_route"></div>
+            </div>
+          </div>
+
+          <div class="col-span-2 lg:col-span-1">
+            <h1 class="mt-10">ตำแหน่งที่เลือก</h1>
+            <div class="shadow-md mt-10 p-5 col-span-2 lg:col-span-1">
+              <div class="d-felx draggable-zone" id="list_route_this_id"></div>
+            </div>
+          </div>
         </div>
 
-        <h1 class="mt-10">ตำแหน่งที่เพิ่มได้</h1>
-        <div class="shadow-md mt-10 p-5">
-          <div class="gird gird-cols-4" id="list_availible_route"></div>
-        </div>
-      </div>
+       
+        
 
       <!-- <div class="card bg-white shadow-md rounded p-4">
         <div class="card-header text-lg font-bold mb-4">เพิ่มรถสองแถว</div>

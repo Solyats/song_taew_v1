@@ -198,6 +198,7 @@ const listSelectedRoute = () => {
       detailDataVar.map((item) => {
         contentDiv += `
           <div class="flex justify-between gx-2 content-center" id="content_detail_var_${item?.Road_id}">
+          <span class="draggable-handle">+</span>
            <h1>${item?.busStop_name}</h1>
         <button class="btn-red" id="btn_remove_busStop_id_${item?.Road_id}">ลบ</button>
           </div>
@@ -220,13 +221,17 @@ const getAvailibleBusStop = async () => {
 
     listRouteAvailible = response?.data?.data;
 
-    listRouteAvailible.map((item) => {
+    const filteredList = listRouteAvailible.filter((item) => {
+  return !detailDataVar.some(detail => detail.busStop_id === item.busStop_id);
+});
+
+    filteredList.map((item) => {
       contentDiv += `
-      <div class="col-span-1 lg:col-span-1">
-              <button class="btn-main" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
-            </div>
+       <div class="col-span-2 lg:col-span-1">
+        <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
+      </div>
       `;
-    });
+    })
 
     $("#list_availible_route").html(contentDiv);
   } catch (error) {
@@ -239,8 +244,6 @@ const initButtonROute = () => {
     listRouteAvailible.map((item) => {
       $(`#bus_stop_${item?.busStop_id}`).on("click", () => {
 
-        console.log(item)
-
         const bodyToAppend = {
           busStop_id: item?.busStop_id,
            busStop_name: item?.busStop_name,
@@ -250,7 +253,7 @@ const initButtonROute = () => {
          busStop_subname: item?.busStop_subname,
         };
 
-        $(`#bus_stop_${item?.busStop_id}`).remove();
+        $(`#bus_stop_${item?.busStop_id}`).attr("disabled", true);
 
         detailDataVar.push(bodyToAppend);
 
@@ -262,7 +265,7 @@ const initButtonROute = () => {
       $(`#btn_remove_busStop_id_${item?.Road_id}`).on("click", () => {
         detailDataVar = detailDataVar.filter((i) => i?.Road_id != item.Road_id);
 
-        $(`#content_detail_var_${item?.Road_id}`).remove();
+        // $(`#content_detail_var_${item?.Road_id}`).remove();
 
         console.log(detailDataVar);
       });
@@ -272,12 +275,69 @@ const initButtonROute = () => {
   }
 };
 
+const initializeSortable = () => {
+  let containers = $(".draggable-zone");
+
+  if (containers.length === 0) {
+    console.log("Initializing sortable failed");
+    return false;
+  }
+
+  containers.each(function () {
+    new Sortable(this, {
+      animation: 150,
+      handle: ".draggable-handle",
+      onEnd: async function (event) {
+        try {
+          const startIndex = event.oldIndex;
+          const endIndex = event.newIndex;
+
+          const draggedItem = detailDataVar[startIndex];
+          detailDataVar.splice(startIndex, 1);
+          detailDataVar.splice(endIndex, 0, draggedItem);
+
+          const reportIdsAndSeqs = detailDataVar.map((item, index) => ({
+            Road_id: item?.Road_id,
+            road_id_increment: index + 1,
+          }));
+
+          listSortItem = {
+            shuttleBus_id: shuttleBusIdVar,
+            data: reportIdsAndSeqs,
+          };
+
+          await updateSeqDetailShuttleBus(listSortItem);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  });
+};
+
+const updateSeqDetailShuttleBus = async (body) => {
+  try {
+    window.customswal.showLoading();
+
+    const response = await axios.post("api/v1/edit-seq-shuttlebus-detail", body);
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    window.customswal.hideLoading();
+  }
+};
+
 $(document).ready(async function () {
   const searchParams = new URLSearchParams(window.location.search);
 
   shuttleBusIdVar = searchParams.get("id");
   initDomJS();
-  await getAvailibleBusStop();
   await getShuttleBus(shuttleBusIdVar);
+  await getAvailibleBusStop();
   initButtonROute();
+  initializeSortable()
 });

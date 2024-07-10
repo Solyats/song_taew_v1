@@ -102,7 +102,7 @@ const AuthLoginController = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
+      maxAge: 360000000,
       path: "/"
     });
 

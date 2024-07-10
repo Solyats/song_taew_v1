@@ -124,5 +124,4 @@ const updateSeqShuttleBus = async (body) => {
 
 window.onload = async function () {
   await initDataPage();
-  initializeSortable();
 };
