@@ -403,6 +403,7 @@ const editSeqShuttleBusDetailSeqController = async (req, res) => {
 
       const editSeq = await editRoadRouteSeqRepository(
         item?.Road_id,
+        shuttleBus_id,
         dataUpdateroad_id_increment
       );
 

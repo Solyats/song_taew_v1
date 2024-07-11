@@ -107,9 +107,9 @@ const getLatestRoadRouteSeqRepository = async (shuttleBusId) => {
   }
 };
 
-const editRoadRouteSeqRepository = async (Road_id, data) => {
+const editRoadRouteSeqRepository = async (Road_id,shuttleBus_id, data) => {
   try {
-    const query = db("road_route").where("Road_id", Road_id).update(data);
+    const query = db("road_route").update(data).where("Road_id", Road_id).andWhere("shuttleBus_id", shuttleBus_id)
 
     await query;
 
