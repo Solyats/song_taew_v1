@@ -266,8 +266,6 @@ const initButtonROute = () => {
         detailDataVar = detailDataVar.filter((i) => i?.Road_id != item.Road_id);
 
         $(`#content_detail_var_${item?.Road_id}`).remove();
-
-        console.log(detailDataVar);
       });
     });
   } catch (error) {
