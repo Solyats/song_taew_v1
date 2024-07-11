@@ -6,6 +6,7 @@
     <title>edit</title>
     <%- include("./partials/commonJS.ejs") %> <%-
     include("./partials/commonStyle.ejs") %>
+    <%- include("./partials/uploadService.ejs") %>
     <script src="js/admin_edit_shuttle_bus/index.js"></script>
   </head>
 
@@ -37,14 +38,14 @@
           
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
-              <label class="block mb-2">ชื่อย่อ:</label>
+              <label class="block mb-2">ชื่อสายรถ:</label>
               <input id="inp_shuttle_name" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
                 name="inpt_short_name" />
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group w-full">
-              <label class="block mb-2">ชื่อรถ:</label>
+              <label class="block mb-2">ชื่อย่อ:</label>
               <input id="inp_busstop_thName" class="form-control border border-gray-300 p-2 rounded w-full" name="inp_name" />
             </div>
           </div>
@@ -59,6 +60,7 @@
               <label class="block mb-2">เวลาทำการ:</label>
               <input id="inp_busstop_time" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
                 name="inpt_time" />
+                
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
@@ -76,6 +78,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                           </svg> -->
                 <input id="inp_busstop_picture" type="file" class="" name="inp_image" />
+                  <label for="inp_busstop_picture" class="block text-gray-700"></label>
+                
+                
               </div>
               <!-- <label for="inp_busstop_picture" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
                           เลือกรูป
@@ -107,9 +112,9 @@
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
-              <label class="block mb-2">ไอคอนรถ:</label>
+              <label class="block">ไอคอนรถ:</label>
               <input id="inp_busstop_icon" class="form-control border border-gray-300 p-2 rounded w-full"
-                name="input_icon_img" />
+                name="input_icon_img" type="file" />
             </div>
           </div>
       

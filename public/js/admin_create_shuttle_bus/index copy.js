@@ -39,7 +39,7 @@ const initDomJS = () => {
 
         // Make the Axios request using async/await
         const response = await window.upload_services.UploadSingleImage(formData);
-
+        //โชว์รูป
         if (response?.data?.data?.url) {
           shuttlebusPicture = response?.data?.data?.url;
           $("#previewImageShuttleBus").attr("src", shuttlebusPicture).show();

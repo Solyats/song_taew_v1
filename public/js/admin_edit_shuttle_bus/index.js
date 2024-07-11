@@ -10,7 +10,8 @@ let polylineColorVar = "";
 let symbolColorVar = "";
 let shuttlebusIcon = "";
 let detailDataVar = [];
-let listRouteAvailible = []
+let listRouteAvailible = [];
+
 
 const initDomJS = () => {
   try {
@@ -38,10 +39,25 @@ const initDomJS = () => {
       shuttlesusPrice = $(this).val();
     });
 
-    $("#inp_busstop_picture").on("change", function () {
-      shuttlebusPicture = $(this).val();
-    });
+   
 
+      $("#inp_busstop_picture").on("change", async function () {
+      try {
+        let formData = new FormData();
+        let imagefile = $("#inp_busstop_picture")[0].files[0];
+        formData.append("image", imagefile);
+
+        const response = await window.upload_services.UploadSingleImage(formData);
+
+        if (response?.data?.data?.url) {
+          shuttlebusPicture = response?.data?.data?.url;
+          $("#previewImageShuttleBus").attr("src", shuttlebusPicture).show();
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    });
+    
     $(document).ready(function () {
   const $polylineColorVar = $("#polylineColorVar");
   const $symbolColorVar = $("#symbolColorVar");
@@ -61,8 +77,23 @@ const initDomJS = () => {
   });
 });
 
-    $("#inp_busstop_icon").on("change", function () {
-      shuttlebusIcon = $(this).val();
+ 
+
+    $("#inp_busstop_icon").on("change", async function () {
+      try {
+        let formData = new FormData();
+        let imagefile = $("#inp_busstop_icon")[0].files[0];
+        formData.append("image", imagefile);
+
+        const response = await window.upload_services.UploadSingleImage(formData);
+
+        if (response?.data?.data?.url) {
+          shuttlebusIcon = response?.data?.data?.url;
+          $("#previewImageShuttleBus").attr("src", shuttlebusIcon).show();
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
     });
 
     $("#btn_edit_shuttlebus").on("click", async function () {
@@ -188,9 +219,16 @@ const getShuttleBus = async (id) => {
 };
 
 
+
+
+
+
+
 const getAvailibleBusStop = async () => {
   try {
     let contentDiv = "";
+
+    
 
     const response = await axios.post(
       "api/v1/list-bus-stop"
