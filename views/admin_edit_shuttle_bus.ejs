@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>edit</title>
+    <title>แก้ไขสายรถโดนสาร</title>
     <%- include("./partials/commonJS.ejs") %> <%-
-    include("./partials/commonStyle.ejs") %>
-    <%- include("./partials/uploadService.ejs") %>
+    include("./partials/commonStyle.ejs") %> <%-
+    include("./partials/uploadService.ejs") %>
     <script src="js/admin_edit_shuttle_bus/index.js"></script>
   </head>
 
@@ -18,106 +18,124 @@
       </div>
 
       <div class="flex justify-between">
-          <a href="/admin_list_shuttle_bus" class="btn-main">กลับ</a>
+        <a href="/admin_list_shuttle_bus" class="btn-main">กลับ</a>
         <button id="btn_edit_shuttlebus" class="btn-main">บันทึก</button>
       </div>
-    
 
       <div class="shadow-md mt-10">
-      
         <div class="grid grid-cols-4 p-4 gap-2">
-
-          
-            <div class="col-span-4 lg:col-span-1">
+          <!-- <div class="col-span-4 lg:col-span-1">
               <div class="form-group mr-8 w-full">
                 <label class="block mb-2">รหัสรถ:</label>
-                <input id="inp_busstop_subName" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
+                <input id="inp_shuttle_subname" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
                   name="inpt_short_name" />
               </div>
-            </div>
-          
+            </div> -->
+
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">ชื่อสายรถ:</label>
-              <input id="inp_shuttle_name" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
-                name="inpt_short_name" />
+              <input
+                id="inp_shuttle_name"
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inpt_short_name"
+              />
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group w-full">
               <label class="block mb-2">ชื่อย่อ:</label>
-              <input id="inp_busstop_thName" class="form-control border border-gray-300 p-2 rounded w-full" name="inp_name" />
+              <input
+                id="inp_busstop_thName"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inp_name"
+              />
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">สีรถ:</label>
-              <input id="inp_busstop_color" class="form-control border border-gray-300 p-2 rounded w-full" name="inp_color" />
+              <input
+                id="inp_busstop_color"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inp_color"
+              />
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">เวลาทำการ:</label>
-              <input id="inp_busstop_time" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
-                name="inpt_time" />
-                
+              <input
+                id="inp_busstop_time"
+                type="text"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inpt_time"
+              />
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">ค่าบริการ:</label>
-              <input id="inp_busstop_price" class="form-control border border-gray-300 p-2 rounded w-full" name="inp_price" />
+              <input
+                id="inp_busstop_price"
+                class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inp_price"
+              />
             </div>
           </div>
-          <div class="col-span-4 lg:col-span-1 ">
-            <div class="form-group mr-8 w-full ">
-              <label class="block mb-2">รูปรถ:</label>
-              <!-- <img class="" id="previewImageShuttleBus" src="#" alt="Preview Image" class="max-w-full max-h-36 rounded-lg shadow-md"> -->
-              <div class=" border">
-                <!-- <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                          </svg> -->
-                <input id="inp_busstop_picture" type="file" class="" name="inp_image" />
-                  <label for="inp_busstop_picture" class="block text-gray-700"></label>
-                
-                
-              </div>
-              <!-- <label for="inp_busstop_picture" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
-                          เลือกรูป
-                        </label> -->
-            </div>
           
-          
-          </div>
-       
 
           <div class="col-span-4 lg:col-span-1">
             <label class="block mb-2">สีเส้นรถ:</label>
-            <div class="form-group mr-8 w-full border border-gray-300 flex p-1 content-center">
-              
-              <input id="inp_busstop_polyline" type="color" class="form-control border border-gray-300  rounded w-25%"
-                name="inp_line_color" />
-                <p>สีที่เลือก: <span id="selectedColorpoly">#ff0000</span></p>
+            <div
+              class="form-group mr-8 w-full border border-gray-300 flex p-1 content-center"
+            >
+              <input
+                id="inp_busstop_polyline"
+                type="color"
+                class="form-control border border-gray-300 rounded w-25%"
+                name="inp_line_color"
+              />
+              <p>สีที่เลือก: <span id="selectedColorpoly">#ff0000</span></p>
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
-            <label class="block">สีจุดรถสองแถว:</label>
-            <div class="form-group mr-8 w-full border border-gray-300 flex p-1 content-center">
-              
-              <input id="inp_busstop_symbol" type="color" class="form-control border border-gray-300 rounded w-25%"
-                name="input_bus_color" />
+            <label class="block mb-2">สีจุดรถสองแถว:</label>
+            <div
+              class="form-group mr-8 w-full border border-gray-300 flex p-1 content-center"
+            >
+              <input
+                id="inp_busstop_symbol"
+                type="color"
+                class="form-control border border-gray-300 rounded w-25%"
+                name="input_bus_color"
+              />
 
-                <p>สีที่เลือก: <span id="selectedColorVar">#ff0000</span></p>
+              <p>สีที่เลือก: <span id="selectedColorVar">#ff0000</span></p>
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">รูปรถ:</label>
+          
+              <div class="border">
+                
+                <!-- ปุ่มที่ใช้แสดงผลเป็นตัวเลือกรูป -->
+                <input id="inp_busstop_picture" type="file"
+                >
+                  
+              
+                </input>
+              </div>
+            </div>
+          <!-- <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block">ไอคอนรถ:</label>
               <input id="inp_busstop_icon" class="form-control border border-gray-300 p-2 rounded w-full"
                 name="input_icon_img" type="file" />
             </div>
-          </div>
-      
+          </div> -->
         </div>
       </div>
 

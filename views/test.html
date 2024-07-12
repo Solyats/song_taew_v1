@@ -4,100 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Picker Table</title>
-    <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
+    <title>แสดงรูปภาพที่เลือก</title>
+    <script>
+        function showImage(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').setAttribute('src', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
         }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .color-display {
-            width: 100px;
-            height: 30px;
-            display: inline-block;
-        }
-    </style>
+    </script>
 </head>
 
 <body>
-    <h2>เลือกสีสำหรับเส้นรถและรถสอง</h2>
-    <table>
-        <tr>
-            <th>สีเส้นรถ</th>
-            <th>สีรถสอง</th>
-        </tr>
-        <tr>
-            <td>
-                <input type="color" id="colorPicker1" name="colorPicker1" value="#e5e823">
-                <span class="color-display" id="colorDisplay1" style="background-color: #e5e823;"></span>
-            </td>
-            <td>
-                <input type="color" id="colorPicker2" name="colorPicker2" value="#43bf36">
-                <span class="color-display" id="colorDisplay2" style="background-color: #43bf36;"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="color" id="colorPicker3" name="colorPicker3" value="#ffff00">
-                <span class="color-display" id="colorDisplay3" style="background-color: #ffff00;"></span>
-            </td>
-            <td>
-                <input type="color" id="colorPicker4" name="colorPicker4" value="#6495ed">
-                <span class="color-display" id="colorDisplay4" style="background-color: #6495ed;"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="color" id="colorPicker5" name="colorPicker5" value="#32cd32">
-                <span class="color-display" id="colorDisplay5" style="background-color: #32cd32;"></span>
-            </td>
-            <td>
-                <input type="color" id="colorPicker6" name="colorPicker6" value="#32cd32">
-                <span class="color-display" id="colorDisplay6" style="background-color: #32cd32;"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="color" id="colorPicker7" name="colorPicker7" value="#00bfff">
-                <span class="color-display" id="colorDisplay7" style="background-color: #00bfff;"></span>
-            </td>
-            <td>
-                <input type="color" id="colorPicker8" name="colorPicker8" value="#00bfff">
-                <span class="color-display" id="colorDisplay8" style="background-color: #00bfff;"></span>
-            </td>
-        </tr>
-    </table>
-
-    <script>
-        function updateColorDisplay(pickerId, displayId) {
-            const colorPicker = document.getElementById(pickerId);
-            const colorDisplay = document.getElementById(displayId);
-
-            colorPicker.addEventListener('input', function () {
-                colorDisplay.style.backgroundColor = colorPicker.value;
-            });
-        }
-
-        updateColorDisplay('colorPicker1', 'colorDisplay1');
-        updateColorDisplay('colorPicker2', 'colorDisplay2');
-        updateColorDisplay('colorPicker3', 'colorDisplay3');
-        updateColorDisplay('colorPicker4', 'colorDisplay4');
-        updateColorDisplay('colorPicker5', 'colorDisplay5');
-        updateColorDisplay('colorPicker6', 'colorDisplay6');
-        updateColorDisplay('colorPicker7', 'colorDisplay7');
-        updateColorDisplay('colorPicker8', 'colorDisplay8');
-    </script>
+    <h2>เลือกรูปภาพ</h2>
+    <input type="file" id="fileInput" name="fileInput" accept=".png, .jpg, .jpeg" onchange="showImage(this)">
+    <br><br>
+    <img id="preview" src="#" alt="รูปภาพที่เลือก" style="max-width: 300px; max-height: 300px;">
 </body>
 
 </html>

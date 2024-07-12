@@ -29,6 +29,7 @@ const {
 } = require("../middleware/middleware");
 const { uploadSingleImageCloudinaryController } = require("../controllers/fileUpload");
 const { uploadMulter } = require("../utils/utils");
+const { listUserControler } = require("../controllers/UserController");
 
 router.post(`${API_ENDPOINT}/fetch-shuttlebus`, fetchDataShuttleBussController);
 router.post(
@@ -62,6 +63,8 @@ router.post(
 );
 
 router.post(`${API_ENDPOINT}/list-bus-stop`, listBussStopControler);
+router.post(`${API_ENDPOINT}/list-user`,authenticateAdminToken, listUserControler);
+
 router.post(`${API_ENDPOINT}/get-bus-stop`, getBussStopControler);
 
 router.post(

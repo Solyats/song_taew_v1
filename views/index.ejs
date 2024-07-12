@@ -158,10 +158,10 @@
   <script>
     const handleSubmit = async () => {
       const { value: formValues } = await Swal.fire({
-        title: "Login",
+        title: "สมัครสมาชิก",
         html:
-          '<input id="username" class="swal2-input" placeholder="Username">' +
-          '<input id="password" type="password" class="swal2-input" placeholder="Password">',
+          '<input id="username" class="swal2-input" placeholder="ชื่อผู้ใช้">' +
+          '<input id="password" type="password" class="swal2-input" placeholder="รหัสผ่าน">',
         focusConfirm: false,
         preConfirm: () => {
           return {
@@ -180,7 +180,7 @@
           console.log("API Response:", response.data);
           Swal.fire({
             icon: "success",
-            title: "Logged in successfully!",
+            title: "สมัครสมาชิกสำเร็จ",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -189,8 +189,8 @@
           console.error("API Error:", error);
           Swal.fire({
             icon: "error",
-            title: "Oops...",
-            text: "Login failed!",
+            title: "ไม่สำเร็จ",
+            text: "สมัครสมาชิก ไม่สำเร็จ!",
           });
         }
       }

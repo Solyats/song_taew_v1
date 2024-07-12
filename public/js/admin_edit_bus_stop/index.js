@@ -1,33 +1,127 @@
 let nameBusStop = "";
-let subnameBusStop ="";
+let subnameBusStop = "";
 let latitudeVar = 0;
 let longitudeVar = 0;
 let PicTureVar = "";
 
+
 const initDomJS = async () => {
   try {
-    $("#inp_busstop_name").on("change", function () {
+    // เมื่อมีการเปลี่ยนแปลงในช่องป้อนชื่อป้ายรถเมล์
+    $("#inp_busStop_name").on("change", function () {
       nameBusStop = $(this).val();
     });
 
-    $("#inp_busstop_subname").on("change", function () {
-      nameBusStop = $(this).val();
+    $("#inp_busStop_subname").on("change", function () {
+      subnameBusStop = $(this).val();
     });
 
+    // พิกัดเริ่มต้นของแผนที่
+    // แทนที่ด้วยพิกัดเริ่มต้นของคุณ
 
-    $("#inp_busStop_latitudee").on("change", function () {
-      latitudeVar = $(this).val();
+    // สร้างแผนที่ใหม่
+    createMap();
+     
+
+      // When there is a change in the picture input field
+      
+    
+    $("#inp_PicTure").on("change", async function () {
+      try {
+        let formData = new FormData();
+        let imagefile = $("#inp_busstop_picture")[0].files[0]; // Select the file using jQuery
+        formData.append("image", imagefile); // Append the file to FormData
+
+        // Make the Axios request using async/await
+        const response = await window.upload_services.UploadSingleImage(formData);
+
+        if (response?.data?.data?.url) {
+          PicTureVar = response?.data?.data?.url;
+          $("#previewImageBusStop").attr("src", PicTureVar).show();
+        }
+      } catch (error) {
+        // Handle error
+        console.error("Error uploading image:", error);
+      }
     });
+    
 
-    $("#inp_busStop_longitude").on("change", function () {
-      longitudeVar = $(this).val();
-    });
-
-    $("#inp_busStop_picture").on("change", function () {
-      PicTureVar = $(this).val();
+    // เมื่อมีการคลิกที่ปุ่มสร้างป้ายรถเมล์
+    $("#btn_update_busstop").on("click", async function () {
+      await onClickUpdateBusStop();
+      console.log("เริ่มสร้างป้ายรถเมล์");
     });
   } catch (error) {
+    console.error(error);
+  }
+};
+
+
+const createMap = async () => {
+  try {
+    await getBusStop(busStopIdVar); // Fetch bus stop data first
+
+    // Convert latitudeVar and longitudeVar to numbers if necessary
+    latitudeVar = parseFloat(latitudeVar);
+    longitudeVar = parseFloat(longitudeVar);
+
+    var initialLatLng = { lat: latitudeVar, lng: longitudeVar };
+
+    var map = new google.maps.Map(document.getElementById("map"), {
+      center: initialLatLng,
+      zoom: 12,
+    });
+
+    var marker = new google.maps.Marker({
+      position: initialLatLng,
+      map: map,
+      draggable: true,
+    });
+
+    google.maps.event.addListener(marker, "dragend", function (event) {
+      $("#inp_busStop_latitude").val(event.latLng.lat());
+      $("#inp_busStop_longitude").val(event.latLng.lng());
+      latitudeVar = event.latLng.lat();
+      longitudeVar = event.latLng.lng();
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
+
+
+const getBusStop = async (id) => {
+  try {
+    window.customswal.showLoading();
+
+
+    const bodyRequest = {
+      busStop_id: id,
+    };
+
+    const response = await axios.post("api/v1/get-bus-stop", bodyRequest);
+
+    if (response?.data) {
+      const data = response?.data?.data;
+      
+      nameBusStop = data?.busStop_name;
+      subnameBusStop = data?.busStop_subname;
+      latitudeVar = data?.busStop_latitude;
+      longitudeVar = data?.busStop_longitude;
+      PicTureVar = data?.busStop_picture;
+
+      $("#inp_busStop_name").val(nameBusStop);
+      $("#inp_busStop_subname").val(subnameBusStop);
+      $("#inp_busStop_latitude").val(latitudeVar);
+      $("#inp_busStop_longitude").val(longitudeVar);
+      $("#inp_PicTure").val(PicTureVar);
+    }
+  } catch (error) {
     console.log(error);
+  } finally {
+    window.customswal.hideLoading();
   }
 };
 
@@ -36,6 +130,7 @@ const onClickUpdateBusStop = async () => {
     window.customswal.showLoading();
 
     const bodyRequest = {
+      busStop_id: busStopIdVar,
       busStop_name: nameBusStop,
       busStop_subname: subnameBusStop,
       busStop_latitude: latitudeVar,
@@ -43,12 +138,12 @@ const onClickUpdateBusStop = async () => {
       busStop_picture: PicTureVar,
     };
 
-    console.log("Request body: ", bodyRequest); // Log to see the request body
+   
 
-    const response = await axios.post("api/v1/create-bus-stop", bodyRequest);
-    console.log("Response: ", response); // Log to see the server response
+    await axios.post("api/v1/edit-bus-stop", bodyRequest);
+  
 
-    window.location.href = "/admin_list_shuttle_bus";
+    window.location.href = "/admin_list_bus_stop";
   } catch (error) {
     console.log("Error: ", error); // Log to see the error
     switch (error?.response?.data?.error) {
@@ -62,42 +157,10 @@ const onClickUpdateBusStop = async () => {
   }
 };
 
-const getBusStop = async (id) => {
-  try {
-    window.customswal.showLoading();
-
-    const bodyRequest = {
-      busStop_id: id,
-    };
-
-    const response = await axios.post("api/v1/get-bus-stop", bodyRequest);
-
-    if (response?.data) {
-      const data = response?.data?.data;
-      nameBusStop = data?.busStop_name;
-      subnameBusStop = data?.busStop_subname;
-      latitudeVar = data?.busStop_latitude;
-      longitudeVar = data?.busStop_longitude;
-      PicTureVar = data?.busStop_picture;
-
-      $("#inp_busStop_name").val(nameBusStop);
-      $("#inp_busStop_subname").val(subnameBusStop);
-      $("#inp_busStop_latitudee").val(latitudeVar);
-      $("#inp_busStop_longitude").val(longitudeVar);
-      $("#inp_busStop_picture").val(PicTureVar);
-    }
-  } catch (error) {
-    console.log(error);
-  } finally {
-    window.customswal.hideLoading();
-  }
-};
-
-// Initialize DOM elements
-
 $(document).ready(async () => {
   const searchParams = new URLSearchParams(window.location.search);
   busStopIdVar = searchParams.get("id");
   initDomJS();
   await getBusStop(busStopIdVar);
+  
 });

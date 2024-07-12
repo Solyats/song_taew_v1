@@ -21,7 +21,7 @@ const initDomJS = async () => {
 
     // สร้างแผนที่ใหม่
     $(document).ready(function() {
-  var initialLatLng = { lat: 16.447, lng: 102.833 }; // Example initial position, replace with actual coordinates
+  var initialLatLng = { lat: 16.439755821668168, lng: 102.82750683593747 }; // Example initial position, replace with actual coordinates
   
   var map = new google.maps.Map($('#map')[0], {
     center: initialLatLng,
@@ -44,10 +44,28 @@ const initDomJS = async () => {
   });
 
   // When there is a change in the picture input field
-  $('#inp_PicTure').on('change', function() {
-    PicTureVar = $(this).val();
+  $("#inp_busstop_picture").on("change", async function () {
+      try {
+        let formData = new FormData();
+        let imagefile = $("#inp_busstop_picture")[0].files[0];
+        formData.append("image", imagefile);
+
+        const response = await window.upload_services.UploadSingleImage(formData);
+
+        if (response?.data?.data?.url) {
+          PicTureVar = response?.data?.data?.url;
+          $("#previewImageShuttleBus").attr("src", PicTureVar).show();
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
   });
-});
+      
+      console.log("asdasdas");
+
+
+    });
+    
 
 
     // เมื่อมีการคลิกที่ปุ่มสร้างป้ายรถเมล์

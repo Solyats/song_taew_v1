@@ -11,7 +11,7 @@ let symbolColorVar = "";
 let shuttlebusIcon = "";
 let detailDataVar = [];
 let listRouteAvailible = [];
-
+let contentPicture = "";
 
 const initDomJS = () => {
   try {
@@ -39,9 +39,21 @@ const initDomJS = () => {
       shuttlesusPrice = $(this).val();
     });
 
-   
+    $("#inp_busstop_polyline").on("change", function () {
+      polylineColorVar = $(this).val();
+      $("#selectedColorpoly").text(polylineColorVar);
+    });
 
-      $("#inp_busstop_picture").on("change", async function () {
+    $("#inp_busstop_symbol").on("change", function () {
+      symbolColorVar = $(this).val();
+      $("#selectedColorVar").text(symbolColorVar);
+    });
+
+    $("#contentPicture").on("change", function () {
+      contentPicture.html(contentDiv);
+    });
+
+    $("#inp_busstop_picture").on("change", async function () {
       try {
         let formData = new FormData();
         let imagefile = $("#inp_busstop_picture")[0].files[0];
@@ -57,27 +69,6 @@ const initDomJS = () => {
         console.error("Error uploading image:", error);
       }
     });
-    
-    $(document).ready(function () {
-  const $polylineColorVar = $("#polylineColorVar");
-  const $symbolColorVar = $("#symbolColorVar");
-  const $selectedColorpoly = $("#selectedColorpoly");
-  const $selectedColor = $("#selectedColor");
-
-  $polylineColorVar.on("change", function () {
-    $selectedColorpoly.text($polylineColorVar.val());
-    // Set value to input field
-    $("#polylineColorVar").val($polylineColorVar.val());
-  });
-
-  $symbolColorVar.on("change", function () {
-    $selectedColor.text($symbolColorVar.val());
-    // Set value to input field
-    $("#symbolColorVar").val($symbolColorVar.val());
-  });
-});
-
- 
 
     $("#inp_busstop_icon").on("change", async function () {
       try {
@@ -123,13 +114,13 @@ const onClickUpdateShuttleBus = async () => {
       detailData: detailDataVar,
     };
 
-    console.log("Request body: ", bodyRequest); // เพิ่มการ log เพื่อดูค่าที่ส่งไป
+    console.log("Request body: ", bodyRequest); // Log request body for debugging
 
     const response = await axios.post(
       "api/v1/edit-shuttlebus",
       bodyRequest
     );
-    console.log("Response: ", response); // เพิ่มการ log เพื่อตรวจสอบการตอบสนองของเซิร์ฟเวอร์
+    console.log("Response: ", response); // Log server response for debugging
 
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -137,7 +128,7 @@ const onClickUpdateShuttleBus = async () => {
 
     window.location.href = "/admin_edit_shuttle_bus";
   } catch (error) {
-    console.log("Error: ", error); // เพิ่มการ log เพื่อดูข้อผิดพลาดที่เกิดขึ้น
+    console.log("Error: ", error); // Log errors for debugging
     switch (error?.response?.data?.error) {
       case "busStopName_is_already_exist":
         window?.customswal?.showErrorAlert("ชื่อจุดจอดซ้ำ");
@@ -177,39 +168,15 @@ const getShuttleBus = async (id) => {
       detailDataVar = data?.detailData;
 
       $("#inp_shuttle_name").val(shortNameVar);
-
-      $("#inp_busstop_subName").val(subBsname);
-
+      $("#inp_shuttle_subname").val(subBsname);
       $("#inp_busstop_thName").val(shortThname);
-
       $("#inp_busstop_color").val(suttlebusColor);
-
       $("#inp_busstop_time").val(shuttlesusTime);
-
       $("#inp_busstop_price").val(shuttlesusPrice);
-
-      $("#inp_busstop_picture").val(shuttlebusPicture);
-
       $("#inp_busstop_polyline").val(polylineColorVar);
-
+      $("#selectedColorpoly").text(polylineColorVar);
       $("#inp_busstop_symbol").val(symbolColorVar);
-
-      $("#inp_busstop_icon").val(shuttlebusIcon);
-
-      // let contentDiv = "";
-      // if (detailDataVar?.length > 0) {
-      //   detailDataVar.map((item) => {
-      //     contentDiv += `
-      //     <div class="flex justify-between gx-2 content-center" id="content_detail_var_${item?.Road_id}">
-      //      <h1>${item?.busStop_name}</h1>
-      //   <button class="btn-red" id="btn_remove_busStop_id_${item?.Road_id}">ลบ</button>
-      //     </div>
-       
-      //     `;
-      //   });
-      // }
-
-      // $("#list_route_this_id").html(contentDiv);
+      $("#selectedColorVar").text(symbolColorVar);
     }
   } catch (error) {
     console.log(error);
@@ -218,31 +185,23 @@ const getShuttleBus = async (id) => {
   }
 };
 
-
-
-
-
-
-
 const getAvailibleBusStop = async () => {
   try {
     let contentDiv = "";
-
-    
 
     const response = await axios.post(
       "api/v1/list-bus-stop"
     );
 
-    listRouteAvailible = response?.data?.data
+    listRouteAvailible = response?.data?.data;
 
     listRouteAvailible.map((item) => {
       contentDiv += `
-      <div class="col-span-1 lg:col-span-1">
-              <button class="btn-main" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
-            </div>
-      `
-    })
+        <div class="col-span-1 lg:col-span-1">
+          <button class="btn-main" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
+        </div>
+      `;
+    });
 
     $("#list_availible_route").html(contentDiv);
   } catch (error) {
@@ -252,44 +211,37 @@ const getAvailibleBusStop = async () => {
 
 const initButtonROute = () => {
   try {
-
     listRouteAvailible.map((item) => {
       $(`#bus_stop_${item?.busStop_id}`).on("click", () => {
         const bodyToAppend = {
-            Road_id: "",
-            shuttleBus_id: shuttleBusIdVar,
-            busStop_id: item?.busStop_id
-        }
+          Road_id: "",
+          shuttleBus_id: shuttleBusIdVar,
+          busStop_id: item?.busStop_id
+        };
 
-        $(`#bus_stop_${item?.busStop_id}`).remove()
-
-        detailDataVar.push(bodyToAppend)
-
-        console.log(detailDataVar)
-      })
-    })
+        $(`#bus_stop_${item?.busStop_id}`).remove();
+        detailDataVar.push(bodyToAppend);
+        console.log(detailDataVar);
+      });
+    });
 
     detailDataVar.map((item) => {
       $(`#btn_remove_busStop_id_${item?.Road_id}`).on("click", () => {
-        detailDataVar = detailDataVar.filter((i) => i?.Road_id != item.Road_id)
-
-        $(`#content_detail_var_${item?.Road_id}`).remove()
-        
-        console.log(detailDataVar)
-      })
-    })
-
+        detailDataVar = detailDataVar.filter((i) => i?.Road_id != item.Road_id);
+        $(`#content_detail_var_${item?.Road_id}`).remove();
+        console.log(detailDataVar);
+      });
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 $(document).ready(async function () {
   const searchParams = new URLSearchParams(window.location.search);
 
   shuttleBusIdVar = searchParams.get("id");
-  initDomJS()
-  // await getAvailibleBusStop()
+  initDomJS();
   await getShuttleBus(shuttleBusIdVar);
-      initButtonROute()
+  initButtonROute();
 });

@@ -59,25 +59,7 @@ const initDomJS = () => {
     });
 
 
-    $("#inp_busstop_icon").on("change", async function () {
-      try {
-        let formData = new FormData();
-        let imagefile = $("#inp_busstop_icon")[0].files[0]; // Select the file using jQuery
-        formData.append("image", imagefile); // Append the file to FormData
-
-        // Make the Axios request using async/await
-        const response = await window.upload_services.UploadSingleImage(formData);
-
-        if (response?.data?.data?.url) {
-          shuttlebusIcon = response?.data?.data?.url;
-          $("#previewNameShuttleBusIcon").attr("src", shuttlebusIcon).show();
-        }
-      } catch (error) {
-        // Handle error
-        console.error("Error uploading image:", error);
-      }
-    });
-
+    
 
 
 

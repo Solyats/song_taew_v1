@@ -23,6 +23,30 @@ const getUserByUsernameWithPasswordRepository = async (username) => {
   }
 };
 
+const getUserListRepository = async () => {
+  try {
+    const result = await db
+      .select(
+        "id",
+        "username",
+        "role",
+        "status",
+        "created_at",
+        "updated_at",
+        "update_by"
+      )
+      .from("tbl_users")
+     
+
+    return { data: result, error: null };
+  } catch (err) {
+    console.log("🚀 ~ getUserListRepository ~ err:", err);
+    return { data: null, error: err };
+  }
+};
+
+
+
 const insertUserRepository = async (user) => {
   try {
     const result = await db("tbl_users").insert(user);
@@ -60,4 +84,5 @@ module.exports = {
   getUserByUsernameWithPasswordRepository,
   insertUserRepository,
   checkIsHaveUserRepository,
+  getUserListRepository
 };

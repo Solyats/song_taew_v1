@@ -20,12 +20,12 @@ const initDataPage = async () => {
       listDatas.map((item) => {
         divContent += `
             <tr
-                  class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                  class="odd:bg-white odd:dark:bg-gray-900  even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 >
                   
                   <td
-                    scope="row"
-                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                   
+                    class="px-6 py-4 font-medium text-gray-900  dark:text-white"
                   >
                   ${item?.shuttleBus_subname}
                   </td>
@@ -36,14 +36,14 @@ const initDataPage = async () => {
       
                   
                   
-                  <td class="px-6 py-4 flex border ">
-                    <a
-                      href="/admin_edit_road?id=${item?.shuttleBus_id}"
-                      class="font-medium ml-2 bg-yellow-500 text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                      <svg class="h-8 w-8 text-red-500"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />  <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />  <line x1="16" y1="5" x2="19" y2="8" /></svg>
-                      </a
-                    > 
+                  <td class="px-6 py-4  " style="vertical-align: top;">
+                  
+                    <a href="/admin_edit_road?id=${item?.shuttleBus_id}"
+   class="font-medium ml-2 bg-bt text-black font-bold flex justify-center dark:text-blue-500 hover:bg-yellow-400 hover:text-blue-700 dark:hover:text-blue-400 dark:hover:bg-yellow-600 px-3 py-1 rounded-lg shadow-md transition-all duration-300 hover:underline">
+   จัดการเส้นทาง
+</a>
+
+                    
                     
                   </td>
                 </tr>
@@ -55,14 +55,14 @@ const initDataPage = async () => {
       listDatas.map((item) => {
         $(`#btn_delete_${item?.shuttleBus_id}`).click(function () {
           Swal.fire({
-            title: "Are you sure?",
-            text: "Do you want to delete?",
+            title: "ลบข้อมูล?",
+            text: "ต้องการจะลบข้อมูลหรือไม่?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, I want to delete",
-            cancelButtonText: "Cancel",
+            confirmButtonText: "ใช่",
+            cancelButtonText: "ยกเลิก",
           }).then(async (result) => {
             if (result.isConfirmed) {
               await onDeleteShuttleBus(item?.shuttleBus_id);

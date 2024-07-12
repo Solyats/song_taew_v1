@@ -58,5 +58,12 @@ router.get('/admin_edit_road', async (req, res) => {
   res.render('admin_edit_road');
 });
 
+router.get('/admin_edit_bus_stopcopy', async (req, res) => {
+  res.render('admin_edit_bus_stopcopy');
+});
+
+router.get('/admin_list_user', async (req, res) => {
+  res.render('admin_list_user');
+});
 
 module.exports = router;

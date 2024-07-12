@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>edit</title>
+    <title>สร้างจุดจอด</title>
     <%- include("./partials/commonJS.ejs") %> <%-
     include("./partials/commonStyle.ejs") %>
+    <%- include("./partials/uploadService.ejs") %>
     <script src="js/admin_create_bus_stop/index.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=th"></script>
     
@@ -33,10 +34,17 @@
       <div class="shadow-md mt-10">
         <div class="">
           <div class="grid grid-cols-2">
+            
+            <div class="col-span-2 w-full p-2">
+              <label class="block mb-2">รหัสจุดจอด:</label>
+              <input id="inp_busstop_subname" type="text" class="form-control border border-gray-300 p-2 rounded w-full" />
+            </div>
+
+
             <div class="col-span-2 w-full p-2">
               <label class="block mb-2">ชื่อจุดจอด:</label>
               <input
-              id="inp_busstop_subname"
+              id="inp_busstop_name"
                 type="text"
                 class="form-control border border-gray-300 p-2 rounded w-full"
                
@@ -65,11 +73,10 @@
             <div class="col-span-2 mr-8 w-full p-2">
               <label class="block mb-2">รูปจุดจอด:</label>
               <input
-              id="inp_PicTure"
+              id="inp_busstop_picture"
                 type="file"
-                class="form-control border border-gray-300 p-2 rounded w-full"
-                name="BusStop_id"
-                accept="image/*"
+             
+               
               />
             </div>
               <div id="map"></div>
