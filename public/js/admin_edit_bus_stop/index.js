@@ -29,7 +29,7 @@ const initDomJS = async () => {
     $("#inp_PicTure").on("change", async function () {
       try {
         let formData = new FormData();
-        let imagefile = $("#inp_busstop_picture")[0].files[0]; // Select the file using jQuery
+        let imagefile = $("#inp_PicTure")[0].files[0]; // Select the file using jQuery
         formData.append("image", imagefile); // Append the file to FormData
 
         // Make the Axios request using async/await
