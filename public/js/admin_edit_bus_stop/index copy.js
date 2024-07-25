@@ -69,6 +69,7 @@ const onClickUpdateBusStop = async () => {
     const bodyRequest = {
       busStop_name: nameBusStop,
       busStop_subname: subnameBusStop,
+      busStop_status: statusnameBusStop,
       busStop_latitude: latitudeVar,
       busStop_longitude: longitudeVar,
       busStop_picture: PicTureVar,

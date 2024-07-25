@@ -8,14 +8,27 @@
     include("./partials/commonStyle.ejs") %>
     <script src="js/sortable.min.js"></script>
     <script src="js/admin_edit_road/index.js"></script>
+  
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=th"></script>  
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   </head>
+  <style>
+    #map-bus {
+      height: 500px;
+      /* กำหนดความสูงของแผนที่ */
+      width: 100%;
+      /* กำหนดความกว้างของแผนที่ */
+    }
+  </style>
 
-  <body>
+  <body class="flex">
     <%- include("./partials/navbar.ejs") %>
     <div class="container mx-auto" style="margin-top: 100px">
       <div class="text-center text-3xl">
-        <span>จัดการรถโดยสาร</span>
+        <span>จัดการเส้นทาง</span>
       </div>
+
+      
 
       <div class="flex justify-between">
         <a href="/admin_list_road" class="btn-main">กลับ</a>
@@ -115,21 +128,49 @@
         <!-- </div> -->
         
 
-        <div class="grid grid-cols-2 gap-4">
-        
-          <div class="col-span-2 lg:col-span-1">
-            <h1 class="mt-10">ตำแหน่งที่เพิ่มได้</h1>
+        <div class="grid grid-cols-2 gap-4 flex">
+          <div>
+            <div class="col-span-1 overflow-y-auto  w-10p ">
+            <h1 class="mt-10">ตำแหน่งจุดจอด</h1>
             <div class="shadow-md mt-10 p-5">
-              <div class="grid grid-cols-4 gap-2" id="list_availible_route"></div>
+              <div class="grid grid-cols-4 gap-2 overflow-y-auto h-56" id="list_availible_route"></div>
+            </div>
+            </div>
+            
+            <div class="">
+              <h1 class="mt-10">ตำแหน่งจุดแยก</h1>
+              <div class="shadow-md mt-10 p-5">
+                <div class="grid grid-cols-4 gap-2 overflow-y-auto h-56" id="list_availible_route1"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-span-1 ">
+            
+            <div
+              class="col-span-2">
+              <h1 class="mt-10">ตำแหน่งที่เลือก</h1>
+              <div class="overflow-y-auto h-56 mt-10 ">
+                <div class="d-flex draggable-zone" id="list_route_this_id"></div>
+              </div>
+            </div>
+
+            <div class="col-span-1 ">
+            
+              <div class="col-span-2 lg:col-span-1  text-black py-2 rounded  ">
+                <h1 class="mt-16">ตำแหน่งหมุด</h1>
+                <div class="overflow-y-auto mt-10 h-72 max-h-screen">
+                  <div id="map-bus" ></div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="col-span-2 lg:col-span-1">
-            <h1 class="mt-10">ตำแหน่งที่เลือก</h1>
-            <div class="shadow-md mt-10 p-5 col-span-2 lg:col-span-1">
-              <div class="d-felx draggable-zone" id="list_route_this_id"></div>
-            </div>
-          </div>
+         
+        
+     
+
         </div>
 
        

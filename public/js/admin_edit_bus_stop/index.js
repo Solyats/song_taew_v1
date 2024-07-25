@@ -3,6 +3,7 @@ let subnameBusStop = "";
 let latitudeVar = 0;
 let longitudeVar = 0;
 let PicTureVar = "";
+let statusnameBusStop = "";
 
 
 const initDomJS = async () => {
@@ -14,6 +15,10 @@ const initDomJS = async () => {
 
     $("#inp_busStop_subname").on("change", function () {
       subnameBusStop = $(this).val();
+    });
+
+    $("#inp_busStop_status").on("change", function () {
+      statusnameBusStop = $(this).val();
     });
 
     // พิกัดเริ่มต้นของแผนที่
@@ -108,12 +113,14 @@ const getBusStop = async (id) => {
       
       nameBusStop = data?.busStop_name;
       subnameBusStop = data?.busStop_subname;
+      statusnameBusStop = data?.busStop_status;
       latitudeVar = data?.busStop_latitude;
       longitudeVar = data?.busStop_longitude;
       PicTureVar = data?.busStop_picture;
 
       $("#inp_busStop_name").val(nameBusStop);
       $("#inp_busStop_subname").val(subnameBusStop);
+      $("#inp_busStop_status").val(statusnameBusStop);
       $("#inp_busStop_latitude").val(latitudeVar);
       $("#inp_busStop_longitude").val(longitudeVar);
       $("#inp_PicTure").val(PicTureVar);
@@ -133,6 +140,7 @@ const onClickUpdateBusStop = async () => {
       busStop_id: busStopIdVar,
       busStop_name: nameBusStop,
       busStop_subname: subnameBusStop,
+      busStop_status: statusnameBusStop,
       busStop_latitude: latitudeVar,
       busStop_longitude: longitudeVar,
       busStop_picture: PicTureVar,

@@ -39,8 +39,8 @@ const initDataPage = async () => {
                   <td class="px-6 py-4">${item?.shuttleTHname}</td>
                   <td class="px-6 py-4">${item?.shuttleBus_color}</td>
                   <td class="px-6 py-4">${item?.shuttleBus_time}</td>
-                  <td class="px-6 py-4">${item?.shuttleBus_price}</td>
-                  <td class="px-6 py-4"><img src="${item?.shuttleBus_picture}" height="50%" width="50%" alt=""></td>
+                  <td class="px-6 py-4 ">${item?.shuttleBus_price}</td>
+                  <td class="px-6 py-4 flex justify-center"><img src="${item?.shuttleBus_picture}" height="50%" width="50%" alt=""></td>
                   <td class="px-6 ml-2 py-4" style="background-color:${item?.polylineColor};"></td>
                   <td class="px-6 ml-2 py-4" style="background-color:${item?.symbolColor};"></td>
                   

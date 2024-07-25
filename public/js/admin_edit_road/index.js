@@ -197,16 +197,18 @@ const listSelectedRoute = () => {
     if (detailDataVar?.length > 0) {
       detailDataVar.map((item) => {
         contentDiv += `
-          <div class="flex justify-between gx-2 content-center" id="content_detail_var_${item?.Road_id}">
-          <span class="draggable-handle">+</span>
-           <h1>${item?.busStop_name}</h1>
-        <button class="btn-red" id="btn_remove_busStop_id_${item?.Road_id}">ลบ</button>
+          <div class="flex justify-between gx-2 p-1 content-center" id="content_detail_var_${item?.Road_id}">
+            <span class="draggable-handle ">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+</svg>
+</span>
+            <h1>${item?.busStop_name}</h1>
+            <button class="btn-red " id="btn_remove_busStop_id_${item?.Road_id}">ลบ</button>
           </div>
-       
-          `;
+        `;
       });
     }
-
     $("#list_route_this_id").html(contentDiv);
   } catch (error) {
     console.log(error);
@@ -216,22 +218,20 @@ const listSelectedRoute = () => {
 const getAvailibleBusStop = async () => {
   try {
     let contentDiv = "";
-
-    const response = await axios.post("api/v1/list-bus-stop");
-
+    const response = await axios.post("api/v1/list-bus-stop"); 
     listRouteAvailible = response?.data?.data;
 
     const filteredList = listRouteAvailible.filter((item) => {
-  return !detailDataVar.some(detail => detail.busStop_id === item.busStop_id);
-});
+      return !detailDataVar.some(detail => detail.busStop_id === item.busStop_id) && !item.busStop_name.endsWith("*");
+    });
 
     filteredList.map((item) => {
       contentDiv += `
-       <div class="col-span-2 lg:col-span-1">
-        <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
-      </div>
+        <div class="col-span-2 lg:col-span-1">
+          <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
+        </div>
       `;
-    })
+    });
 
     $("#list_availible_route").html(contentDiv);
   } catch (error) {
@@ -239,39 +239,86 @@ const getAvailibleBusStop = async () => {
   }
 };
 
+const getAvailibleBusStop1 = async () => {
+  try {
+    let contentDiv = "";
+    const response = await axios.post("api/v1/list-bus-stop");
+    listRouteAvailible1 = response?.data?.data;
+
+    const filteredList1 = listRouteAvailible1.filter((item) => {
+      return !detailDataVar.some(detail => detail.busStop_id === item.busStop_id) && item.busStop_name.endsWith("*");
+    });
+
+    filteredList1.map((item) => {
+      contentDiv += `
+        <div class="col-span-2 lg:col-span-1">
+          <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
+        </div>
+      `;
+    });
+
+    $("#list_availible_route1").html(contentDiv);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const initButtonROute = () => {
   try {
-    listRouteAvailible.map((item) => {
+    listRouteAvailible.forEach((item) => {
       $(`#bus_stop_${item?.busStop_id}`).on("click", () => {
+        if (!detailDataVar.some(detail => detail.busStop_id === item.busStop_id)) {
+          const bodyToAppend = {
+            busStop_id: item?.busStop_id,
+            busStop_name: item?.busStop_name,
+            busStop_latitude: item?.busStop_latitude,
+            busStop_longitude: item?.busStop_longitude,
+            busStop_picture: item?.busStop_picture,
+            busStop_subname: item?.busStop_subname
+          };
 
-        const bodyToAppend = {
-          busStop_id: item?.busStop_id,
-           busStop_name: item?.busStop_name,
-          busStop_latitude: item?.busStop_latitude,
-          busStop_longitude: item?.busStop_longitude,
-          busStop_picture: item?.busStop_picture,
-         busStop_subname: item?.busStop_subname,
-        };
-
-        $(`#bus_stop_${item?.busStop_id}`).attr("disabled", true);
-
-        detailDataVar.push(bodyToAppend);
-
-        listSelectedRoute()
+          $(`#bus_stop_${item?.busStop_id}`).attr("disabled", true);
+          detailDataVar.push(bodyToAppend);
+          listSelectedRoute();
+        }
       });
     });
 
-    detailDataVar.map((item) => {
-      $(`#btn_remove_busStop_id_${item?.Road_id}`).on("click", () => {
-        detailDataVar = detailDataVar.filter((i) => i?.Road_id != item.Road_id);
+    listRouteAvailible1.forEach((item) => {
+      $(`#bus_stop_${item?.busStop_id}`).on("click", () => {
+        if (!detailDataVar.some(detail => detail.busStop_id === item.busStop_id)) {
+          const bodyToAppend = {
+            busStop_id: item?.busStop_id,
+            busStop_name: item?.busStop_name,
+            busStop_latitude: item?.busStop_latitude,
+            busStop_longitude: item?.busStop_longitude,
+            busStop_picture: item?.busStop_picture,
+            busStop_subname: item?.busStop_subname
+          };
 
+          $(`#bus_stop_${item?.busStop_id}`).attr("disabled", true);
+          detailDataVar.push(bodyToAppend);
+          listSelectedRoute();
+        }
+      });
+    });
+
+    detailDataVar.forEach((item) => {
+      $(`#btn_remove_busStop_id_${item?.Road_id}`).on("click", () => {
+        detailDataVar = detailDataVar.filter((i) => i?.Road_id !== item.Road_id);
         $(`#content_detail_var_${item?.Road_id}`).remove();
+        $(`#bus_stop_${item?.busStop_id}`).attr("disabled", false);
       });
     });
   } catch (error) {
     console.log(error);
   }
 };
+
+// Initialize the button routes after loading the available bus stops
+getAvailibleBusStop().then(initButtonROute);
+getAvailibleBusStop1().then(initButtonROute);
+
 
 const initializeSortable = () => {
   let containers = $(".draggable-zone");
@@ -329,13 +376,378 @@ const updateSeqDetailShuttleBus = async (body) => {
   }
 };
 
-$(document).ready(async function () {
-  const searchParams = new URLSearchParams(window.location.search);
+//เริ่ม Shuttle
+let map;
+let allDataShuttleBus = [];
+let listShuttleBus = [];
 
-  shuttleBusIdVar = searchParams.get("id");
-  initDomJS();
-  await getShuttleBus(shuttleBusIdVar);
-  await getAvailibleBusStop();
-  initButtonROute();
-  initializeSortable()
+const fetchShuttlebusData = async (routeId) => {
+  try {
+    const bodyRequest = {
+      route_id: routeId ? routeId : "",
+    };
+
+    const response = await axios.post("api/v1/fetch-shuttlebus", bodyRequest);
+
+    if (response.status !== 200) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.data.data;
+  } catch (error) {
+    console.error(`Error fetching the shuttle bus data for ${routeId}:`, error);
+  }
+};
+
+const updatePolylineStyle = (polyline, isSelected) => {
+  polyline.whiteBorder.setVisible(isSelected);
+  polyline.setOptions({
+    zIndex: isSelected ? 1 : 0,
+  });
+};
+
+const initialize = async (routeId) => {
+  allDataShuttleBus = await fetchShuttlebusData(routeId);
+
+  initDetailBus();
+
+  let mapOptions = {
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    zoom: 9,
+    panControl: false,
+    scaleControl: false,
+    mapTypeControl: false,
+    streetViewControl: true,
+    overviewMapControl: false,
+    zoomControl: true,
+    zoomControlOptions: {
+      style: google.maps.ZoomControlStyle.SMALL,
+      position: google.maps.ControlPosition.RIGHT_TOP,
+    },
+  };
+  map = new google.maps.Map(document.getElementById("map-bus"), mapOptions);
+  let infowindow = new google.maps.InfoWindow();
+
+  let uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+
+  if (!routeId) {
+    let set = new Set(uuIndices);
+    for (let i = 1; i <= 1000; i++) {
+      set.add(i);
+    }
+    uuIndices = Array.from(set);
+    uuIndices.sort((a, b) => a - b);
+  } else {
+    switch (routeId) {
+      case "bus02":
+        uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+        break;
+      case "bus03":
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
+        break;
+      case "bus04":
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
+        break;
+      case "bus09":
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
+        break;
+      case "bus10":
+        uuIndices = [
+          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
+          33, 34, 37, 38, 39, 41, 42, 44, 45,
+        ];
+        break;
+      default:
+        break;
+    }
+  }
+
+  let arr = [];
+
+  const renderMarkersAndPath = (data, iconSet) => {
+    $.each(data, function (i, item) {
+      let iconUrl;
+      let index = i + 1;
+      if (index === 1) {
+        iconUrl = iconSet.startIcon;
+      } else if (uuIndices.includes(index)) {
+        iconUrl = iconSet.makkerIcon;
+      } else if (index === data.length) {
+        iconUrl = iconSet.endIcon;
+      } else {
+        iconUrl = iconSet.middleIcon;
+      }
+
+      let marker = new google.maps.Marker({
+        position: new google.maps.LatLng(
+          item.busStop_latitude,
+          item.busStop_longitude
+        ),
+        map: map,
+        title: item.busStop_name,
+        icon: {
+          url: iconUrl,
+          url: iconUrl,
+          scaledSize: new google.maps.Size(
+            iconUrl.includes("makkerIcon.png")
+              ? 50
+              : iconUrl.includes("startIcon.png")
+              ? 50
+              : iconUrl.includes("busIcon60.png")
+              ? 60
+              : 0,
+            iconUrl.includes("makkerIcon.png")
+              ? 50
+              : iconUrl.includes("startIcon.png")
+              ? 50
+              : iconUrl.includes("busIcon60.png")
+              ? 60
+              : 0
+          ),
+          // scaledSize: new google.maps.Size(
+            
+          //   item?.busStop_name.endsWith("*") ? 0 : 50,
+          //   item?.busStop_name.endsWith("*") ? 0 : 50
+          // ),
+          // origin: new google.maps.Point(0, 0), // จุดเริ่มต้นของไอคอนที่มีขนาด 50x50 pixels
+          // anchor: new google.maps.Point(40, 40), // จุดที่ใช้เชื่อมต่อไอคอนกับตำแหน่งของ Marker
+        },
+      });
+
+      google.maps.event.addListener(
+        marker,
+        "click",
+        (function (marker, i) {
+          return function () {
+            let contentString =
+              "<div><p>" +
+              item.busStop_name +
+              '</p><img src="' +
+              item.busStop_picture +
+              '" width="300px"></div>';
+            infowindow.setContent(contentString);
+            infowindow.open(map, marker);
+          };
+        })(marker, i)
+      );
+
+      arr.push(marker.getPosition());
+    });
+
+    let whiteBorder = new google.maps.Polyline({
+      path: arr,
+      strokeColor: "white",
+      strokeOpacity: 1.0,
+      strokeWeight: 12,
+      map: map,
+      zIndex: 0,
+      visible: false,
+    });
+
+    let poly = new google.maps.Polyline({
+      path: arr,
+      strokeColor: iconSet.polylineColor,
+      strokeOpacity: 1.0,
+      strokeWeight: 8,
+      map: map,
+      zIndex: 0, // Default zIndex
+    });
+
+    poly.originalColor = iconSet.polylineColor;
+    poly.whiteBorder = whiteBorder; // Link the white border to the polyline
+
+    google.maps.event.addListener(poly, "click", function () {
+      // Reset all polylines zIndex and white border visibility
+      allPolylines.forEach((p) => updatePolylineStyle(p, false));
+      // Update clicked polyline zIndex and style
+      updatePolylineStyle(poly, true);
+    });
+
+    let lineSymbol = {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 3,
+      fillColor: iconSet.symbolColor,
+      fillOpacity: 1,
+      strokeColor: iconSet.symbolColor,
+      strokeWeight: 1,
+    };
+
+    let lineSymbolSequence = {
+      icon: lineSymbol,
+      offset: "0%",
+      repeat: "0.7%",
+    };
+
+    poly.setOptions({
+      icons: [lineSymbolSequence],
+    });
+
+    allPolylines.push(poly); // Add to allPolylines array
+
+    return poly;
+  };
+
+  let allPolylines = []; // Store all polylines for resetting zIndex
+
+   if (allDataShuttleBus.length > 0) {
+    allDataShuttleBus.map((item) => {
+      let itemDetail = renderMarkersAndPath(item?.detailData, {
+        startIcon: "image/startIcon.png",
+        makkerIcon: "image/makkerIcon.png",
+        endIcon: item?.shuttleBus_picture
+          ? "image/busIcon60.png"
+          : "image/busIcon60.png",
+        middleIcon: "image/p.png",
+        polylineColor: item?.polylineColor ? item?.polylineColor : "#ffff00",
+        symbolColor: item?.symbolColor ? item?.symbolColor : "#32cd32",
+      });
+
+      setMapsToCenter(itemDetail);
+    });
+  }
+};
+
+
+function setMapsToCenter(obj) {
+  let bounds = new google.maps.LatLngBounds();
+  let points = obj.getPath().getArray();
+  for (let n = 0; n < points.length; n++) {
+    bounds.extend(points[n]);
+  }
+  map.fitBounds(bounds);
+}
+
+const initDetailBus = () => {
+  try {
+    let busContent = "";
+    let shuttleBusSidebar = "";
+
+    $("#detail_bus").html("");
+    $("#list_shuttle_bus_data").html("");
+
+    let uniqueBuses = [];
+
+    if (allDataShuttleBus.length > 0) {
+      allDataShuttleBus.forEach((item) => {
+        if (!uniqueBuses.includes(item?.shuttleBus_id)) {
+          uniqueBuses.push(item.shuttlebus);
+
+          const shuttlebusStops = item?.detailData
+            .map((stop) => stop.busStop_name)
+            .filter((name) => !name.endsWith("*"))
+            .join(", ");
+
+          busContent += `
+        <div class="mb-4">
+          <div class="flex justify-center font-semibold ">
+            <span>${item?.shuttleBus_name}</span>
+          </div>
+          <div class="flex justify-center font-semibold">
+            <img src="${item?.shuttleBus_picture}" alt="รูปรถสาย ${item?.bus02}">
+          </div>
+          <div>
+            <span>
+              จุดจอด : ${shuttlebusStops}
+               
+            </span>
+          </div>
+          <br />
+          <div>
+            <span>รถสี : ${item?.shuttleBus_color}</span>
+            <div>
+              <span>เวลาทำการ : ${item?.shuttleBus_time}</span>
+            </div>
+            <div>
+              <span>ค่าบริการ : ${item?.shuttleBus_price} บาท</span>
+            </div>
+          </div>
+        </div>
+      `;
+        }
+      });
+    }
+
+    $("#detail_bus").html(busContent);
+
+    if (listShuttleBus.length > 0) {
+      listShuttleBus.forEach((item) => {
+        if (!uniqueBuses.includes(item?.shuttleBus_id)) {
+          shuttleBusSidebar += `
+          <span id="item_${item?.shuttleBus_id}"
+  class="flex flex-col items-center active-nav-link text-white nav-item ml-4 mr-4 my-4 hover:bg-primary cursor-pointer">
+ <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M18 11H6V6h12m-1.5 11a1.5 1.5 0 0 1-1.5-1.5a1.5 1.5 0 0 1 1.5-1.5a1.5 1.5 0 0 1 1.5 1.5a1.5 1.5 0 0 1-1.5 1.5m-9 0A1.5 1.5 0 0 1 6 15.5A1.5 1.5 0 0 1 7.5 14A1.5 1.5 0 0 1 9 15.5A1.5 1.5 0 0 1 7.5 17M4 16c0 .88.39 1.67 1 2.22V20a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4s-8 .5-8 4z"/></svg>
+  <div class="m-1 text-white text-1xl font-semibold content-center flex flex-col items-center">
+    <span>${item?.shuttleTHname}</span>
+  </div>
+</span>
+          `;
+        }
+      });
+    }
+
+    $("#list_shuttle_bus_data").html(shuttleBusSidebar);
+
+    if (listShuttleBus.length > 0) {
+      listShuttleBus.forEach((item) => {
+        if (!uniqueBuses.includes(item?.shuttleBus_id)) {
+          $(`#item_${item?.shuttleBus_id}`).on("click", async function () {
+            await initialize(item?.shuttleBus_id);
+          });
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
+
+$(document).ready(async function () {
+  try {
+    const searchParams = new URLSearchParams(window.location.search);
+    const routeId = searchParams.get('routeId');
+    const id = searchParams.get('id');
+    listShuttleBus = await fetchShuttlebusData();
+
+     if (id) {
+       console.log(`ID: ${id}`);
+       
+        listShuttleBus = await fetchShuttlebusData(); // ดึงข้อมูล
+      
+      await initialize(id);
+
+    }
+
+    if (routeId) {
+      console.log(`routeId: ${routeId}`);
+    } else {
+      console.log('routeId parameter is missing');
+    }
+
+     listShuttleBus = await fetchShuttlebusData(); // ดึงข้อมูล
+
+    shuttleBusIdVar = searchParams.get("id");
+    initDomJS();
+    await getShuttleBus(shuttleBusIdVar);
+    await getAvailibleBusStop();
+    await getAvailibleBusStop1();
+    initButtonROute();
+    initializeSortable();
+    
+    
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
 });
+

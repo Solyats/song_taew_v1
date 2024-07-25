@@ -1,5 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+
+    theme: {
+    extend: {
+      // Custom scrollbar styles
+      scrollbar: {
+        DEFAULT: {
+          track: 'bg-gray-100',
+          thumb: 'bg-gray-900',
+          hover: 'bg-gray-700',
+        },
+      },
+    },
+  },
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
+
+
+
   enabled: process.env.IS_PRODUCTION === 'dev' ? false: true,
   content: ["./views/**/*.{html,ejs}"],
   theme: {

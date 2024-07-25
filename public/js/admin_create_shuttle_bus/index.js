@@ -7,6 +7,7 @@ let shuttlesusPrice = "";
 let shuttlebusPicture = "";
 let polylineColorVar = "";
 let symbolColorVar = "";
+let shuttlesusStatus = "";
 let shuttlebusIcon = "";
 
 const initDomJS = () => {
@@ -52,6 +53,10 @@ const initDomJS = () => {
 
     $("#inp_busstop_subname").on("change", function () {
       shuttlesusSubname = $(this).val();
+    });
+
+    $("#inp_busstop_status").on("change", function () {
+      shuttlesusStatus = $(this).val();
     });
 
     $("#inp_busstop_icon").on("change", function () {

@@ -1,29 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แสดงรูปภาพที่เลือก</title>
-    <script>
-        function showImage(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('preview').setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
+    <title>Hover Image Button</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .tooltip {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 10;
         }
-    </script>
+    </style>
 </head>
 
-<body>
-    <h2>เลือกรูปภาพ</h2>
-    <input type="file" id="fileInput" name="fileInput" accept=".png, .jpg, .jpeg" onchange="showImage(this)">
-    <br><br>
-    <img id="preview" src="#" alt="รูปภาพที่เลือก" style="max-width: 300px; max-height: 300px;">
+<body class="flex justify-center items-center min-h-screen bg-gray-100">
+
+    <div class="relative">
+        <button id="hover-button" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 focus:outline-none">
+            ชี้เมาส์ที่นี่
+        </button>
+        <div id="tooltip" class="tooltip">
+            <img src="https://via.placeholder.com/150" alt="Sample Image" class="w-40 h-auto">
+        </div>
+    </div>
+
+    <script>
+        const button = document.getElementById('hover-button');
+        const tooltip = document.getElementById('tooltip');
+
+        button.addEventListener('mouseover', () => {
+            tooltip.style.display = 'block';
+        });
+
+        button.addEventListener('mousemove', (e) => {
+            const rect = button.getBoundingClientRect();
+            tooltip.style.left = `${e.clientX - rect.left}px`;
+            tooltip.style.top = `${e.clientY - rect.top + 20}px`;
+        });
+
+        button.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
+    </script>
+
 </body>
 
 </html>

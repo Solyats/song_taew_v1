@@ -8,13 +8,20 @@ const busStopValidator = [
     .withMessage("busStop_name must be a string")
     .notEmpty()
     .withMessage("busStop_name cannot be empty"),
-    body("busStop_subname")
+  body("busStop_subname")
     .exists()
     .withMessage("busStop_subname is required")
     .isString()
     .withMessage("busStop_subname must be a string")
     .notEmpty()
     .withMessage("busStop_subname cannot be empty"),
+  body("busStop_status")
+    .exists()
+    .withMessage("busStop_status is required")
+    .isString()
+    .withMessage("busStop_status must be a string")
+    .notEmpty()
+    .withMessage("busStop_status cannot be empty"),
   body("busStop_latitude")
     .exists()
     .withMessage("busStop_latitude is required")

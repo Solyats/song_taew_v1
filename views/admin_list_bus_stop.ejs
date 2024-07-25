@@ -7,7 +7,17 @@
   <title>จุดจอด</title>
   <%- include("./partials/commonJS.ejs") %> <%- include("./partials/commonStyle.ejs") %>
       <script src="js/admin_list_bus_stop/index.js"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=th"></script>
+      
 </head>
+<style>
+  #map-bus {
+    height: 500px;
+    /* กำหนดความสูงของแผนที่ */
+    width: 100%;
+    /* กำหนดความกว้างของแผนที่ */
+  }
+</style>
 
 <body>
   <%- include("./partials/navbar.ejs") %>
@@ -15,23 +25,45 @@
     <div class="container mx-auto">
       <div class="grid grid-cols-10 p-1 mt-20 min-h-screen">
         <div class="col-span-10 text-left">
+          
           <div class="flex justify-between ">
-
+            
+            
             <span class="text-3xl pt-6 font-se"> จัดการรถโดยสาร </span>
+                <!-- You can open the modal using ID.showModal() method -->
+                <button class="btn my-2 bg-primary text-white rounded-lg border border-gray-300 border-2 border-gray-300 p-2 " onclick="my_modal_3.showModal()">จุดจอดทั้งหมด</button>
+                <dialog id="my_modal_3" class="modal">
+                  <div class="modal-box ">
+                    <form method="dialog">
+                      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <div class="rounded-lg border border-gray-300 border-2 border-gray-300">
+                      <h3 class="text-lg font-bold w-full px-72 ">จุดจอดทั้งหมด</h3>
+                      <div class="w-full">
+                        <p class="px-4 py-2" id="map-bus"></p>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </dialog>
+
+            
             <div class="mb-6 flex"><a href="/admin_create_bus_stop" class="btn-main">สร้าง</a></div>
             
+            
           </div>
+          <!-- <div id="map-bus"></div> -->
 
           <div class="relative overflow-x-auto shadow-md sm:rounded-lg p-4">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" class="px-6 py-3">รหัสจุดจอด</th>
+                  <th scope="col" class="px-4 py-16">รหัสจุดจอด</th>
                   <th scope="col" class="px-6 py-3">ชื่อจุดจอด</th>
                   <th scope="col" class="px-6 py-3">ละติจูด</th>
                   <th scope="col" class="px-6 py-3">ลองจิจูด</th>
-                  <th scope="col" class="px-6 py-3">รูปจุดจอด</th>
-                  
+                  <th scope="col" class="px-6 py-3 w-48 h-32">รูปจุดจอด</th>
+                  <th scope="col" class="px-6 py-3 w-full">สภานะ</th>
                   <th scope="col" class="px-6 py-3">เครื่องมือ</th>
                   
                 </tr>
@@ -62,6 +94,7 @@
                   </td>
                 </tr> -->
               </tbody>
+              
             </table>
           </div>
         </div>

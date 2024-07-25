@@ -237,26 +237,6 @@ const initialize = async (routeId) => {
   }
 };
 
-//   if (allDataShuttleBus.length > 0) {
-//     console.log("allDataShuttleBus", allDataShuttleBus);
-//     allDataShuttleBus.map((item) => {
-//       let itemDetail = renderMarkersAndPath(item?.detailData, {
-//         startIcon: allDataShuttleBus[0]?.icon_shuttle_bus
-//           ? allDataShuttleBus[0]?.icon_shuttle_bus
-//           : "image/busIcon60.png",
-//         makkerIcon: "image/makkerIcon.png",
-//         endIcon: allDataShuttleBus[0]?.shuttleBus_picture
-//           ? allDataShuttleBus[0]?.shuttleBus_picture
-//           : "image/busIcon60.png",
-//         middleIcon: "image/p.png",
-//         polylineColor: item?.polylineColor ? item?.polylineColor : "#ffff00",
-//         symbolColor: item?.symbolColor ? item?.symbolColor : "#32cd32",
-//       });
-
-//       setMapsToCenter(itemDetail);
-//     });
-//   }
-// };
 
 function setMapsToCenter(obj) {
   let bounds = new google.maps.LatLngBounds();

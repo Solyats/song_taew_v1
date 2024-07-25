@@ -69,6 +69,7 @@ const createBusStopController = async (req, res) => {
     const busStopData = {
       busStop_id: uuid,
       busStop_subname: data?.busStop_subname,
+      busStop_status: data?.busStop_status,
       busStop_name: data?.busStop_name,
       busStop_latitude: data?.busStop_latitude,
       busStop_longitude: data?.busStop_longitude,
@@ -172,6 +173,7 @@ const editBusStopController = async (req, res) => {
     const busStopData = {
       busStop_name: data?.busStop_name,
       busStop_subname: data?.busStop_subname,
+      busStop_status: data?.busStop_status,
       busStop_latitude: data?.busStop_latitude,
       busStop_longitude: data?.busStop_longitude,
       busStop_picture: data?.busStop_picture,

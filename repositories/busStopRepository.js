@@ -8,6 +8,7 @@ const listBusstopRepository = async () => {
     'tb1.busStop_id',
     'tb1.busStop_name',
     'tb1.busStop_subname',
+    'tb1.busStop_status',
     'tb1.busStop_latitude',
     'tb1.busStop_longitude',
     'tb1.busStop_picture'
@@ -31,6 +32,7 @@ const getBusstopRepository = async (busStop_id) => {
     'tb1.busStop_id',
     'tb1.busStop_name',
     'tb1.busStop_subname',
+    'tb1.busStop_status',
     'tb1.busStop_latitude',
     'tb1.busStop_longitude',
     'tb1.busStop_picture'
@@ -102,6 +104,7 @@ try {
     'tb1.busStop_id',
     'tb1.busStop_name',
     'tb1.busStop_subname',
+    'tb1.busStop_status',
     'tb1.busStop_latitude',
     'tb1.busStop_longitude',
     'tb1.busStop_picture'

@@ -159,6 +159,7 @@
     const handleSubmit = async () => {
       const { value: formValues } = await Swal.fire({
         title: "สมัครสมาชิก",
+        confirmButtonText: "Yes, close my account!",
         html:
           '<input id="username" class="swal2-input" placeholder="ชื่อผู้ใช้">' +
           '<input id="password" type="password" class="swal2-input" placeholder="รหัสผ่าน">',
