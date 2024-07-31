@@ -19,7 +19,7 @@ const showLoading = () => {
       text: message,
       icon: "error",
       buttonsStyling: false,
-      confirmButtonText: "Okay, i got it",
+      confirmButtonText: "ตกลง",
       customClass: { confirmButton: "btn-main" },
     });
   };
@@ -29,7 +29,7 @@ const showLoading = () => {
       text: message,
       icon: "success",
       buttonsStyling: false,
-      confirmButtonText: "Okay, i got it",
+      confirmButtonText: "ตกลง",
       customClass: { confirmButton: "btn-main" },
     });
 };

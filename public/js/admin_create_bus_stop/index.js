@@ -5,7 +5,7 @@ let latitudeVar = 0;
 let longitudeVar = 0;
 let PicTureVar = "";
 
-const initDomJS = async () => {
+const initDomsJS = async () => {
   try {
     // เมื่อมีการเปลี่ยนแปลงในช่องป้อนชื่อป้ายรถเมล์
     $("#inp_busstop_name").on("change", function () {
@@ -162,6 +162,6 @@ function validateFloatInput(input) {
 
 window.onload = async function () {
   console.log("Initializing DOM...");
-  await initDomJS();
+  await initDomsJS();
 };
 

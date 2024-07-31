@@ -35,6 +35,7 @@ const AuthRegisterController = async (req, res) => {
       id: userID,
       username: data.username,
       password: hashedPassword, 
+      gmail: data.gmail,
       role: "ADMIN",
       status: true,
       created_at: currentEpochTime,

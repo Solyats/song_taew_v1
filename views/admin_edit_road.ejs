@@ -8,12 +8,20 @@
     include("./partials/commonStyle.ejs") %>
     <script src="js/sortable.min.js"></script>
     <script src="js/admin_edit_road/index.js"></script>
+    
 
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&language=th"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
   </head>
   <style>
     #map-bus {
+      height: 500px;
+      /* กำหนดความสูงของแผนที่ */
+      width: 100%;
+      /* กำหนดความกว้างของแผนที่ */
+    }
+
+     #map {
       height: 500px;
       /* กำหนดความสูงของแผนที่ */
       width: 100%;
@@ -133,64 +141,92 @@
           </div>
         </div>
 
-        <div class="">
-          <div class="col-span-1 w-10p">
-            <h1 class="mt-16">ตำแหน่งที่เลือก</h1>
-            <div class="overflow-y-auto h-56 mt-10">
-              <div
-                class="overflow-y-auto mt-10 h-72 max-h-screen"
-                id="list_route_this_id"
-              ></div>
-            </div>
-
-            <h1 class="mt-6">เพิ่มทางผ่าน</h1>
-            <div class=" h-56 mt-10">
-              <div class="w-full">
-                <div>
-                  ชื่อจุดผ่าน
-                  <input type="text" id="inp_busstop_name">
-                </div>
-                <div>
-                  ละติจูด
-                  <input type="text" class="busStop_latitude">
-                </div>
-                <div>
-                  ลองจิจูด
-                  <input type="text" class="busStop_longitude">
-                </div>
-              </div>
-              
-              
-              <button class=" btn-main" id="btn_create_busstop">เพิ่ม</button>
-              <div class=" mt-10 h-full max-h-screen" id="list_route_this_id"></div>
+        <div>
+          <div class="col-span-2 lg:col-span-1 ">
+            <h1 class="mt-10">ตำแหน่งที่เลือก</h1>
+            <div class=" shadow-md mt-24 p-5 col-span-2 lg:col-span-1">
+              <div class="d-felx overflow-y-auto h-48 draggable-zone" id="list_route_this_id"></div>
             </div>
           </div>
+          <h1 class="mt-6">เพิ่มทางผ่าน</h1>
+          <div class="h-56 mt-10">
+            <div class="w-full">
+              <div>
+                รหัสจุดผ่าน
+                <input type="text" id="inp_busstop_subname" />
+              </div>
+
+              
+
+              <div>
+                สถานะจุดผ่าน
+                <input type="text" id="inp_busstop_status" />
+              </div>
+              <div>
+              
+                ชื่อจุดผ่าน
+                <input type="text" id="inp_busstop_name" />
+              </div>
+              <div>
+                ละติจูด
+                <input type="text" id="busStop_latitude" class="busStop_latitude" />
+              </div>
+              <div>
+                ลองจิจูด
+                <input type="text" id="busStop_longitude" class="busStop_longitude" />
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn my-2 bg-primary text-white rounded-lg border border-gray-300 border-2 border-gray-300 p-2 " onclick="my_modal_3.showModal()">เลือกตำแหน่ง</button>
+                <dialog id="my_modal_3" class="modal">
+                  <div class="modal-box ">
+                    <form method="dialog">
+                      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <div class="rounded-lg border border-gray-300 border-2 border-gray-300">
+                      <h3 class="text-lg font-bold w-full px-72 p-4 ">เลือกตำแหน่ง</h3>
+                      <div class="w-full">
+                        <p class="px-4 py-2" id="map"></p>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </dialog>
+
+          <div class="btn-main" id="btn_create_busstops">บันทึก</div>
+          
+          
+
+
+
+
+
+          <div class="mt-10 h-full max-h-screen" id="list_route_this_id"></div>
         </div>
       </div>
       <div class="grid grid-cols-4 gap-4">
-        
-          <div class="col-span-2">
-            <h1 class="">ตำแหน่งจุดจอด</h1>
+        <div class="col-span-2">
+          <h1 class="">ตำแหน่งจุดจอด</h1>
+          <div class="shadow-md mt-2 p-5">
+            <div
+              class="grid grid-cols-4 gap-2 overflow-y-auto h-48"
+              id="list_availible_route"
+            ></div>
+          </div>
+        </div>
+
+        <div class="col-span-2">
+          <div class="col-span-2 lg:col-span-1 text-black py-2 rounded">
+            <h1 class="">ตำแหน่งจุดผ่าน</h1>
             <div class="shadow-md mt-2 p-5">
               <div
                 class="grid grid-cols-4 gap-2 overflow-y-auto h-48"
-                id="list_availible_route"
+                id="list_availible_route1"
               ></div>
             </div>
           </div>
-
-          <div class="col-span-2">
-            <div class="col-span-2 lg:col-span-1 text-black py-2 rounded">
-              <h1 class="">ตำแหน่งจุดผ่าน</h1>
-              <div class="shadow-md mt-2 p-5">
-                <div
-                  class="grid grid-cols-4 gap-2 overflow-y-auto h-48"
-                  id="list_availible_route1"
-                ></div>
-              </div>
-            </div>
-          </div>
-        
+        </div>
       </div>
 
       <!-- <div class="card bg-white shadow-md rounded p-4">
