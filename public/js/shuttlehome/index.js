@@ -299,6 +299,8 @@ const initDetailBus = () => {
 
     $("#detail_bus").html(busContent);
 
+    
+
     if (listShuttleBus.length > 0) {
       listShuttleBus.forEach((item) => {
         if (!uniqueBuses.includes(item?.shuttleBus_id)) {

@@ -11,35 +11,14 @@ let symbolColorVar = "";
 let shuttlebusIcon = "";
 let detailDataVar = [];
 let listRouteAvailible = [];
+let nameBusStop = "";
+let latitudeVar = 0;
+let longitudeVar = 0;
 
 const initDomJS = () => {
   try {
-    $("#inp_shuttle_name").on("change", function () {
-      shortNameVar = $(this).val();
-    });
-
-    $("#inp_shuttle_subname").on("change", function () {
-      subBsname = $(this).val();
-    });
-
-    $("#inp_busstop_thName").on("change", function () {
-      shortThname = $(this).val();
-    });
-
-    $("#inp_busstop_color").on("change", function () {
-      suttlebusColor = $(this).val();
-    });
-
-    $("#inp_busstop_time").on("change", function () {
-      shuttlesusTime = $(this).val();
-    });
-
-    $("#inp_busstop_price").on("change", function () {
-      shuttlesusPrice = $(this).val();
-    });
-
-    $("#inp_busstop_picture").on("change", function () {
-      shuttlebusPicture = $(this).val();
+      $("#inp_busstop_name").on("change", function () {
+      nameBusStop = $(this).val();
     });
 
     $(document).ready(function () {
@@ -142,6 +121,7 @@ const getShuttleBus = async (id) => {
       detailDataVar = data?.detailData;
 
       $("#inp_shuttle_name").val(shortNameVar);
+
 
       $("#inp_busstop_subName").val(subBsname);
 
@@ -428,173 +408,144 @@ const initialize = async (routeId) => {
   map = new google.maps.Map(document.getElementById("map-bus"), mapOptions);
   let infowindow = new google.maps.InfoWindow();
 
-  let uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
+  
 
-  if (!routeId) {
-    let set = new Set(uuIndices);
-    for (let i = 1; i <= 1000; i++) {
-      set.add(i);
-    }
-    uuIndices = Array.from(set);
-    uuIndices.sort((a, b) => a - b);
-  } else {
-    switch (routeId) {
-      case "bus02":
-        uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
-        break;
-      case "bus03":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus04":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus09":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus10":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      default:
-        break;
-    }
-  }
+// ประกาศ uuIndices เป็นอาร์เรย์ว่าง
+let uuIndices = [];
+
+// ลูปเพิ่มหมายเลขจาก 1 ถึง 1000 ลงใน uuIndices
+for (let i = 1; i <= 1000; i++) {
+  uuIndices.push(i);
+}
+
+
+
+
+
+
+    
 
   let arr = [];
 
   const renderMarkersAndPath = (data, iconSet) => {
-    $.each(data, function (i, item) {
-      let iconUrl;
-      let index = i + 1;
-      if (index === 1) {
-        iconUrl = iconSet.startIcon;
-      } else if (uuIndices.includes(index)) {
-        iconUrl = iconSet.makkerIcon;
-      } else if (index === data.length) {
-        iconUrl = iconSet.endIcon;
-      } else {
-        iconUrl = iconSet.middleIcon;
-      }
+  let arr = [];
+  $.each(data, function (i, item) {
+    let iconUrl;
+    let index = i + 1;
 
-      let marker = new google.maps.Marker({
-        position: new google.maps.LatLng(
-          item.busStop_latitude,
-          item.busStop_longitude
+    if (index === 1) {
+      iconUrl = iconSet.startIcon;
+    } else if (index === data.length) {
+      iconUrl = iconSet.endIcon; // Use endIcon for the last marker
+    } else if (item.busStop_name.endsWith("*")) {
+      iconUrl = iconSet.middleIcon; // Use endIcon for markers with names ending with "*"
+    } else if (uuIndices.includes(index)) {
+      iconUrl = iconSet.makkerIcon;
+    } else {
+      iconUrl = iconSet.middleIcon;
+    }
+
+    let marker = new google.maps.Marker({
+      position: new google.maps.LatLng(
+        item.busStop_latitude,
+        item.busStop_longitude
+      ),
+      map: map,
+      title: item.busStop_name,
+      icon: {
+        url: iconUrl,
+        scaledSize: new google.maps.Size(
+          iconUrl.includes("makkerIcon.png")
+            ? 50
+            : iconUrl.includes("startIcon.png")
+            ? 50
+            : iconUrl.includes("busIcon60.png")
+            ? 60
+            : 0,
+          iconUrl.includes("makkerIcon.png")
+            ? 50
+            : iconUrl.includes("startIcon.png")
+            ? 50
+            : iconUrl.includes("busIcon60.png")
+            ? 60
+            : 0
         ),
-        map: map,
-        title: item.busStop_name,
-        icon: {
-          url: iconUrl,
-          url: iconUrl,
-          scaledSize: new google.maps.Size(
-            iconUrl.includes("makkerIcon.png")
-              ? 50
-              : iconUrl.includes("startIcon.png")
-              ? 50
-              : iconUrl.includes("busIcon60.png")
-              ? 60
-              : 0,
-            iconUrl.includes("makkerIcon.png")
-              ? 50
-              : iconUrl.includes("startIcon.png")
-              ? 50
-              : iconUrl.includes("busIcon60.png")
-              ? 60
-              : 0
-          ),
-          // scaledSize: new google.maps.Size(
-            
-          //   item?.busStop_name.endsWith("*") ? 0 : 50,
-          //   item?.busStop_name.endsWith("*") ? 0 : 50
-          // ),
-          // origin: new google.maps.Point(0, 0), // จุดเริ่มต้นของไอคอนที่มีขนาด 50x50 pixels
-          // anchor: new google.maps.Point(40, 40), // จุดที่ใช้เชื่อมต่อไอคอนกับตำแหน่งของ Marker
-        },
-      });
-
-      google.maps.event.addListener(
-        marker,
-        "click",
-        (function (marker, i) {
-          return function () {
-            let contentString =
-              "<div><p>" +
-              item.busStop_name +
-              '</p><img src="' +
-              item.busStop_picture +
-              '" width="300px"></div>';
-            infowindow.setContent(contentString);
-            infowindow.open(map, marker);
-          };
-        })(marker, i)
-      );
-
-      arr.push(marker.getPosition());
+      },
     });
 
-    let whiteBorder = new google.maps.Polyline({
-      path: arr,
-      strokeColor: "white",
-      strokeOpacity: 1.0,
-      strokeWeight: 12,
-      map: map,
-      zIndex: 0,
-      visible: false,
-    });
+    google.maps.event.addListener(
+      marker,
+      "click",
+      (function (marker, i) {
+        return function () {
+          let contentString =
+            "<div><p>" +
+            item.busStop_name +
+            '</p><img src="' +
+            item.busStop_picture +
+            '" width="300px"></div>';
+          infowindow.setContent(contentString);
+          infowindow.open(map, marker);
+        };
+      })(marker, i)
+    );
 
-    let poly = new google.maps.Polyline({
-      path: arr,
-      strokeColor: iconSet.polylineColor,
-      strokeOpacity: 1.0,
-      strokeWeight: 8,
-      map: map,
-      zIndex: 0, // Default zIndex
-    });
+    arr.push(marker.getPosition());
+  });
 
-    poly.originalColor = iconSet.polylineColor;
-    poly.whiteBorder = whiteBorder; // Link the white border to the polyline
+  let whiteBorder = new google.maps.Polyline({
+    path: arr,
+    strokeColor: "white",
+    strokeOpacity: 1.0,
+    strokeWeight: 12,
+    map: map,
+    zIndex: 0,
+    visible: false,
+  });
 
-    google.maps.event.addListener(poly, "click", function () {
-      // Reset all polylines zIndex and white border visibility
-      allPolylines.forEach((p) => updatePolylineStyle(p, false));
-      // Update clicked polyline zIndex and style
-      updatePolylineStyle(poly, true);
-    });
+  let poly = new google.maps.Polyline({
+    path: arr,
+    strokeColor: iconSet.polylineColor,
+    strokeOpacity: 1.0,
+    strokeWeight: 8,
+    map: map,
+    zIndex: 0, // Default zIndex
+  });
 
-    let lineSymbol = {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 3,
-      fillColor: iconSet.symbolColor,
-      fillOpacity: 1,
-      strokeColor: iconSet.symbolColor,
-      strokeWeight: 1,
-    };
+  poly.originalColor = iconSet.polylineColor;
+  poly.whiteBorder = whiteBorder; // Link the white border to the polyline
 
-    let lineSymbolSequence = {
-      icon: lineSymbol,
-      offset: "0%",
-      repeat: "0.7%",
-    };
+  google.maps.event.addListener(poly, "click", function () {
+    // Reset all polylines zIndex and white border visibility
+    allPolylines.forEach((p) => updatePolylineStyle(p, false));
+    // Update clicked polyline zIndex and style
+    updatePolylineStyle(poly, true);
+  });
 
-    poly.setOptions({
-      icons: [lineSymbolSequence],
-    });
-
-    allPolylines.push(poly); // Add to allPolylines array
-
-    return poly;
+  let lineSymbol = {
+    path: google.maps.SymbolPath.CIRCLE,
+    scale: 3,
+    fillColor: iconSet.symbolColor,
+    fillOpacity: 1,
+    strokeColor: iconSet.symbolColor,
+    strokeWeight: 2,
   };
+
+  let lineSymbolSequence = {
+    icon: lineSymbol,
+    offset: "0%",
+    repeat: "0.7%",
+  };
+
+  poly.setOptions({
+    icons: [lineSymbolSequence],
+  });
+
+  allPolylines.push(poly); // Add to allPolylines array
+
+  return poly;
+};
+
 
   let allPolylines = []; // Store all polylines for resetting zIndex
 

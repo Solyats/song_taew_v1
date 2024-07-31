@@ -50,7 +50,9 @@ const initDataPage = async () => {
             `;
       });
 
-      $("#list_data_bus").html(divContent);
+      $("#list_data_bus").html(divContent); 
+
+      
 
       listDatas.map((item) => {
         $(`#btn_delete_${item?.shuttleBus_id}`).click(function () {
@@ -121,6 +123,8 @@ const updateSeqShuttleBus = async (body) => {
     window.customswal.hideLoading();
   }
 };
+
+                                                                                                                                                                                    
 
 window.onload = async function () {
   await initDataPage();

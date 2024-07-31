@@ -12,6 +12,12 @@ router.get("/shuttlehome", (req, res) => {
   res.render("shuttlehome");
 });
 
+
+
+router.get("/mainpage", (req, res) => {
+  res.render("mainpage");
+});
+
 router.get("/admin_list_shuttle_bus", FrontEndAdminToken, (req, res) => {
   res.render("admin_list_shuttle_bus");
 });

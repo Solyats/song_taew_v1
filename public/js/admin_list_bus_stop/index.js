@@ -16,6 +16,7 @@ const fetchShuttlebusData = async (routeId) => {
     if (response.status !== 200) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+    
 
     return response.data.data;
   } catch (error) {
@@ -396,7 +397,7 @@ const initDataPage = async () => {
         <img src="${item?.busStop_picture}" alt="Bus Stop Picture" class="w-40 h-28q object-cover">
        
     </td>
-                  <td class="px-6 py-4">${item?.busStop_status}</td>
+                  
 
                 
                  
