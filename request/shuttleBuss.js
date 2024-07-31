@@ -28,9 +28,7 @@ const shuttlebusValidator = [
   body('symbolColor')
     .optional()
     .isString().withMessage('symbolColor must be a string'),
-  body('icon_shuttle_bus')
-    .optional()
-    .isString().withMessage('icon_shuttle_bus must be a string'),
+  
   body('detailData')
     .optional()
     .isArray().withMessage('icon_shuttle_bus must be a array')

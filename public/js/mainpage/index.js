@@ -116,6 +116,8 @@ const initialize = async (routeId) => {
       iconUrl = iconSet.endIcon; // Use endIcon for the last marker
     } else if (item.busStop_name.endsWith("*")) {
       iconUrl = iconSet.middleIcon; // Use endIcon for markers with names ending with "*"
+    } else if (item.busStop_name.endsWith("")) {
+      iconUrl = iconSet.middleIcon; // Use endIcon for markers with names ending with "*"
     } else if (uuIndices.includes(index)) {
       iconUrl = iconSet.makkerIcon;
     } else {

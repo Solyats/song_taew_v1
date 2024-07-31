@@ -20,7 +20,7 @@ const initDataPage = async () => {
       listDatas.map((item) => {
         divContent += `
             <tr
-                  class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                  class="odd:bg-white space-center py-3odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
                 >
                   <td
                     
@@ -41,11 +41,11 @@ const initDataPage = async () => {
                   <td class="px-6 py-4">${item?.shuttleBus_time}</td>
                   <td class="px-6 py-4 ">${item?.shuttleBus_price}</td>
                   <td class="px-6 py-4 flex justify-center"><img src="${item?.shuttleBus_picture}" height="50%" width="50%" alt=""></td>
-                  <td class="px-6 ml-2 py-4" style="background-color:${item?.polylineColor};"></td>
-                  <td class="px-6 ml-2 py-4" style="background-color:${item?.symbolColor};"></td>
+                  <td class="px-8 ml-2 py-4 justify-center" style="background-color:${item?.polylineColor};"></td>
+                  <td class="px-8 ml-2 justify-center" style="background-color:${item?.symbolColor};"></td>
                   
                   
-                  <td class="px-6 py-4 flex border ">
+                  <td class="px-6 py-4 flex space-center ">
                     <a
                       href="/admin_edit_shuttle_bus?id=${item?.shuttleBus_id}"
                       class="font-medium ml-2 bg-red text-blue-600 dark:text-blue-500 hover:underline"

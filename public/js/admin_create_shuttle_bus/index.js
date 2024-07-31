@@ -59,9 +59,7 @@ const initDomJS = () => {
       shuttlesusStatus = $(this).val();
     });
 
-    $("#inp_busstop_icon").on("change", function () {
-      shuttlebusIcon = $(this).val();
-    });
+   
 
 
     

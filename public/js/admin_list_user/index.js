@@ -21,7 +21,7 @@ const initDataPage = async () => {
               ${item?.username}
             </td>
             <td class="px-6 py-4">${item?.role}</td>
-            <td class="px-6 py-4"><img src="${item?.shuttleBus_picture}" height="15%" width="15%" alt=""></td>
+            <td class="px-6 py-4">${item?.gmail}</td>
             <td class="px-6 py-4" style="vertical-align: top;">
               
             </td>

@@ -9,6 +9,7 @@ const getUserByUsernameWithPasswordRepository = async (username) => {
         "password",
         "role",
         "status",
+        "gmail",
         "created_at",
         "updated_at",
         "update_by"
@@ -31,6 +32,7 @@ const getUserListRepository = async () => {
         "username",
         "role",
         "status",
+        "gmail",
         "created_at",
         "updated_at",
         "update_by"
@@ -66,6 +68,7 @@ const checkIsHaveUserRepository = async () => {
         "username",
         "password",
         "role",
+        "gmail",
         "status",
         "created_at",
         "updated_at",

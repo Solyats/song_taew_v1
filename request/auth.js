@@ -16,6 +16,16 @@ const authValidator = [
     .withMessage("password must be a string")
     .notEmpty()
     .withMessage("password cannot be empty"),
+  body("gmail")
+    .exists()
+    .withMessage("gmail is required")
+    .isString()
+    .withMessage("gmail must be a string")
+    .notEmpty()
+    .withMessage("gmail cannot be empty"),
+
+
+
 ];
 
 module.exports = { authValidator };

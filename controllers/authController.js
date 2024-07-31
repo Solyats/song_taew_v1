@@ -34,7 +34,7 @@ const AuthRegisterController = async (req, res) => {
     const bodyJSON = {
       id: userID,
       username: data.username,
-      password: hashedPassword,
+      password: hashedPassword, 
       role: "ADMIN",
       status: true,
       created_at: currentEpochTime,

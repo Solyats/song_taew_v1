@@ -275,7 +275,7 @@ const initDetailBus = () => {
           <div class="flex justify-center font-semibold">
             <img src="${item?.shuttleBus_picture}" alt="รูปรถสาย ${item?.bus02}">
           </div>
-          <div>
+          <div> 
             <span>
               จุดจอด : ${shuttlebusStops}
                
