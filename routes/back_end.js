@@ -24,6 +24,7 @@ const {
   AuthLoginController,
 } = require("../controllers/authController");
 const { authValidator } = require("../request/auth");
+const { authValidatorLogin } = require("../request/auth");
 const {
   authenticateAdminToken,
 } = require("../middleware/middleware");
@@ -93,7 +94,9 @@ router.post(
   AuthRegisterController
 );
 
-router.post(`${API_ENDPOINT}/login`, authValidator, AuthLoginController);
+router.post(`${API_ENDPOINT}/login`,
+  authValidatorLogin,
+  AuthLoginController);
 
 router.post(`${API_ENDPOINT}/upload-single-image`, authenticateAdminToken, uploadMulter.single('image'), uploadSingleImageCloudinaryController);
 

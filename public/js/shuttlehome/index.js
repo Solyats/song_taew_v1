@@ -49,48 +49,12 @@ const initialize = async (routeId) => {
   map = new google.maps.Map(document.getElementById("map-bus"), mapOptions);
   let infowindow = new google.maps.InfoWindow();
 
-  let uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
-
-  if (!routeId) {
-    let set = new Set(uuIndices);
-    for (let i = 1; i <= 1000; i++) {
-      set.add(i);
-    }
-    uuIndices = Array.from(set);
-    uuIndices.sort((a, b) => a - b);
-  } else {
-    switch (routeId) {
-      case "bus02":
-        uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
-        break;
-      case "bus03":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus04":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus09":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus10":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      default:
-        break;
-    }
+  let uuIndices = [];
+  for (let i = 1; i <= 1000; i++) {
+    uuIndices.push(i);
   }
+
+
 
   let arr = [];
 
@@ -100,10 +64,12 @@ const initialize = async (routeId) => {
       let index = i + 1;
       if (index === 1) {
         iconUrl = iconSet.startIcon;
+      } else if (index === data.length) {
+        iconUrl = iconSet.endIcon; // Use endIcon for the last marker
+      } else if (item.busStop_name.endsWith("*")) {
+        iconUrl = iconSet.middleIcon; // Use endIcon for markers with names ending with "*"
       } else if (uuIndices.includes(index)) {
         iconUrl = iconSet.makkerIcon;
-      } else if (index === data.length) {
-        iconUrl = iconSet.endIcon;
       } else {
         iconUrl = iconSet.middleIcon;
       }

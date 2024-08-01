@@ -148,53 +148,48 @@
               <div class="d-felx overflow-y-auto h-48 draggable-zone" id="list_route_this_id"></div>
             </div>
           </div>
-          <h1 class="mt-6">เพิ่มทางผ่าน</h1>
-          <div class="h-56 mt-10">
-            <div class="w-full">
+          <div class=" flex justify-center text-3xl">
+            <h1 class="mt-6">เพิ่มทางผ่าน</h1>
+          </div>
+          
+          <div class="h-56 mt-2">
+            <div class="w-full ml-8">
               <div>
-                รหัสจุดผ่าน
-                <input type="text" id="inp_busstop_subname" />
-              </div>
-
-              
-
-              <div>
-                สถานะจุดผ่าน
-                <input type="text" id="inp_busstop_status" />
-              </div>
-              <div>
-              
                 ชื่อจุดผ่าน
-                <input type="text" id="inp_busstop_name" />
+                <input type="text" id="inp_busstop_name" class =" border border-gray-300 p-2 rounded w-full" />
               </div>
               <div>
                 ละติจูด
-                <input type="text" id="busStop_latitude" class="busStop_latitude" />
+                <input type="text" id="busStop_latitude" class="busStop_latitude border border-gray-300 p-2 rounded w-full" />
               </div>
               <div>
                 ลองจิจูด
-                <input type="text" id="busStop_longitude" class="busStop_longitude" />
+                <input type="text" id="busStop_longitude" class="busStop_longitude border border-gray-300 p-2 rounded w-full" />
               </div>
             </div>
           </div>
-          
-          <button class="btn my-2 bg-primary text-white rounded-lg border border-gray-300 border-2 border-gray-300 p-2 " onclick="my_modal_3.showModal()">เลือกตำแหน่ง</button>
-                <dialog id="my_modal_3" class="modal">
-                  <div class="modal-box ">
-                    <form method="dialog">
-                      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
-                    <div class="rounded-lg border border-gray-300 border-2 border-gray-300">
-                      <h3 class="text-lg font-bold w-full px-72 p-4 ">เลือกตำแหน่ง</h3>
-                      <div class="w-full">
-                        <p class="px-4 py-2" id="map"></p>
-                      </div>
-                    </div>
-                    
+          <div class="flex justify-between">
+            <button class="btn my-2 bg-primary text-white rounded-lg border border-gray-300 border-2 border-gray-300 p-2 "
+              onclick="my_modal_3.showModal()">เลือกตำแหน่ง</button>
+            <dialog id="my_modal_3" class="modal">
+              <div class="modal-box ">
+                <form method="dialog">
+                  <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
+                <div class="rounded-lg border border-gray-300 border-2 border-gray-300">
+                  <h3 class="text-lg font-bold w-full px-72 p-4 ">เลือกตำแหน่ง</h3>
+                  <div class="">
+                    <p class="px-4 py-2" id="map"></p>
                   </div>
-                </dialog>
+                </div>
+            
+              </div>
+            </dialog>
+            
+            <button class="btn-main mx-2" id="btn_create_busstops">บันทึก</button>
 
-          <div class="btn-main" id="btn_create_busstops">บันทึก</div>
+          </div>
+          
           
           
 

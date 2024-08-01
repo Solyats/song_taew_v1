@@ -303,7 +303,9 @@ const getAvailibleBusStop1 = async () => {
 };
 
 const initButtonROute = () => {
+  
   try {
+    
     listRouteAvailible.forEach((item) => {
       $(`#bus_stop_${item?.busStop_id}`).on("click", () => {
         if (
@@ -668,7 +670,8 @@ const initDomsJS = async () => {
 
     // เมื่อมีการคลิกที่ปุ่มสร้างป้ายรถเมล์
     $("#btn_create_busstops").on("click", async function () {
-      await onClickCreateBusstops();
+      await onClickCreateBusstops()
+      location.reload();;
       console.log("เริ่มสร้างป้ายรถเมล์");
     });
   } catch (error) {
@@ -680,11 +683,13 @@ const initDomsJS = async () => {
 
 
 
-const onClickCreateBusstops = async () => {
+let subnameCounter = 1;
+
+const onClickCreateBusstops = async (item) => {
   try {
     window.customswal.showLoading();
 
-    if (  nameBusStop === "") {
+    if (nameBusStop === "") {
       window.customswal.hideLoading(); // ปิด loading เมื่อเกิดข้อผิดพลาด
       return showErrorAlert("กรุณากรอก ชื่อจุดจอด");
     }
@@ -700,13 +705,22 @@ const onClickCreateBusstops = async () => {
     }
 
     const bodyRequest = {
-      busStop_name: nameBusStop,
-      busStop_subname: subnameBusStop,
-      busStop_status: statusnameBusStop,
+      busStop_subname: `bp${subnameCounter}`,
+      busStop_status: "จุดผ่าน",
+      busStop_name: `${nameBusStop}*`,
       busStop_latitude: latitudeVar,
       busStop_longitude: longitudeVar,
-      busStop_picture: PicTureVar,
+      busStop_picture: PicTureVar
     };
+
+   
+
+          $(`#bus_stop_${item?.busStop_id}`).attr("disabled", true);
+          detailDataVar.push(bodyRequest);
+          listSelectedRoute();
+
+    // เพิ่มค่า counter สำหรับ busStop_subname
+    subnameCounter++;
 
     const response = await axios.post(
       "api/v1/create-bus-stop",
@@ -732,6 +746,7 @@ const onClickCreateBusstops = async () => {
     }
   }
 };
+
 
 function isInt(n) {
   return typeof n === "number" && Number.isInteger(n);
@@ -876,11 +891,13 @@ $(document).ready(async function () {
 
     shuttleBusIdVar = searchParams.get("id");
     initDomJS();
-    initDomsJS();
+    
 
     await getShuttleBus(shuttleBusIdVar);
     await getAvailibleBusStop();
     await getAvailibleBusStop1();
+    initDomsJS();
+
     initButtonROute();
     initializeSortable();
   } catch (error) {
