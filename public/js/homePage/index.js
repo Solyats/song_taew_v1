@@ -227,6 +227,291 @@ function setMapsToCenter(obj) {
   map.fitBounds(bounds);
 }
 
-window.onload = async function () {
+// Add this function after the initialize function
+function setupAutocomplete() {
+  const inputStart = document.getElementById('shuttlebus-search-start');
+  const autocompleteListStart = document.getElementById('autocomplete-list-start');
+  const inputEnd = document.getElementById('shuttlebus-search-end');
+  const autocompleteListEnd = document.getElementById('autocomplete-list-end');
+  const searchButton = document.getElementById('shuttlebus-search-button');
+
+  setupAutocompleteForInput(inputStart, autocompleteListStart);
+  setupAutocompleteForInput(inputEnd, autocompleteListEnd);
+
+  searchButton.addEventListener('click', handleSearch);
+
+  document.addEventListener('click', function(e) {
+    if (e.target !== inputStart && e.target !== autocompleteListStart) {
+      autocompleteListStart.style.display = 'none';
+    }
+    if (e.target !== inputEnd && e.target !== autocompleteListEnd) {
+      autocompleteListEnd.style.display = 'none';
+    }
+  });
+}
+
+function setupAutocompleteForInput(input, autocompleteList) {
+  input.addEventListener('input', function() {
+    const inputValue = this.value.toLowerCase();
+    autocompleteList.innerHTML = '';
+
+    if (inputValue.length === 0) {
+      autocompleteList.style.display = 'none';
+      return;
+    }
+
+    const uniqueStops = new Set();
+    const matchingStops = allDataShuttleBus.flatMap(route => 
+      route.detailData
+        .filter(stop => 
+          stop.busStop_name.toLowerCase().includes(inputValue) &&
+          !stop.busStop_name.endsWith('*')
+        )
+        .map(stop => stop.busStop_name)
+    );
+
+    matchingStops.forEach(stopName => uniqueStops.add(stopName));
+
+    if (uniqueStops.size > 0) {
+      autocompleteList.style.display = 'block';
+      uniqueStops.forEach(stopName => {
+        const item = document.createElement('div');
+        item.textContent = stopName;
+        item.addEventListener('click', function() {
+          input.value = this.textContent;
+          autocompleteList.style.display = 'none';
+        });
+        autocompleteList.appendChild(item);
+      });
+    } else {
+      autocompleteList.style.display = 'none';
+    }
+  });
+}
+
+function handleSearch() {
+  const startStop = document.getElementById('shuttlebus-search-start').value;
+  const endStop = document.getElementById('shuttlebus-search-end').value;
+
+  if (startStop && endStop) {
+    const routes = findAllPossibleRoutes(startStop, endStop);
+    if (routes.length > 0) {
+      displayRouteInfo(routes);
+      drawRoutes(routes);
+    } else {
+      alert('No route found with the specified stops.');
+    }
+  } else {
+    alert('Please enter both start and end stops.');
+  }
+}
+
+function findAllPossibleRoutes(startStop, endStop) {
+  let allRoutes = [];
+
+  // Check direct routes
+  const directRoutes = findDirectRoutes(startStop, endStop);
+  allRoutes = allRoutes.concat(directRoutes);
+
+  // Check routes with one transfer
+  const transferRoutes = findTransferRoutes(startStop, endStop);
+  allRoutes = allRoutes.concat(transferRoutes);
+
+  // Sort routes by total distance
+  allRoutes.sort((a, b) => a.totalDistance - b.totalDistance);
+
+  return allRoutes;
+}
+
+function findDirectRoutes(startStop, endStop) {
+  return allDataShuttleBus.filter(route => {
+    const stops = route.detailData.map(stop => stop.busStop_name);
+    return stops.includes(startStop) && stops.includes(endStop);
+  }).map(route => {
+    const startIndex = route.detailData.findIndex(stop => stop.busStop_name === startStop);
+    const endIndex = route.detailData.findIndex(stop => stop.busStop_name === endStop);
+    const path = route.detailData.slice(
+      Math.min(startIndex, endIndex),
+      Math.max(startIndex, endIndex) + 1
+    );
+    const totalDistance = calculateDistance(path);
+    return {
+      routes: [{ name: route.shuttleBus_name, path }],
+      totalDistance,
+      description: [`${route.shuttleBus_name}: ${startStop} to ${endStop}`],
+      transfers: []
+    };
+  });
+}
+
+function findTransferRoutes(startStop, endStop) {
+  let transferRoutes = [];
+
+  allDataShuttleBus.forEach(startRoute => {
+    const startStops = startRoute.detailData.map(stop => stop.busStop_name);
+    if (!startStops.includes(startStop)) return;
+
+    allDataShuttleBus.forEach(endRoute => {
+      if (startRoute === endRoute) return;
+      const endStops = endRoute.detailData.map(stop => stop.busStop_name);
+      if (!endStops.includes(endStop)) return;
+
+      const transferStops = startStops.filter(stop => endStops.includes(stop));
+      
+      transferStops.forEach(transferStop => {
+        const startPath = getSubPath(startRoute.detailData, startStop, transferStop);
+        const endPath = getSubPath(endRoute.detailData, transferStop, endStop);
+        const totalDistance = calculateDistance(startPath) + calculateDistance(endPath);
+
+        transferRoutes.push({
+          routes: [
+            { name: startRoute.shuttleBus_name, path: startPath },
+            { name: endRoute.shuttleBus_name, path: endPath }
+          ],
+          totalDistance,
+          description: [
+            `${startRoute.shuttleBus_name}: ${startStop} to ${transferStop}`,
+            `Transfer at ${transferStop}`,
+            `${endRoute.shuttleBus_name}: ${transferStop} to ${endStop}`
+          ],
+          transfers: [transferStop]
+        });
+      });
+    });
+  });
+
+  return transferRoutes;
+}
+
+function getSubPath(routeData, startStop, endStop) {
+  const startIndex = routeData.findIndex(stop => stop.busStop_name === startStop);
+  const endIndex = routeData.findIndex(stop => stop.busStop_name === endStop);
+  return routeData.slice(
+    Math.min(startIndex, endIndex),
+    Math.max(startIndex, endIndex) + 1
+  );
+}
+
+function calculateDistance(path) {
+  let distance = 0;
+  for (let i = 0; i < path.length - 1; i++) {
+    const start = new google.maps.LatLng(path[i].busStop_latitude, path[i].busStop_longitude);
+    const end = new google.maps.LatLng(path[i+1].busStop_latitude, path[i+1].busStop_longitude);
+    distance += google.maps.geometry.spherical.computeDistanceBetween(start, end);
+  }
+  return distance;
+}
+
+function displayRouteInfo(routes) {
+  const resultDiv = document.getElementById('shuttlebus-search-result');
+  let html = '<h3>Route Information</h3>';
+  routes.forEach((route, index) => {
+    html += `
+      <div style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px;">
+        <h4>Route ${index + 1}</h4>
+        <p>Total Distance: ${(route.totalDistance / 1000).toFixed(2)} km</p>
+        <p>Route Details:</p>
+        <ul>
+          ${route.description.map(desc => `<li>${desc}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  });
+  resultDiv.innerHTML = html;
+}
+
+function drawRoutes(routes) {
+  // Clear existing routes
+  if (window.currentRoutes) {
+    window.currentRoutes.forEach(route => route.setMap(null));
+  }
+  window.currentRoutes = [];
+
+  const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+
+  routes.forEach((route, index) => {
+    const path = [];
+    let startIndex = -1;
+    let endIndex = -1;
+
+    route.detailData.forEach((stop, i) => {
+      if (stop.busStop_name === startStop) startIndex = i;
+      if (stop.busStop_name === endStop) endIndex = i;
+    });
+
+    if (startIndex > endIndex) [startIndex, endIndex] = [endIndex, startIndex];
+
+    for (let i = startIndex; i <= endIndex; i++) {
+      path.push(new google.maps.LatLng(
+        route.detailData[i].busStop_latitude,
+        route.detailData[i].busStop_longitude
+      ));
+    }
+
+    const polyline = new google.maps.Polyline({
+      path: path,
+      strokeColor: colors[index % colors.length],
+      strokeOpacity: 1.0,
+      strokeWeight: 5,
+      map: map,
+      zIndex: 100 + index // Ensure the new routes are on top
+    });
+
+    window.currentRoutes.push(polyline);
+  });
+
+  // Fit the map to show all routes
+  const bounds = new google.maps.LatLngBounds();
+  window.currentRoutes.forEach(route => {
+    route.getPath().forEach(latLng => bounds.extend(latLng));
+  });
+  map.fitBounds(bounds);
+}
+function calculateDistance(route, startStop, endStop) {
+  let distance = 0;
+  let startIndex = -1;
+  let endIndex = -1;
+
+  route.detailData.forEach((stop, index) => {
+    if (stop.busStop_name === startStop) startIndex = index;
+    if (stop.busStop_name === endStop) endIndex = index;
+  });
+
+  if (startIndex > endIndex) [startIndex, endIndex] = [endIndex, startIndex];
+
+  for (let i = startIndex; i < endIndex; i++) {
+    const start = new google.maps.LatLng(
+      route.detailData[i].busStop_latitude,
+      route.detailData[i].busStop_longitude
+    );
+    const end = new google.maps.LatLng(
+      route.detailData[i + 1].busStop_latitude,
+      route.detailData[i + 1].busStop_longitude
+    );
+    distance += google.maps.geometry.spherical.computeDistanceBetween(start, end);
+  }
+
+  return distance;
+}
+
+function updateMapWithRoute(routeId) {
+  // Implement the logic to update the map with the selected route
+  initialize(routeId);
+}
+
+function updateMapWithStop(routeId, stopId) {
+  // Implement the logic to update the map with the selected stop
+  initialize(routeId);
+  // Additional logic to focus on the specific stop
+  const route = allDataShuttleBus.find(r => r.shuttleBus_id === routeId);
+  const stop = route.detailData.find(s => s.busStop_id === stopId);
+  if (stop) {
+    map.setCenter(new google.maps.LatLng(stop.busStop_latitude, stop.busStop_longitude));
+    map.setZoom(15); // Adjust zoom level as needed
+  }
+}
+
+window.onload = async function() {
   await initialize();
+  setupAutocomplete();
 };
