@@ -298,7 +298,14 @@ function handleSearch() {
     allMarkers.forEach(marker => marker.setMap(null)); // ลบ markers เก่า
     allMarkers = []; // ล้าง allMarkers
 
-    const routes = findAllPossibleRoutes(startStop, endStop);
+    const directRoutes = findDirectRoutes(startStop, endStop);
+    let routes = directRoutes;
+
+    if (directRoutes.length === 0) {
+      const transferRoutes = findTransferRoutes(startStop, endStop);
+      routes = transferRoutes;
+    }
+
     if (routes.length > 0) {
       displayRouteInfo(routes);
       drawRoutes(routes);
@@ -349,7 +356,6 @@ function findDirectRoutes(startStop, endStop) {
     };
   });
 }
-
 function findTransferRoutes(startStop, endStop) {
   let transferRoutes = [];
 
@@ -415,6 +421,8 @@ function findTransferRoutes(startStop, endStop) {
                   <span class="text-gray-800">${endStop}</span>
                 </div>
               </div>`,
+              `เปลี่ยนรถที่ ${transferStop}`,
+              `${endRoute.shuttleBus_name}: ${transferStop} ถึง ${endStop}`
             ],
             transfers: [transferStop]
           };
@@ -563,7 +571,7 @@ function drawRoutes(routes) {
         return latLng;
       });
 
-      // Add start icon
+      // Add start icon for the first point of the first subroute
       if (subRouteIndex === 0) {
         const startMarker = new google.maps.Marker({
           position: path[0],
@@ -577,21 +585,8 @@ function drawRoutes(routes) {
         window.currentMarkers.push(startMarker);
       }
 
-      // Add transfer icon or end icon
-      if (subRouteIndex === route.routes.length - 1) {
-        // Only add end icon if it's the last subroute
-        const endMarker = new google.maps.Marker({
-          position: path[path.length - 1],
-          map: map,
-          icon: {
-            url: 'image/endIcon.png',
-            scaledSize: new google.maps.Size(40, 40)
-          },
-          zIndex: 1000
-        });
-        window.currentMarkers.push(endMarker);
-      } else if (subRouteIndex === route.routes.length - 2 && route.routes.length > 1) {
-        // Add transfer icon at the end of the first route if there are two routes
+      // Add transfer icon for the last point of each subroute except the last one
+      if (subRouteIndex < route.routes.length - 1) {
         const transferMarker = new google.maps.Marker({
           position: path[path.length - 1],
           map: map,
@@ -602,6 +597,34 @@ function drawRoutes(routes) {
           zIndex: 999
         });
         window.currentMarkers.push(transferMarker);
+      }
+
+      // Add transfer icon for the first point of each subroute except the first one
+      if (subRouteIndex > 0) {
+        const endMarker = new google.maps.Marker({
+          position: path[0],
+          map: map,
+          icon: {
+            url: 'image/endIcon.png',
+            scaledSize: new google.maps.Size(40, 40)
+          },
+          zIndex: 1000
+        });
+        window.currentMarkers.push(endMarker);
+      }
+
+      // Add end icon for the last point of the last subroute
+      if (subRouteIndex === route.routes.length - 1) {
+        const endMarker = new google.maps.Marker({
+          position: path[path.length - 1],
+          map: map,
+          icon: {
+            url: 'image/endIcon.png',
+            scaledSize: new google.maps.Size(40, 40)
+          },
+          zIndex: 1000
+        });
+        window.currentMarkers.push(endMarker);
       }
 
       return new google.maps.Polyline({
