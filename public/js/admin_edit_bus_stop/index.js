@@ -8,7 +8,6 @@ let statusnameBusStop = "";
 
 const initDomJS = async () => {
   try {
-    // เมื่อมีการเปลี่ยนแปลงในช่องป้อนชื่อป้ายรถเมล์
     $("#inp_busStop_name").on("change", function () {
       nameBusStop = $(this).val();
     });
@@ -16,46 +15,30 @@ const initDomJS = async () => {
     $("#inp_busStop_subname").on("change", function () {
       subnameBusStop = $(this).val();
     });
-
+    createMap();
     $("#inp_busStop_status").on("change", function () {
       statusnameBusStop = $(this).val();
     });
-
-    // พิกัดเริ่มต้นของแผนที่
-    // แทนที่ด้วยพิกัดเริ่มต้นของคุณ
-
-    // สร้างแผนที่ใหม่
-    createMap();
-     
-
-      // When there is a change in the picture input field
-      
-    
     $("#inp_PicTure").on("change", async function () {
       try {
         let formData = new FormData();
-        let imagefile = $("#inp_PicTure")[0].files[0]; // Select the file using jQuery
-        formData.append("image", imagefile); // Append the file to FormData
+        let imagefile = $("#inp_PicTure")[0].files[0];
+        formData.append("image", imagefile); 
 
-        // Make the Axios request using async/await
         const response = await window.upload_services.UploadSingleImage(formData);
-
         if (response?.data?.data?.url) {
           PicTureVar = response?.data?.data?.url;
           $("#previewImageBusStop").attr("src", PicTureVar).show();
         }
       } catch (error) {
-        // Handle error
         console.error("Error uploading image:", error);
       }
     });
-    
-
-    // เมื่อมีการคลิกที่ปุ่มสร้างป้ายรถเมล์
     $("#btn_update_busstop").on("click", async function () {
       await onClickUpdateBusStop();
       console.log("เริ่มสร้างป้ายรถเมล์");
     });
+   
   } catch (error) {
     console.error(error);
   }

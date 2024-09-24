@@ -362,7 +362,7 @@ const initButtonROute = () => {
   }
 };
 
-// Initialize the button routes after loading the available bus stops
+
 getAvailibleBusStop().then(initButtonROute);
 getAvailibleBusStop1().then(initButtonROute);
 

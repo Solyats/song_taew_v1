@@ -56,45 +56,8 @@ const initialize = async (routeId) => {
   let uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
 
   if (!routeId) {
-    let set = new Set(uuIndices);
-    for (let i = 1; i <= 1000; i++) {
-      set.add(i);
-    }
-    uuIndices = Array.from(set);
-    uuIndices.sort((a, b) => a - b);
-  } else {
-    switch (routeId) {
-      case "bus02":
-        uuIndices = [2, 9, 27, 30, 32, 33, 34, 37, 38, 39, 41, 42, 44, 45];
-        break;
-      case "bus03":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus04":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus09":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      case "bus10":
-        uuIndices = [
-          3, 4, 5, 7, 24, 25, 46, 16, 33, 34, 39, 40, 42, 43, 2, 9, 27, 30, 32,
-          33, 34, 37, 38, 39, 41, 42, 44, 45,
-        ];
-        break;
-      default:
-        break;
-    }
-  }
+    uuIndices = Array.from({length: 1000}, (_, i) => i + 1);
+  } 
 
   let arr = [];
 
@@ -395,17 +358,8 @@ const initDataPage = async () => {
                   <td class="px-6 py-4 " >
                   
         <img src="${item?.busStop_picture}" alt="Bus Stop Picture" class="w-40 h-28q object-cover">
-       
     </td>
-                  
-
-                
-                 
                   <td class="px-6 py-4 flex ">
-
-  
-
-                    
                     <a
                       href="/admin_edit_bus_stop?id=${item?.busStop_id}"
                       class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
@@ -420,7 +374,6 @@ const initDataPage = async () => {
                 </tr>
             `;
       });
-
       $("#list_data_busstop").html(divContent);
 
       listDatas.map((item) => {

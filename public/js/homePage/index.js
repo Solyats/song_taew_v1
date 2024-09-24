@@ -1,7 +1,7 @@
 let map;
 let allDataShuttleBus = [];
 let mainRoutePolylines = [];
-let allMarkers = []; // เพิ่มตัวแปรนี้
+let allMarkers = [];
 
 const fetchShuttlebusData = async (routeId) => {
   try {
@@ -88,17 +88,15 @@ const initialize = async (routeId) => {
           url: iconUrl,
           scaledSize: iconSize,
         },
-        visible: index === 1 || index === data.length, // Only show first and last markers
+        visible: index === 1 || index === data.length,
       });
 
       if (index === 1 || index === data.length) {
-        // Add label for start and end points
         let label = new google.maps.Marker({
           position: new google.maps.LatLng(
             item.busStop_latitude,
             item.busStop_longitude
           ),
-          
           icon: {
             path: google.maps.SymbolPath.CIRCLE,
             scale: 0
@@ -124,7 +122,7 @@ const initialize = async (routeId) => {
       );
 
       arr.push(marker.getPosition());
-      allMarkers.push(marker); // เพิ่ม marker เข้าไปใน allMarkers
+      allMarkers.push(marker);
     });
 
     let whiteBorder = new google.maps.Polyline({
@@ -180,7 +178,7 @@ const initialize = async (routeId) => {
 
   let allPolylines = [];
 
-   if (!routeId) {
+  if (!routeId) {
     let set = new Set(uuIndices);
     for (let i = 1; i <= 0; i++) {
       set.add(i);
@@ -294,21 +292,15 @@ function handleSearch() {
   const endStop = document.getElementById('shuttlebus-search-end').value;
 
   if (startStop && endStop) {
-    mainRoutePolylines.forEach(polyline => polyline.setMap(null));
-    allMarkers.forEach(marker => marker.setMap(null)); // ลบ markers เก่า
-    allMarkers = []; // ล้าง allMarkers
+    clearPreviousSearchResults();
 
-    const directRoutes = findDirectRoutes(startStop, endStop);
-    let routes = directRoutes;
-
-    if (directRoutes.length === 0) {
-      const transferRoutes = findTransferRoutes(startStop, endStop);
-      routes = transferRoutes;
-    }
-
+    let routes = findAllPossibleRoutes(startStop, endStop);
     if (routes.length > 0) {
+      // Sort routes by total distance in descending order
+      routes.sort((a, b) => b.totalDistance - a.totalDistance);
+
       displayRouteInfo(routes);
-      drawRoutes(routes);
+      drawRoutes(routes); // Draw only the new routes
     } else {
       alert('No route found with the specified stops.');
     }
@@ -317,11 +309,49 @@ function handleSearch() {
   }
 }
 
+function clearPreviousSearchResults() {
+  // Hide all existing polylines
+  if (window.existingPolylines) {
+    window.existingPolylines.forEach(polyline => polyline.setMap(null));
+  }
+  window.existingPolylines = []; // Reset the existing polylines
+
+  // Hide main route polylines
+  mainRoutePolylines.forEach(polyline => polyline.setMap(null)); // ซ่อนเส้นทางหลักทั้งหมด
+
+  // Hide all existing markers
+  allMarkers.forEach(marker => marker.setMap(null));
+  allMarkers = []; // Reset the existing markers
+
+  // Clear other previous search results
+  if (window.currentRoutes) {
+    window.currentRoutes.forEach(route => route.forEach(polyline => polyline.setMap(null)));
+  }
+  window.currentRoutes = [];
+
+  if (window.transferMarkers) {
+    window.transferMarkers.forEach(markerSet => markerSet.forEach(marker => marker.setMap(null)));
+  }
+  window.transferMarkers = [];
+
+  const routeList = document.getElementById('route-list');
+  if (routeList) {
+    routeList.remove();
+  }
+
+  const resultDiv = document.getElementById('shuttlebus-search-result');
+  resultDiv.innerHTML = '';
+}
+
 function findAllPossibleRoutes(startStop, endStop) {
   const directRoutes = findDirectRoutes(startStop, endStop);
+  
+  if (directRoutes.length > 0) {
+    return directRoutes.sort((a, b) => a.totalDistance - b.totalDistance);
+  }
+  
   const transferRoutes = findTransferRoutes(startStop, endStop);
-
-  return [...directRoutes, ...transferRoutes].sort((a, b) => a.totalDistance - b.totalDistance);
+  return transferRoutes.sort((a, b) => a.totalDistance - b.totalDistance);
 }
 
 function findDirectRoutes(startStop, endStop) {
@@ -342,7 +372,7 @@ function findDirectRoutes(startStop, endStop) {
       description: [
         `<div class="flex flex-col space-y-2 text-sm md:text-base">
           <div class="flex items-center">
-            <span class="text-blue-500 mr-2"><img src="${route.shuttleBus_picture}" alt="${route.shuttleTHname}" class="w-6 h-4 inline-block"></span>
+            <span class="text-blue-500 mr-2"><img src="${route.shuttleBus_picture}" alt="${route.shuttleTHname}" class="w-12 h-8 inline-block"></span>
             <span class="font-semibold">${route.shuttleTHname}:</span>
             <span class="ml-2">${startStop}</span>
             <span class="mx-2"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -356,6 +386,7 @@ function findDirectRoutes(startStop, endStop) {
     };
   });
 }
+
 function findTransferRoutes(startStop, endStop) {
   let transferRoutes = [];
 
@@ -392,7 +423,8 @@ function findTransferRoutes(startStop, endStop) {
                   <span class="text-blue-600 mr-3">
                     <img src="${startRoute.shuttleBus_picture}" alt="${startRoute.shuttleTHname}" class="w-12 h-8 inline-block mr-1">
                   </span>
-                  <span class="font-semibold text-indigo-700 text-lg md:text-xl lg:text-2xl">${startRoute.shuttleTHname}:</span>
+                  <span class="font-semibold text-sm text-indigo-700 text-lg md:text-xl lg:text-2xl
+                  ">${startRoute.shuttleTHname}:</span>
                   <span class="ml-2 text-gray-800">${startStop}</span>
                   <span class="mx-2 text-yellow-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -402,16 +434,16 @@ function findTransferRoutes(startStop, endStop) {
                   <span class="text-gray-800">${transferStop}</span>
                 </div>
                 
-                <div class="pl-8 text-gray-700 italic text-lg md:text-xl">
+                <div class="pl-8 text-gray-700 italic text-lg text-sm md:text-xl">
                   <span class="font-medium text-red-600">จุดเปลี่ยนรถ:</span>
                   <span class="ml-2 text-gray-800">${transferStop}</span>
                 </div>
                 
-                <div class="flex items-center pl-8 text-gray-700 text-lg md:text-xl">
-                  <span class="font-medium text-green-600 mr-3">
+                <div class="flex items-center text-sm pl-8 text-gray-700 text-lg md:text-xl">
+                  <span class="font-medium text-sm text-green-600 mr-3">
                     <img src="${endRoute.shuttleBus_picture}" alt="${endRoute.shuttleTHname}" class="w-12 h-8 inline-block mr-1">
                   </span>
-                  <span class="font-semibold text-indigo-700 text-lg md:text-xl lg:text-2xl">${endRoute.shuttleTHname}:</span>
+                  <span class="text-sm font-semibold text-indigo-700 text-lg md:text-xl lg:text-2xl">${endRoute.shuttleTHname}:</span>
                   <span class="ml-2">${transferStop}</span>
                   <span class="mx-2 text-yellow-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -421,8 +453,6 @@ function findTransferRoutes(startStop, endStop) {
                   <span class="text-gray-800">${endStop}</span>
                 </div>
               </div>`,
-              `เปลี่ยนรถที่ ${transferStop}`,
-              `${endRoute.shuttleBus_name}: ${transferStop} ถึง ${endStop}`
             ],
             transfers: [transferStop]
           };
@@ -461,10 +491,12 @@ function displayRouteInfo(routes) {
   const resultDiv = document.getElementById('shuttlebus-search-result');
   let html = '<h3>ข้อมูลสายรถ</h3>';
   
-  const directRoutes = routes.filter(route => route.transfers.length === 0);
-  const transferRoutes = routes.filter(route => route.transfers.length > 0);
+  if (routes[0].transfers.length === 0) {
+    html += `<p>ค้นพบ ${routes.length} เส้นทางตรง</p>`;
+  } else {
+    html += `<p>ไม่พบเส้นทางตรง, ค้นพบ ${routes.length} เส้นทางที่ต้องเปลี่ยนรถ</p>`;
+  }
   
-  html += `<p>ค้นหา ${directRoutes.length} เส้นทางตรง และ ${transferRoutes.length} เส้นทางที่ต้องเปลี่ยนรถ</p>`;
   resultDiv.innerHTML = html;
 }
 
@@ -473,24 +505,11 @@ function createClickableRouteList(routes) {
   listContainer.id = 'route-list';
   listContainer.style.marginTop = '20px';
 
-  const directRoutes = routes.filter(route => route.transfers.length === 0);
-  const transferRoutes = routes.filter(route => route.transfers.length > 0);
+  const header = document.createElement('h4');
+  header.textContent = routes[0].transfers.length === 0 ? 'เส้นทางตรง' : 'เส้นทางที่ต้องเปลี่ยนรถ';
+  listContainer.appendChild(header);
 
-  // Direct routes
-  if (directRoutes.length > 0) {
-    const directHeader = document.createElement('h4');
-    directHeader.textContent = 'เส้นเดี่ยว';
-    listContainer.appendChild(directHeader);
-    createRouteItems(directRoutes, listContainer);
-  }
-
-  // Transfer routes
-  if (transferRoutes.length > 0) {
-    const transferHeader = document.createElement('h4');
-    transferHeader.textContent = 'เส้นทางที่ต้องเปลี่ยนรถ';
-    listContainer.appendChild(transferHeader);
-    createRouteItems(transferRoutes, listContainer);
-  }
+  createRouteItems(routes, listContainer);
 
   const resultDiv = document.getElementById('shuttlebus-search-result');
   resultDiv.appendChild(listContainer);
@@ -531,11 +550,9 @@ function createRouteItems(routes, container) {
     routeItem.appendChild(routeDescription);
 
     routeItem.addEventListener('click', () => {
-      // Remove highlight from all route items
       document.querySelectorAll('.route-item').forEach(item => {
         item.style.backgroundColor = '#f0f0f0';
       });
-      // Highlight selected route item
       routeItem.style.backgroundColor = '#e0e0e0';
       highlightRoute(index);
     });
@@ -543,7 +560,6 @@ function createRouteItems(routes, container) {
     container.appendChild(routeItem);
   });
 
-  // Initially highlight the first route
   if (routes.length > 0) {
     highlightRoute(0);
     container.firstChild.style.backgroundColor = '#e0e0e0';
@@ -551,119 +567,183 @@ function createRouteItems(routes, container) {
 }
 
 function drawRoutes(routes) {
-  if (window.currentRoutes) {
-    window.currentRoutes.forEach(route => route.forEach(polyline => polyline.setMap(null)));
-  }
-  if (window.currentMarkers) {
-    window.currentMarkers.forEach(marker => marker.setMap(null));
-  }
-  window.currentRoutes = [];
-  window.currentMarkers = [];
-
+  // กำหนดสีสำหรับเส้นทาง
   const colors = ['#FF0000', '#00FFFF'];
+  // สร้างขอบเขตสำหรับแผนที่
   const bounds = new google.maps.LatLngBounds();
 
+  // เตรียมตัวแปรสำหรับเก็บเส้นทางและมาร์คเกอร์
+  window.currentRoutes = [];
+  window.transferMarkers = [];
+
+  // ลบเส้นทางเก่าออกจากแผนที่
+  if (window.existingPolylines) {
+    window.existingPolylines.forEach(polyline => polyline.setMap(null));
+  }
+  window.existingPolylines = [];
+
+  // วนลูปผ่านแต่ละเส้นทาง
   routes.forEach((route, routeIndex) => {
+    // สร้างเส้นทางย่อยสำหรับแต่ละเส้นทางหลัก
     const routePolylines = route.routes.map((subRoute, subRouteIndex) => {
+      // สร้างเส้นทางจากจุดต่างๆ
       const path = subRoute.path.map(stop => {
         const latLng = new google.maps.LatLng(stop.busStop_latitude, stop.busStop_longitude);
         bounds.extend(latLng);
         return latLng;
       });
 
-      // Add start icon for the first point of the first subroute
-      if (subRouteIndex === 0) {
-        const startMarker = new google.maps.Marker({
-          position: path[0],
-          map: map,
-          icon: {
-            url: 'image/startIcon.png',
-            scaledSize: new google.maps.Size(40, 40)
-          },
-          zIndex: 1000
-        });
-        window.currentMarkers.push(startMarker);
-      }
-
-      // Add transfer icon for the last point of each subroute except the last one
-      if (subRouteIndex < route.routes.length - 1) {
-        const transferMarker = new google.maps.Marker({
-          position: path[path.length - 1],
-          map: map,
-          icon: {
-            url: 'image/transferIcon.png',
-            scaledSize: new google.maps.Size(30, 30)
-          },
-          zIndex: 999
-        });
-        window.currentMarkers.push(transferMarker);
-      }
-
-      // Add transfer icon for the first point of each subroute except the first one
-      if (subRouteIndex > 0) {
-        const endMarker = new google.maps.Marker({
-          position: path[0],
-          map: map,
-          icon: {
-            url: 'image/endIcon.png',
-            scaledSize: new google.maps.Size(40, 40)
-          },
-          zIndex: 1000
-        });
-        window.currentMarkers.push(endMarker);
-      }
-
-      // Add end icon for the last point of the last subroute
-      if (subRouteIndex === route.routes.length - 1) {
-        const endMarker = new google.maps.Marker({
-          position: path[path.length - 1],
-          map: map,
-          icon: {
-            url: 'image/endIcon.png',
-            scaledSize: new google.maps.Size(40, 40)
-          },
-          zIndex: 1000
-        });
-        window.currentMarkers.push(endMarker);
-      }
-
-      return new google.maps.Polyline({
+      // สร้าง Polyline สำหรับเส้นทาง
+      const polyline = new google.maps.Polyline({
         path: path,
         strokeColor: colors[(routeIndex + subRouteIndex) % colors.length],
         strokeOpacity: 1.0,
         strokeWeight: 5,
-        map: map,
+        map: null, // ยังไม่แสดงบนแผนที่
         zIndex: 100 + routeIndex
       });
+
+      // เก็บ Polyline ไว้ใช้ในภายหลัง
+      window.existingPolylines.push(polyline);
+      return polyline;
     });
 
+    // เก็บเส้นทางปัจจุบัน
     window.currentRoutes.push(routePolylines);
+
+    // ตรวจสอบว่ามีจุดเปลี่ยนรถหรือไม่
+    if (route.transfers && route.transfers.length > 0) {
+      // สร้างมาร์คเกอร์สำหรับจุดเปลี่ยนรถ
+      const routeTransferMarkers = route.transfers.map(transferStop => {
+        const transferPoint = route.routes[0].path.find(stop => stop.busStop_name === transferStop) ||
+                              route.routes[1].path.find(stop => stop.busStop_name === transferStop);
+        
+        if (transferPoint) {
+          // สร้างมาร์คเกอร์จุดเปลี่ยนรถ
+          const transferMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(transferPoint.busStop_latitude, transferPoint.busStop_longitude),
+            map: null,
+            icon: {
+              url: 'image/transferIcon.png',
+              scaledSize: new google.maps.Size(30, 30)
+            },
+            title: 'Transfer Point: ' + transferStop,
+            zIndex: 150
+          });
+
+          // หาจุดเริ่มต้นที่ไกลที่สุดจากจุดเปลี่ยนรถในเส้นทางแรก
+          const startStop = route.routes[0].path.reduce((farthest, stop) => {
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(
+              new google.maps.LatLng(transferPoint.busStop_latitude, transferPoint.busStop_longitude),
+              new google.maps.LatLng(stop.busStop_latitude, stop.busStop_longitude)
+            );
+            return distance > farthest.distance ? { stop, distance } : farthest;
+          }, { stop: null, distance: 0 }).stop;
+
+          // สร้างมาร์คเกอร์จุดเริ่มต้น
+          const startMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(startStop.busStop_latitude, startStop.busStop_longitude),
+            map: null,
+            icon: {
+              url: 'image/startIcon.png',
+              scaledSize: new google.maps.Size(30, 30)
+            },
+            title: 'Start Point: ' + startStop.busStop_name,
+            zIndex: 150
+          });
+
+          // หาจุดสิ้นสุดที่ไกลที่สุดจากจุดเปลี่ยนรถในเส้นทางที่สอง
+          const endStop = route.routes[1].path.reduce((farthest, stop) => {
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(
+              new google.maps.LatLng(transferPoint.busStop_latitude, transferPoint.busStop_longitude),
+              new google.maps.LatLng(stop.busStop_latitude, stop.busStop_longitude)
+            );
+            return distance > farthest.distance ? { stop, distance } : farthest;
+          }, { stop: null, distance: 0 }).stop;
+
+          // สร้างมาร์คเกอร์จุดสิ้นสุด
+          const endMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(endStop.busStop_latitude, endStop.busStop_longitude),
+            map: null,
+            icon: {
+              url: 'image/endIcon.png',
+              scaledSize: new google.maps.Size(30, 30)
+            },
+            title: 'End Point: ' + endStop.busStop_name,
+            zIndex: 150
+          });
+
+          return [startMarker, transferMarker, endMarker];
+        }
+        return null;
+      }).filter(markerSet => markerSet !== null);
+
+      // เก็บมาร์คเกอร์ทั้งหมดของเส้นทาง
+      window.transferMarkers.push(routeTransferMarkers.flat());
+    } else {
+      // กรณีไม่มีจุดเปลี่ยนรถ ให้วางไอคอนเริ่มต้นและสิ้นสุดที่จุดแรกและจุดสุดท้าย
+      const startStop = route.routes[0].path[0];
+      const endStop = route.routes[0].path[route.routes[0].path.length - 1];
+
+      // สร้างมาร์คเกอร์จุดเริ่มต้น
+      const startMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(startStop.busStop_latitude, startStop.busStop_longitude),
+        map: null,
+        icon: {
+          url: 'image/startIcon.png',
+          scaledSize: new google.maps.Size(30, 30)
+        },
+        title: 'Start Point: ' + startStop.busStop_name,
+        zIndex: 150
+      });
+
+      // สร้างมาร์คเกอร์จุดสิ้นสุด
+      const endMarker = new google.maps.Marker({
+        position: new google.maps.LatLng(endStop.busStop_latitude, endStop.busStop_longitude),
+        map: null,
+        icon: {
+          url: 'image/endIcon.png',
+          scaledSize: new google.maps.Size(30, 30)
+        },
+        title: 'End Point: ' + endStop.busStop_name,
+        zIndex: 150
+      });
+
+      // เก็บมาร์คเกอร์เริ่มต้นและสิ้นสุด
+      window.transferMarkers.push([startMarker, endMarker]);
+    }
   });
 
+  // ปรับขนาดแผนที่ให้พอดีกับเส้นทางทั้งหมด
   map.fitBounds(bounds);
+  // สร้างรายการเส้นทางที่คลิกได้
   createClickableRouteList(routes);
+  
+  // ถ้ามีเส้นทาง ให้ไฮไลท์เส้นทางแรก
+  if (routes.length > 0) {
+    highlightRoute(0);
+  }
 }
 
 function highlightRoute(selectedIndex) {
   window.currentRoutes.forEach((routePolylines, index) => {
     const isSelected = index === selectedIndex;
     routePolylines.forEach(polyline => {
+      polyline.setMap(isSelected ? map : null);
       polyline.setOptions({
-        visible: isSelected,
         strokeOpacity: 1.0,
         strokeWeight: isSelected ? 7 : 5,
         zIndex: isSelected ? 200 : 100 + index
       });
     });
+
+    if (window.transferMarkers[index]) {
+      window.transferMarkers[index].forEach(marker => {
+        marker.setMap(isSelected ? map : null);
+      });
+    }
   });
 
-  // Show/hide markers
-  window.currentMarkers.forEach((marker, index) => {
-    const isSelected = Math.floor(index / 3) === selectedIndex; // Assuming 3 markers per route
-    marker.setVisible(isSelected);
-  });
-
-  // Fit bounds to selected route
   if (window.currentRoutes[selectedIndex]) {
     const bounds = new google.maps.LatLngBounds();
     window.currentRoutes[selectedIndex].forEach(polyline => {
@@ -671,15 +751,41 @@ function highlightRoute(selectedIndex) {
     });
     map.fitBounds(bounds);
   }
+
+  updateRouteListUI(selectedIndex);
+  swapMarkersIfNeeded(selectedIndex);
+}
+
+function swapMarkersIfNeeded(selectedIndex) {
+  const route = window.currentRoutes[selectedIndex];
+  if (route && route.length > 0) {
+    const startMarker = window.transferMarkers[selectedIndex][0];
+    const endMarker = window.transferMarkers[selectedIndex][window.transferMarkers[selectedIndex].length - 1];
+
+    if (startMarker && endMarker) {
+      const startLatLng = startMarker.getPosition();
+      const endLatLng = endMarker.getPosition();
+
+      if (startLatLng.lat() > endLatLng.lat()) {
+        // Swap markers
+        startMarker.setPosition(endLatLng);
+        endMarker.setPosition(startLatLng);
+      }
+    }
+  }
+}
+
+function updateRouteListUI(selectedIndex) {
+  const routeItems = document.querySelectorAll('.route-item');
+  routeItems.forEach((item, index) => {
+    item.style.backgroundColor = index === selectedIndex ? '#e0e0e0' : '#f0f0f0';
+  });
 }
 
 function showMainRoutes() {
   mainRoutePolylines.forEach(polyline => polyline.setMap(map));
   if (window.currentRoutes) {
     window.currentRoutes.forEach(route => route.forEach(polyline => polyline.setMap(null)));
-  }
-  if (window.currentMarkers) {
-    window.currentMarkers.forEach(marker => marker.setMap(null));
   }
   map.fitBounds(getMainRoutesBounds());
 }
@@ -716,9 +822,9 @@ window.onload = async function() {
   document.getElementById('shuttlebus-search-end').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') handleSearch();
   });
+  document.getElementById('shuttlebus-search-button').addEventListener('click', handleSearch);
 
-  const showMainRoutesButton = document.createElement('button');
-  showMainRoutesButton.textContent = 'Show Main Routes';
+
   showMainRoutesButton.onclick = showMainRoutes;
   document.body.appendChild(showMainRoutesButton);
 };

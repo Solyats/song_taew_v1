@@ -34,9 +34,7 @@ const onAdminlogin = async () => {
       return;
     }
 
-    if (!passwordVar) {
-      $("#error_message_password").text("กรุณากรอกรหัสผ่าน");
-      return;
+    if (!passwordVar) { 
     }
 
     window.customswal.showLoading()
