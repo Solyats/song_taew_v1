@@ -227,26 +227,23 @@ const initDetailBus = () => {
 
           busContent += `
         <div class="mb-4">
-          <div class="flex justify-center font-semibold ">
+          <div class="flex justify-center font-semibold text-xl">
             <span>${item?.shuttleBus_name}</span>
           </div>
           <div class="flex justify-center font-semibold">
-            <img src="${item?.shuttleBus_picture}" alt="รูปรถสาย ${item?.bus02}">
+            <img src="${item?.shuttleBus_picture}" alt="รูปรถสาย ${item?.bus02}" style="width: 400px; height: auto;">
           </div>
           <div> 
-            <span>
-              จุดจอด : ${shuttlebusStops}
-               
-            </span>
+            <span class="font-bold">จุดจอด :</span> ${shuttlebusStops}
           </div>
           <br />
           <div>
-            <span>รถสี : ${item?.shuttleBus_color}</span>
+            <div><span class="font-bold">รถสี :</span> ${item?.shuttleBus_color}</div>
             <div>
-              <span>เวลาทำการ : ${item?.shuttleBus_time}</span>
+              <span class="font-bold">เวลาทำการ :</span> ${item?.shuttleBus_time}
             </div>
             <div>
-              <span>ค่าบริการ : ${item?.shuttleBus_price} บาท</span>
+              <span class="font-bold">ค่าบริการ :</span> ${item?.shuttleBus_price} บาท
             </div>
           </div>
         </div>

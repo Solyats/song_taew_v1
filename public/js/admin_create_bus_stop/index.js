@@ -1,5 +1,5 @@
-let nameBusStop = "";
-let subnameBusStop = "";
+let nameBusStop = ""; // ชื่อจุดจอด
+let subnameBusStop = ""; // รหัสจุดจอด
 let statusnameBusStop = "";
 let latitudeVar = 0;
 let longitudeVar = 0;
@@ -76,12 +76,7 @@ const onClickCreateBusstop = async () => {
 
     if (subnameBusStop === "") {
       window.customswal.hideLoading();
-      return showErrorAlert("กรุณากรอก ชื่อรอง");
-    }
-
-    if (statusnameBusStop === "") {
-      window.customswal.hideLoading();
-      return showErrorAlert("กรุณาเลือก สถานะ");
+      return showErrorAlert("กรุณากรอก รหัสจุดจอด");
     }
 
     if (latitudeVar <= 0 || latitudeVar === "") {
@@ -102,7 +97,7 @@ const onClickCreateBusstop = async () => {
     const bodyRequest = {
       busStop_name: nameBusStop,
       busStop_subname: subnameBusStop,
-      busStop_status: statusnameBusStop,
+      busStop_status: "จุดจอด",
       busStop_latitude: latitudeVar,
       busStop_longitude: longitudeVar,
       busStop_picture: PicTureVar,

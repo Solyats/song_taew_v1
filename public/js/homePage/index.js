@@ -228,62 +228,40 @@ const initialize = async (routeId) => {
 
 function setupAutocomplete() {
   const inputStart = document.getElementById('shuttlebus-search-start');
-  const autocompleteListStart = document.getElementById('autocomplete-list-start');
   const inputEnd = document.getElementById('shuttlebus-search-end');
-  const autocompleteListEnd = document.getElementById('autocomplete-list-end');
   const searchButton = document.getElementById('shuttlebus-search-button');
 
-  setupAutocompleteForInput(inputStart, autocompleteListStart);
-  setupAutocompleteForInput(inputEnd, autocompleteListEnd);
+  populateSelectOptions(inputStart);
+  populateSelectOptions(inputEnd);
 
-  searchButton.addEventListener('click', handleSearch);
-
-  document.addEventListener('click', function(e) {
-    if (e.target !== inputStart && e.target !== autocompleteListStart) {
-      autocompleteListStart.style.display = 'none';
-    }
-    if (e.target !== inputEnd && e.target !== autocompleteListEnd) {
-      autocompleteListEnd.style.display = 'none';
+  $('.select2').select2({
+    placeholder: "เลือกจุดต้นทาง",
+    allowClear: true,
+    language: {
+      noResults: function() {
+        return "ไม่พบผลลัพธ์";
+      }
     }
   });
+
+  searchButton.addEventListener('click', handleSearch);
 }
 
-function setupAutocompleteForInput(input, autocompleteList) {
-  input.addEventListener('input', function() {
-    const inputValue = this.value.toLowerCase();
-    autocompleteList.innerHTML = '';
+function populateSelectOptions(selectElement) {
+  const uniqueStops = new Set();
+  allDataShuttleBus.forEach(route => {
+    route.detailData.forEach(stop => {
+      if (!stop.busStop_name.endsWith('*')) {
+        uniqueStops.add(stop.busStop_name);
+      }
+    });
+  });
 
-    if (inputValue.length === 0) {
-      autocompleteList.style.display = 'none';
-      return;
-    }
-
-    const uniqueStops = new Set();
-    const matchingStops = allDataShuttleBus.flatMap(route => 
-      route.detailData
-        .filter(stop => 
-          stop.busStop_name.toLowerCase().includes(inputValue) &&
-          !stop.busStop_name.endsWith('*')
-        )
-        .map(stop => stop.busStop_name)
-    );
-
-    matchingStops.forEach(stopName => uniqueStops.add(stopName));
-
-    if (uniqueStops.size > 0) {
-      autocompleteList.style.display = 'block';
-      uniqueStops.forEach(stopName => {
-        const item = document.createElement('div');
-        item.textContent = stopName;
-        item.addEventListener('click', function() {
-          input.value = this.textContent;
-          autocompleteList.style.display = 'none';
-        });
-        autocompleteList.appendChild(item);
-      });
-    } else {
-      autocompleteList.style.display = 'none';
-    }
+  uniqueStops.forEach(stopName => {
+    const option = document.createElement('option');
+    option.value = stopName;
+    option.textContent = stopName;
+    selectElement.appendChild(option);
   });
 }
 
@@ -297,7 +275,7 @@ function handleSearch() {
     let routes = findAllPossibleRoutes(startStop, endStop);
     if (routes.length > 0) {
       // Sort routes by total distance in descending order
-      routes.sort((a, b) => b.totalDistance - a.totalDistance);
+      routes.sort((a, b) => a.totalDistance - b.totalDistance);
 
       displayRouteInfo(routes);
       drawRoutes(routes); // Draw only the new routes
@@ -438,6 +416,7 @@ function findTransferRoutes(startStop, endStop) {
                 </div>
                 
                 <div class="pl-8 text-gray-700 italic text-lg">
+
                   <span class="font-medium text-red-600">จุดเปลี่ยนรถ:</span>
                   <span class="ml-2 text-gray-800">${transferStop}</span>
                 </div>
@@ -497,7 +476,7 @@ function displayRouteInfo(routes) {
   if (routes[0].transfers.length === 0) {
     html += `<p style="color: #2ECC71; font-size: 1.2em;">ค้นพบ ${routes.length} เส้นทางตรง</p>`;
   } else {
-    html += `<p style="color: #E74C3C; font-size: 1.2em;">ไม่พบเส้นทางตรง, ค้นพบ ${routes.length} เส้นทางที่ต้องเปลี่ยนรถ</p>`;
+    html += `<p style="color: #2ECC71; font-size: 1.2em;">ค้นพบ ${routes.length} เส้นทางที่ต้องเปลี่ยนรถ</p>`;
   }
   
   resultDiv.innerHTML = html;
