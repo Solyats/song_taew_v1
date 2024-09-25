@@ -19,39 +19,42 @@ const initDomsJS = async () => {
       statusnameBusStop = $(this).val();
     });
     $(document).ready(function() {
-  var initialLatLng = { lat: 16.439755821668168, lng: 102.82750683593747 }; 
-  
-  var map = new google.maps.Map($('#map')[0], {
-    center: initialLatLng,
-    zoom: 12
-  });
-  var marker = new google.maps.Marker({ 
-    position: initialLatLng,
-    map: map,
-    draggable: true 
-  });
-  google.maps.event.addListener(marker, 'dragend', function(event) {
-    $('#busStop_latitude').val(event.latLng.lat());
-    $('#busStop_longitude').val(event.latLng.lng());
-    latitudeVar = event.latLng.lat();
-    longitudeVar = event.latLng.lng();
-  });
-  $("#inp_busstop_picture").on("change", async function () {
-      try {
-        let formData = new FormData();
-        let imagefile = $("#inp_busstop_picture")[0].files[0];
-        formData.append("image", imagefile);
+      var initialLatLng = { lat: 16.439755821668168, lng: 102.82750683593747 }; 
+      
+      // Set the height of the map to 400px
+      $('#map').css('height', '400px');
 
-        const response = await window.upload_services.UploadSingleImage(formData);
+      var map = new google.maps.Map($('#map')[0], {
+        center: initialLatLng,
+        zoom: 12
+      });
+      var marker = new google.maps.Marker({ 
+        position: initialLatLng,
+        map: map,
+        draggable: true 
+      });
+      google.maps.event.addListener(marker, 'dragend', function(event) {
+        $('#busStop_latitude').val(event.latLng.lat());
+        $('#busStop_longitude').val(event.latLng.lng());
+        latitudeVar = event.latLng.lat();
+        longitudeVar = event.latLng.lng();
+      });
+      $("#inp_busstop_picture").on("change", async function () {
+          try {
+            let formData = new FormData();
+            let imagefile = $("#inp_busstop_picture")[0].files[0];
+            formData.append("image", imagefile);
 
-        if (response?.data?.data?.url) {
-          PicTureVar = response?.data?.data?.url;
-          $("#previewImageShuttleBus").attr("src", PicTureVar).show();
-        }
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
-  });
+            const response = await window.upload_services.UploadSingleImage(formData);
+
+            if (response?.data?.data?.url) {
+              PicTureVar = response?.data?.data?.url;
+              $("#previewImageShuttleBus").attr("src", PicTureVar).show();
+            }
+          } catch (error) {
+            console.error("Error uploading image:", error);
+          }
+      });
       console.log("asdasdas");
     });
     $("#btn_create_busstop").on("click", async function () {
@@ -66,9 +69,19 @@ const onClickCreateBusstop = async () => {
   try {
     window.customswal.showLoading();
 
-    if (  nameBusStop === "") {
+    if (nameBusStop === "") {
       window.customswal.hideLoading();
       return showErrorAlert("กรุณากรอก ชื่อจุดจอด");
+    }
+
+    if (subnameBusStop === "") {
+      window.customswal.hideLoading();
+      return showErrorAlert("กรุณากรอก ชื่อรอง");
+    }
+
+    if (statusnameBusStop === "") {
+      window.customswal.hideLoading();
+      return showErrorAlert("กรุณาเลือก สถานะ");
     }
 
     if (latitudeVar <= 0 || latitudeVar === "") {
@@ -79,6 +92,11 @@ const onClickCreateBusstop = async () => {
     if (longitudeVar <= 0 || longitudeVar === "") {
       window.customswal.hideLoading();
       return showErrorAlert("กรุณากรอก ลองจิจูด");
+    }
+
+    if (PicTureVar === "") {
+      window.customswal.hideLoading();
+      return showErrorAlert("กรุณาอัพโหลดรูปภาพ");
     }
 
     const bodyRequest = {
@@ -139,4 +157,3 @@ window.onload = async function () {
   console.log("Initializing DOM...");
   await initDomsJS();
 };
-

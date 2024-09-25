@@ -105,7 +105,7 @@ const onClickUpdateShuttleBus = async () => {
       shuttleBus_subname: subBsname,
       shuttleTHname: shortThname,
       shuttleBus_color: suttlebusColor,
-      shuttleBus_time: shuttlesusTime,
+      shuttleBus_time: shuttlesusTime, // Ensure this value is correct
       shuttleBus_price: shuttlesusPrice,
       shuttleBus_picture: shuttlebusPicture,
       polylineColor: polylineColorVar,
@@ -167,10 +167,16 @@ const getShuttleBus = async (id) => {
       shuttlebusIcon = data?.icon_shuttle_bus;
       detailDataVar = data?.detailData;
 
+      // Split the time range into start and end times
+      const [startTime, endTime] = shuttlesusTime.split(" - ");
+
       $("#inp_shuttle_name").val(shortNameVar);
       $("#inp_shuttle_subname").val(subBsname);
       $("#inp_busstop_thName").val(shortThname);
       $("#inp_busstop_color").val(suttlebusColor);
+      $("#inp_start_time").val(startTime);
+      $("#inp_end_time").val(endTime);
+      $("#time_range_display").text(shuttlesusTime);
       $("#inp_busstop_time").val(shuttlesusTime);
       $("#inp_busstop_price").val(shuttlesusPrice);
       $("#inp_busstop_polyline").val(polylineColorVar);

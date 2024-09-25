@@ -23,6 +23,7 @@ const initDomJS = () => {
       suttlebusColor = $(this).val();
     });
 
+    // Update the event listener for inp_busstop_time
     $("#inp_busstop_time").on("change", function () {
       shuttlesusTime = $(this).val();
     });
@@ -75,7 +76,7 @@ const onClickCreateShuttleBus = async () => {
       shuttleBus_name: shortNameVar,
       shuttleTHname: shortThname,
       shuttleBus_color: suttlebusColor,
-      shuttleBus_time: shuttlesusTime,
+      shuttleBus_time: shuttlesusTime, // Ensure this value is correct
       shuttleBus_subname: shuttlesusSubname,
       shuttleBus_price: shuttlesusPrice,
       shuttleBus_picture: shuttlebusPicture,
@@ -83,6 +84,26 @@ const onClickCreateShuttleBus = async () => {
       symbolColor: $("#symbolColorVar").val(),
       icon_shuttle_bus: shuttlebusIcon,
     };
+
+    // Check for missing required fields
+    const requiredFields = [
+      { field: 'shuttleBus_name', value: bodyRequest.shuttleBus_name, message: 'กรุณากรอกชื่อสายรถ' },
+      { field: 'shuttleTHname', value: bodyRequest.shuttleTHname, message: 'หมายเลขสายรถ' },
+      { field: 'shuttleBus_color', value: bodyRequest.shuttleBus_color, message: 'กรุณาเลือกสีรถ' },
+      { field: 'shuttleBus_time', value: bodyRequest.shuttleBus_time, message: 'กรุณากรอกเวลาทำการ' },
+      { field: 'shuttleBus_subname', value: bodyRequest.shuttleBus_subname, message: 'กรุณากรอกรหัสรถ' },
+      { field: 'shuttleBus_price', value: bodyRequest.shuttleBus_price, message: 'กรุณากรอกค่าบริการ' },
+      { field: 'shuttleBus_picture', value: bodyRequest.shuttleBus_picture, message: 'กรุณาอัปโหลดรูปรถ' },
+      { field: 'polylineColor', value: bodyRequest.polylineColor, message: 'กรุณาเลือกสีเส้นรถ' },
+      { field: 'symbolColor', value: bodyRequest.symbolColor, message: 'กรุณาเลือกสีสัญลักษณ์' },
+    ];
+
+    for (const { field, value, message } of requiredFields) {
+      if (!value) {
+        window.customswal.showErrorAlert(message);
+        return;
+      }
+    }
 
     console.log("Request body: ", bodyRequest); 
 

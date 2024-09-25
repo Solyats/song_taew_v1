@@ -42,11 +42,11 @@
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group w-full">
-              <label class="block mb-2">หมายเลขสายรถ:</label>
-              <input id="inp_busstop_thName" class="form-control border border-gray-300 p-2 rounded w-full"
-                name="inp_name" />
+              <label class="block mb-2">ชื่อหมายเลขสายรถ:</label>
+              <input id="inp_busstop_thName" class="form-control border border-gray-300 p-2 rounded w-full" name="inp_name" />
             </div>
           </div>
+         
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
               <label class="block mb-2">สีรถ:</label>
@@ -56,15 +56,39 @@
           </div>
           <div class="col-span-4 lg:col-span-1">
             <div class="form-group mr-8 w-full">
-              <label class="block mb-2">เวลาทำการ:</label>
-              <input id="inp_busstop_time" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
-                name="inpt_time" />
+              <label class="block mb-2">เวลาเริ่มต้น:</label>
+              <input id="inp_start_time" type="time" class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inp_start_time" oninput="updateTimeRange()" />
             </div>
           </div>
           <div class="col-span-4 lg:col-span-1">
-            <div class="form-group mx-6">
-              <label class="block ">ค่าบริการ:</label>
-              <input id="inp_busstop_price" class="form-control border border-gray-300 p-2 rounded w-full"
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">เวลาสิ้นสุด:</label>
+              <input id="inp_end_time" type="time" class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inp_end_time" oninput="updateTimeRange()" />
+            </div>
+          </div>
+         
+          <script>
+            function updateTimeRange() {
+              const startTime = $('#inp_start_time').val();
+              const endTime = $('#inp_end_time').val();
+              const timeRange = startTime && endTime ? `${startTime} - ${endTime}` : '--:-- - --:--';
+              $('#time_range_display').text(timeRange);
+              $('#inp_busstop_time').val(timeRange).trigger('change'); // Trigger change event
+            }
+          </script>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mr-8 w-full">
+              <label class="block mb-2">เวลาทำการ:</label>
+              <input id="inp_busstop_time" type="text" class="form-control border border-gray-300 p-2 rounded w-full"
+                name="inpt_time"  />
+            </div>
+          </div>
+          <div class="col-span-4 lg:col-span-1">
+            <div class="form-group mx-8">
+              <label class="block mb-2">ค่าบริการ:</label>
+              <input id="inp_busstop_price" class="form-control border border-gray-300 p-2 rounded w-full" type="number"
                 name="inp_price" />
             </div>
           </div>
