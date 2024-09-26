@@ -74,7 +74,7 @@ const onClickCreateShuttleBus = async () => {
 
     const bodyRequest = {
       shuttleBus_name: shortNameVar,
-      shuttleTHname: shortThname,
+      shuttleTHname: "สาย " + shortThname,
       shuttleBus_color: suttlebusColor,
       shuttleBus_time: shuttlesusTime, // Ensure this value is correct
       shuttleBus_subname: shuttlesusSubname,

@@ -252,6 +252,19 @@ const getAvailibleBusStop = async () => {
     const response = await axios.post("api/v1/list-bus-stop");
     listRouteAvailible = response?.data?.data;
 
+    const renderList = (filteredList) => {
+      contentDiv = "";
+      filteredList.map((item) => {
+        contentDiv += `
+          <div class="col-span-2 lg:col-span-1">
+            <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
+          </div>
+        `;
+      });
+      $("#list_availible_route").html(contentDiv);
+      initButtonROute();
+    };
+
     const filteredList = listRouteAvailible.filter((item) => {
       return (
         !detailDataVar.some(
@@ -260,15 +273,20 @@ const getAvailibleBusStop = async () => {
       );
     });
 
-    filteredList.map((item) => {
-      contentDiv += `
-        <div class="col-span-2 lg:col-span-1">
-          <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
-        </div>
-      `;
-    });
+    renderList(filteredList);
 
-    $("#list_availible_route").html(contentDiv);
+    $("#search_availible_route").on("input", function () {
+      const query = $(this).val().toLowerCase();
+      const filteredList = listRouteAvailible.filter((item) => {
+        return (
+          item.busStop_name.toLowerCase().includes(query) &&
+          !detailDataVar.some(
+            (detail) => detail.busStop_id === item.busStop_id
+          ) && !item.busStop_name.endsWith("*")
+        );
+      });
+      renderList(filteredList);
+    });
   } catch (error) {
     console.log(error);
   }
@@ -280,6 +298,19 @@ const getAvailibleBusStop1 = async () => {
     const response = await axios.post("api/v1/list-bus-stop");
     listRouteAvailible1 = response?.data?.data;
 
+    const renderList = (filteredList1) => {
+      contentDiv = "";
+      filteredList1.map((item) => {
+        contentDiv += `
+          <div class="col-span-2 lg:col-span-1">
+            <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
+          </div>
+        `;
+      });
+      $("#list_availible_route1").html(contentDiv);
+      initButtonROute();
+    };
+
     const filteredList1 = listRouteAvailible1.filter((item) => {
       return (
         !detailDataVar.some(
@@ -288,15 +319,20 @@ const getAvailibleBusStop1 = async () => {
       );
     });
 
-    filteredList1.map((item) => {
-      contentDiv += `
-        <div class="col-span-2 lg:col-span-1">
-          <button class="btn-main w-full h-full" id="bus_stop_${item?.busStop_id}">${item?.busStop_name}</button>
-        </div>
-      `;
-    });
+    renderList(filteredList1);
 
-    $("#list_availible_route1").html(contentDiv);
+    $("#search_availible_route1").on("input", function () {
+      const query = $(this).val().toLowerCase();
+      const filteredList1 = listRouteAvailible1.filter((item) => {
+        return (
+          item.busStop_name.toLowerCase().includes(query) &&
+          !detailDataVar.some(
+            (detail) => detail.busStop_id === item.busStop_id
+          ) && item.busStop_name.endsWith("*")
+        );
+      });
+      renderList(filteredList1);
+    });
   } catch (error) {
     console.log(error);
   }

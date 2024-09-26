@@ -186,7 +186,7 @@
               </div>
             </dialog>
             
-            <button class="btn-main mx-2" id="btn_create_busstops">บันทึก</button>
+            <button class="btn-main mx-2" id="btn_create_busstops">บันทึกจุดผ่าน</button>
 
           </div>
           
@@ -203,6 +203,7 @@
       <div class="grid grid-cols-4 gap-4">
         <div class="col-span-2">
           <h1 class="">ตำแหน่งจุดจอด</h1>
+          <input type="text" id="search_availible_route" placeholder="ค้นหาจุดจอด" class="border border-gray-300 p-2 rounded w-full" />
           <div class="shadow-md mt-2 p-5">
             <div
               class="grid grid-cols-4 gap-2 overflow-y-auto h-48"
@@ -212,8 +213,9 @@
         </div>
 
         <div class="col-span-2">
-          <div class="col-span-2 lg:col-span-1 text-black py-2 rounded">
+          <div class="col-span-2 lg:col-span-1 text-black rounded">
             <h1 class="">ตำแหน่งจุดผ่าน</h1>
+            <input type="text" id="search_availible_route1" placeholder="ค้นหาจุดผ่าน" class="border border-gray-300 p-2 rounded w-full" />
             <div class="shadow-md mt-2 p-5">
               <div
                 class="grid grid-cols-4 gap-2 overflow-y-auto h-48"

@@ -103,7 +103,7 @@ const onClickUpdateShuttleBus = async () => {
       shuttleBus_id: shuttleBusIdVar,
       shuttleBus_name: shortNameVar,
       shuttleBus_subname: subBsname,
-      shuttleTHname: shortThname,
+      shuttleTHname: "สาย " + shortThname,
       shuttleBus_color: suttlebusColor,
       shuttleBus_time: shuttlesusTime, // Ensure this value is correct
       shuttleBus_price: shuttlesusPrice,
